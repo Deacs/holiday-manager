@@ -97,11 +97,10 @@ class UserSpec extends ObjectBehavior
         $this->shouldThrow(new \Exception('You cannot approve your own Holiday Requests'))->duringApproveTeamHolidayRequest($holiday_request);
     }
 
-    function it_can_check_approved_holiday_balance()
+    function it_can_see_a_full_allowance_of_available_holiday_when_no_holiday_has_been_requested_taken_or_active()
     {
-        $this->checkApprovedHolidayBalance();
-
-//        $this->checkHolidayRequests(2)->shouldBeCalled();
+        $this->annual_holiday_allowance = 25;
+        $this->availableHolidayAllowance()->shouldReturn(25);
     }
 
     function it_is_notified_by_email_when_holiday_request_is_approved(HolidayRequest $holiday_request)

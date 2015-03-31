@@ -27,7 +27,12 @@ class HolidayRequest extends Model
         'declined_by'
     ];
 
+    // The date of the requested holiday
     public $date;
+    public $holiday_start_year;
+    public $holiday_end_year;
+    public $holiday_start_date;
+    public $holiday_end_date;
 
     /**
      * Specify the date for the request
@@ -57,6 +62,27 @@ class HolidayRequest extends Model
     public function status()
     {
         return $this->hasOne('App\Status');
+    }
+
+    public function setHolidayYear($holiday_start_year)
+    {
+        $this->holiday_start_year = $holiday_start_year;
+    }
+
+    /**
+     * Return the year of the holiday requests we are concerned with
+     * If nothing has been specified, we presume we are dealing with the current year
+     *
+     * @return int
+     */
+    public function getHolidayYear()
+    {
+        if ( ! empty($this->holiday_year)) {
+            return $this->holiday_year;
+        }
+
+        $dt = new Carbon();
+        return $dt->year;
     }
 
     /**

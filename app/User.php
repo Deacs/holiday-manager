@@ -30,7 +30,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		'email',
 		'telephone',
 		'department_id',
-		'password'
+		'password',
+		'annual_holiday_allowance'
 	];
 
 	/**
@@ -39,6 +40,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 * @var array
 	 */
 	protected $hidden = ['password', 'remember_token'];
+
+	public $active_holiday_balance 		= 0;
+	public $pending_holiday_balance 	= 0;
+	public $approved_holiday_balance 	= 0;
+	public $completed_holiday_balance 	= 0;
+	public $available_holiday_balance 	= 0;
+	public $unavailable_holiday_balance = 0;
 
 	private function isDepartmentLead()
 	{
@@ -86,6 +94,57 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		//return $holiday_requests;
 
 		return true;
+	}
+
+	/**
+	 * How many days holiday are already accounted for
+	 * This will be the annual allowance minus active, approved, pending and completed requests
+	 *
+	 * @return mixed
+	 */
+	public function unavailableHolidayBalance()
+	{
+		return ($this->pendingBalance() - $this->approvedBalance() - $this->activeBalance() - $this->completedBalance());
+	}
+
+	/**
+	 * How many days holiday are still available
+	 *
+	 * @return mixed
+	 */
+	public function availableHolidayAllowance()
+	{
+		return $this->annual_holiday_allowance - $this->unavailableHolidayBalance();
+	}
+
+	public function pendingBalance()
+	{
+		return 0;
+	}
+
+	public function approvedBalance()
+	{
+		return 0;
+	}
+
+	public function declinedBalance()
+	{
+		return 0;
+	}
+
+	public function activeBalance()
+	{
+		return 0;
+	}
+
+	public function cancelledBalance()
+	{
+		return 0;
+	}
+
+	public function completedBalance()
+	{
+		return 0;
 	}
 
 	/**

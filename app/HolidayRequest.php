@@ -29,8 +29,8 @@ class HolidayRequest extends Model
 
     // The date of the requested holiday
     public $date;
-    public $holiday_start_year;
-    public $holiday_end_year;
+    public $holiday_start_date_year;
+    public $holiday_end_date_year;
     public $holiday_start_date;
     public $holiday_end_date;
 
@@ -64,21 +64,26 @@ class HolidayRequest extends Model
         return $this->hasOne('App\Status');
     }
 
-    public function setHolidayYear($holiday_start_year)
+    public function setHolidayYearStart($holiday_start_date_year)
     {
-        $this->holiday_start_year = $holiday_start_year;
+        $this->holiday_start_date_year = $holiday_start_date_year;
+    }
+
+    public function setHolidayYearEnd($holiday_end_date_year)
+    {
+        $this->holiday_end_date_year = $holiday_end_date_year;
     }
 
     /**
-     * Return the year of the holiday requests we are concerned with
+     * Return the start year of the holiday requests we are concerned with
      * If nothing has been specified, we presume we are dealing with the current year
      *
      * @return int
      */
-    public function getHolidayYear()
+    public function getHolidaySartYear()
     {
-        if ( ! empty($this->holiday_year)) {
-            return $this->holiday_year;
+        if ( ! empty($this->holiday_start_date_year)) {
+            return $this->holiday_start_date_year;
         }
 
         $dt = new Carbon();

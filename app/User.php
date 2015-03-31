@@ -81,22 +81,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	}
 
 	/**
-	 * Check on the status of all holiday requests within business year
-	 *
-	 * @return bool
-	 * @param $status_id
-	 */
-	public function checkHolidayRequests($status_id)
-	{
-		// Retrieve a collection of HolidayRequests (within current holiday year) with the provided status
-
-		//$holiday_requests = HolidayRequest::where('user_id', $this->id)->where('status_id', $status_id)->get();
-		//return $holiday_requests;
-
-		return true;
-	}
-
-	/**
 	 * How many days holiday are already accounted for
 	 * This will be the annual allowance minus active, approved, pending and completed requests
 	 *
@@ -119,6 +103,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	public function pendingBalance()
 	{
+		// Ensure that returned requests are for the current year
 		return 0;
 	}
 
@@ -152,7 +137,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 */
 	public function checkApprovedHolidayBalance()
 	{
-		$this->checkHolidayRequests(2);
+		return $this->approvedBalance();
 	}
 
 	/**

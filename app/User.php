@@ -60,6 +60,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 * Cancel an existing holiday request
 	 *
 	 * @throws \Exception
+	 * @return bool
 	 * @param HolidayRequest $holiday_request
 	 */
 	public function cancelHolidayRequest(HolidayRequest $holiday_request)
@@ -68,7 +69,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 			throw new \Exception('You can only cancel your own Holiday Requests');
 		}
 
-		$holiday_request->cancel();
+		return $holiday_request->cancel();
 	}
 
 	/**

@@ -24,18 +24,20 @@ class UserSpec extends ObjectBehavior
         $this->addHolidayRequest($holiday_request)->shouldReturn(true);
     }
 
-    function it_can_cancel_a_requested_holiday_request(HolidayRequest $holiday_request)
+    function it_can_cancel_a_pending_holiday_request()
     {
-        $this->cancelHolidayRequest($holiday_request);
+        $holiday_request = new \App\HolidayRequest();
+        $holiday_request->status_id = 1;
 
-        $holiday_request->cancel()->shouldBeCalled();
+        $this->cancelHolidayRequest($holiday_request)->shouldReturn(true);
     }
 
-    function it_can_cancel_an_approved_holiday_request(HolidayRequest $holiday_request)
+    function it_can_cancel_an_approved_holiday_request()
     {
-        $this->cancelHolidayRequest($holiday_request);
+        $holiday_request = new \App\HolidayRequest();
+        $holiday_request->status_id = 2;
 
-        $holiday_request->cancel()->shouldBeCalled();
+        $this->cancelHolidayRequest($holiday_request)->shouldReturn(true);
     }
 
     function it_will_be_prevented_from_cancelling_holiday_requests_made_by_others(HolidayRequest $holiday_request)

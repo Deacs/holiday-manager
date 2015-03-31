@@ -41,12 +41,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 */
 	protected $hidden = ['password', 'remember_token'];
 
-	public $active_holiday_balance 		= 0;
-	public $pending_holiday_balance 	= 0;
-	public $approved_holiday_balance 	= 0;
-	public $completed_holiday_balance 	= 0;
-	public $available_holiday_balance 	= 0;
-	public $unavailable_holiday_balance = 0;
+	public $default_annual_holiday_alowance = 25;
+	public $active_holiday_balance 			= 0;
+	public $pending_holiday_balance 		= 0;
+	public $approved_holiday_balance 		= 0;
+	public $completed_holiday_balance 		= 0;
+	public $available_holiday_balance 		= 0;
+	public $unavailable_holiday_balance 	= 0;
 
 	private function isDepartmentLead()
 	{
@@ -80,6 +81,16 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		return $holiday_request->cancel();
 	}
 
+	public function getAnnualHolidayAllowance()
+	{
+		if ( ! empty($this->annual_holiday_allowance))
+		{
+			return $this->annual_holiday_allowance;
+		}
+
+		return $this->default_annual_holiday_alowance;
+	}
+
 	/**
 	 * How many days holiday are already accounted for
 	 * This will be the annual allowance minus active, approved, pending and completed requests
@@ -88,7 +99,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 */
 	public function unavailableHolidayBalance()
 	{
-		return ($this->pendingBalance() - $this->approvedBalance() - $this->activeBalance() - $this->completedBalance());
+		return ($this->pendingBalance() + $this->approvedBalance() + $this->activeBalance() + $this->completedBalance());
 	}
 
 	/**
@@ -98,7 +109,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 */
 	public function availableHolidayAllowance()
 	{
-		return $this->annual_holiday_allowance - $this->unavailableHolidayBalance();
+		return $this->getAnnualHolidayAllowance() - $this->unavailableHolidayBalance();
 	}
 
 	public function pendingBalance()
@@ -109,7 +120,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	public function approvedBalance()
 	{
-		return 0;
+		return $this->approved_holiday_balance;
 	}
 
 	public function declinedBalance()

@@ -99,8 +99,13 @@ class UserSpec extends ObjectBehavior
 
     function it_can_see_a_full_allowance_of_available_holiday_when_no_holiday_has_been_requested_taken_or_active()
     {
-        $this->annual_holiday_allowance = 25;
         $this->availableHolidayAllowance()->shouldReturn(25);
+    }
+
+    function it_can_see_an_allowance_of_22_available_holiday_when_3_days_holiday_have_been_approved()
+    {
+        $this->approved_holiday_balance = 3;
+        $this->availableHolidayAllowance()->shouldReturn(22);
     }
 
     function it_is_notified_by_email_when_holiday_request_is_approved(HolidayRequest $holiday_request)

@@ -9,6 +9,8 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon as Carbon;
+use \Exception as Exception;
+use \App\Department as Department;
 
 class HolidayRequest extends Model
 {
@@ -26,6 +28,13 @@ class HolidayRequest extends Model
         'approved_by',
         'declined_by'
     ];
+
+    const PENDING_STATUS_ID     = 1;
+    const APPROVED_STATUS_ID    = 2;
+    const DECLINED_STATUS_ID    = 3;
+    const ACTIVE_STATUS_ID      = 4;
+    const CANCELLED_STATUS_ID   = 5;
+    const COMPLETED_STATUS_ID   = 6;
 
     // The date of the requested holiday
     public $date;
@@ -80,7 +89,7 @@ class HolidayRequest extends Model
      *
      * @return int
      */
-    public function getHolidaySartYear()
+    public function getHolidayStartYear()
     {
         if ( ! empty($this->holiday_start_date_year)) {
             return $this->holiday_start_date_year;
@@ -97,7 +106,7 @@ class HolidayRequest extends Model
      */
     public function isPending()
     {
-        return $this->status_id == 1;
+        return $this->status_id == self::PENDING_STATUS_ID;
     }
 
     /**
@@ -107,7 +116,7 @@ class HolidayRequest extends Model
      */
     public function isApproved()
     {
-        return $this->status_id == 2;
+        return $this->status_id == self::APPROVED_STATUS_ID;
     }
 
     /**
@@ -117,7 +126,7 @@ class HolidayRequest extends Model
      */
     public function isDeclined()
     {
-        return $this->status_id == 3;
+        return $this->status_id == self::DECLINED_STATUS_ID;
     }
 
     /**
@@ -127,7 +136,7 @@ class HolidayRequest extends Model
      */
     public function isActive()
     {
-        return $this->status_id == 4;
+        return $this->status_id == self::ACTIVE_STATUS_ID;
     }
 
     /**
@@ -137,7 +146,7 @@ class HolidayRequest extends Model
      */
     public function isCancelled()
     {
-        return $this->status_id == 5;
+        return $this->status_id == self::CANCELLED_STATUS_ID;
     }
 
     /**
@@ -147,13 +156,13 @@ class HolidayRequest extends Model
      */
     public function isCompleted()
     {
-        return $this->status_id == 6;
+        return $this->status_id == self::COMPLETED_STATUS_ID;
     }
 
     /**
      * Attempt to record the request
      *
-     * @throws \Exception
+     * @throws Exception
      * @return bool
      */
     public function place()
@@ -166,7 +175,7 @@ class HolidayRequest extends Model
     /**
      * Validate the requested date
      *
-     * @throws \Exception
+     * @throws Exception
      * @return bool
      */
     private function validate()
@@ -175,12 +184,16 @@ class HolidayRequest extends Model
 
         switch (true) {
             // The requested date cannot be in the past
-            case Carbon::now()->gte($this->date):
-                throw new \Exception('You cannot make a Holiday Request for a date in the past');
+            case !$this->date->isFuture():
+                throw new Exception('You cannot make a Holiday Request for a date in the past');
                 break;
             // The requested date must be within the current year
             case $dt->year != $this->date->year:
-                throw new \Exception('Holiday Requests can only be made for the current year');
+                throw new Exception('Holiday Requests can only be made for the current year');
+                break;
+            // The requested date ia a weekend
+            case $this->date->isWeekend():
+                throw new Exception('Requested date is a weekend');
                 break;
             default:
                 return true;
@@ -195,8 +208,8 @@ class HolidayRequest extends Model
     public function approve()
     {
         if ($this->canBeApproved()) {
-            $this->status_id = 2;
-            // save();
+            $this->status_id = self::APPROVED_STATUS_ID;
+            // $this->save();
             $this->sendApprovalNotification();
 
             return true;
@@ -213,8 +226,8 @@ class HolidayRequest extends Model
     public function cancel()
     {
         if ($this->canBeCancelled()) {
-            $this->status_id = 5;
-            // save();
+            $this->status_id = self::CANCELLED_STATUS_ID;
+            // $this->save();
             $this->sendCancellationNotification();
 
             return true;
@@ -231,8 +244,8 @@ class HolidayRequest extends Model
     public function decline()
     {
         if ($this->canBeDeclined()) {
-            $this->status_id = 3;
-            //save();
+            $this->status_id = self::DECLINED_STATUS_ID;
+            //$this->save();
             $this->sendDeclineNotification();
 
             return true;
@@ -244,7 +257,7 @@ class HolidayRequest extends Model
     /**
      * Can this request be approved
      *
-     * @throws \Exception
+     * @throws Exception
      * @return bool
      */
     private function canBeApproved()
@@ -261,7 +274,7 @@ class HolidayRequest extends Model
     /**
      * Can this request be cancelled
      *
-     * @throws \Exception
+     * @throws Exception
      * @return bool
      */
     private function canBeCancelled()
@@ -278,7 +291,7 @@ class HolidayRequest extends Model
     /**
      * Can this request be declined
      *
-     * @throws \Exception
+     * @throws Exception
      * @return bool
      */
     private function canBeDeclined()
@@ -295,7 +308,7 @@ class HolidayRequest extends Model
     /**
      * Explain why changing to approved status was refused
      *
-     * @throws \Exception
+     * @throws Exception
      * @return bool
      */
     private function explainApprovalRefusal()
@@ -324,7 +337,7 @@ class HolidayRequest extends Model
     /**
      * Explain why moving to cancelled status was refused
      *
-     * @throws \Exception
+     * @throws Exception
      * @return bool
      */
     private function explainCancellationRefusal()
@@ -350,7 +363,7 @@ class HolidayRequest extends Model
     /**
      * Explain why moving to declined status was refused
      *
-     * @throws \Exception
+     * @throws Exception
      * @return bool
      */
     private function explainDeclineRefusal()
@@ -401,6 +414,28 @@ class HolidayRequest extends Model
     public function sendCancellationNotification()
     {
         return true;
+    }
+
+    /**
+     * Return a summary of Requests for the specified Team
+     *
+     * @return array
+     * @param Department $department
+     */
+    public function getDepartmentSummary($department)
+    {
+        // @TODO Return a multi-dimensional array for each Team member
+        $summary = [];
+
+        return $summary;
+        // Each member will hold an array of each status and their values
+        if ( ! empty($department->members)) {
+            foreach ($department->members as $member) {
+                $summary[$member->fullName()] = [];
+            }
+        }
+
+        return $summary;
     }
 
 }

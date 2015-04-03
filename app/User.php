@@ -6,6 +6,7 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
+use \Exception as Exception;
 use \App\HolidayRequest as HolidayRequest;
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract {
@@ -39,7 +40,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 *
 	 * @var array
 	 */
-	protected $hidden = ['password', 'remember_token'];
+	protected $hidden = [
+		'password',
+		'remember_token'
+	];
 
 	public $default_annual_holiday_alowance = 25;
 	public $active_holiday_balance 			= 0;
@@ -48,6 +52,18 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	public $completed_holiday_balance 		= 0;
 	public $available_holiday_balance 		= 0;
 	public $unavailable_holiday_balance 	= 0;
+
+	public $super_user 						= 0;
+
+	public function department()
+	{
+		return $this->belongsTo('App\Department', 'id', 'department_id');
+	}
+
+	public function fullName()
+	{
+		return $this->first_name.' '.$this->last_name;
+	}
 
 	private function isDepartmentLead()
 	{
@@ -62,13 +78,17 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 */
 	public function addHolidayRequest(HolidayRequest $holiday_request)
 	{
-		return $holiday_request->place();
+		if ($this->validateHolidayRequest()) {
+			return $holiday_request->place();
+		}
+
+		return false;
 	}
 
 	/**
 	 * Cancel an existing holiday request
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 * @return bool
 	 * @param HolidayRequest $holiday_request
 	 */
@@ -81,6 +101,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		return $holiday_request->cancel();
 	}
 
+	/**
+	 * If no allowance has been specified, use the Company default
+	 *
+	 * @return int|mixed
+	 */
 	public function getAnnualHolidayAllowance()
 	{
 		if ( ! empty($this->annual_holiday_allowance))
@@ -89,6 +114,23 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		}
 
 		return $this->default_annual_holiday_alowance;
+	}
+
+	/**
+	 * Create a summary of balances of all holiday statuses
+	 *
+	 * @return array
+	 */
+	public function getHolidayBalanceSummary()
+	{
+		return [
+			'Annual Allowance'  => $this->getAnnualHolidayAllowance(),
+			'Completed Holiday' => $this->completedBalance(),
+			'Active Holiday'    => $this->activeBalance(),
+			'Pending Requests'  => $this->pendingBalance(),
+			'Approved Requests' => $this->approvedBalance(),
+			'Available Balance' => $this->availableHolidayAllowance(),
+		];
 	}
 
 	/**
@@ -114,8 +156,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	public function pendingBalance()
 	{
-		// Ensure that returned requests are for the current year
-		return 0;
+		// @TODO Ensure that returned requests are for the current year
+		return $this->pending_holiday_balance;
 	}
 
 	public function approvedBalance()
@@ -130,7 +172,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	public function activeBalance()
 	{
-		return 0;
+		return $this->active_holiday_balance;
 	}
 
 	public function cancelledBalance()
@@ -140,15 +182,37 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	public function completedBalance()
 	{
-		return 0;
+		return $this->completed_holiday_balance;
 	}
 
 	/**
-	 * Check balance of approved holiday requests
+	 * Is this user regarded as a Super User
+	 * This will generally be a user that can manage multiple Teams
+	 *
+	 * @return bool
 	 */
-	public function checkApprovedHolidayBalance()
+	private function isSuperUser()
 	{
-		return $this->approvedBalance();
+		// @TODO Retrieve actual value
+		return $this->super_user;
+	}
+
+	/**
+	 * Validate a Holiday Request
+	 *
+	 * @throws Exception
+	 * @return bool
+	 */
+	private function validateHolidayRequest()
+	{
+		switch (true) {
+			// Does this user have any holiday allowance left
+			case $this->availableHolidayAllowance() <= 0:
+				throw new Exception('Your Holiday Request could not be placed. Your Annual Holiday Allowance has been taken');
+				break;
+			default:
+				return true;
+		}
 	}
 
 	/**
@@ -156,7 +220,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 * This action is only allowable by a user flagged as lead for the department
 	 * the requesting user is a member of
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 * @param HolidayRequest $holiday_request
 	 */
 	public function approveTeamHolidayRequest(HolidayRequest $holiday_request)
@@ -171,25 +235,55 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 * - Only Department Leads can approve Requests
 	 * - Users cannot approve their own Requests - regardless of their 'Lead' status
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 * @return bool
 	 * @param HolidayRequest $holiday_request
 	 */
 	private function canApproveHolidayRequests(HolidayRequest $holiday_request)
 	{
-		if ( ! $this->isDepartmentLead()) {
-			throw new \Exception('Only Department Leads can approve Holiday Requests');
+		if ( ! $this->hasApproveHolidayRequestPermission()) {
+			throw new Exception('Only Department Leads can approve Holiday Requests');
 		}
 
 		if ($this->id == $holiday_request->user_id) {
-			throw new \Exception('You cannot approve your own Holiday Requests');
+			throw new Exception('You cannot approve your own Holiday Requests');
 		}
 
 		if ($this->department_id != $holiday_request->user->department_id) {
-			throw new \Exception('You may only approve Holiday Requests from members of your own Department');
+			throw new Exception('You may only approve Holiday Requests from members of your own Department');
 		}
 
 		return true;
+	}
+
+	/**
+	 * Can this User approve Holiday Requests
+	 * Generally they will be a Department Lead but this may be extended to allow Team Leads to deputise
+	 * There is possibly a Super User that can approve Requests in the absence of relevant Department Lead
+	 *
+	 * @throws Exception
+	 * @return bool
+	 */
+	private function hasApproveHolidayRequestPermission()
+	{
+		return $this->isSuperUser() || $this->isDepartmentLead();
+	}
+
+	/**
+	 * Can this user view Team Holiday Summaries
+	 *
+	 * @throws Exception
+	 * @return bool
+	 */
+	public function viewDepartmentHolidaySummary(Department $department)
+	{
+		if ( ! $this->hasApproveHolidayRequestPermission()) {
+			throw new Exception('Only Team Leads can view Holiday summaries');
+		}
+
+		$holiday_request = new HolidayRequest();
+
+		return $holiday_request->getDepartmentSummary($department);
 	}
 
 }

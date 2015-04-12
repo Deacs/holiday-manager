@@ -83,6 +83,36 @@ class HolidayRequest extends Model
         $this->holiday_end_date_year = $holiday_end_date_year;
     }
 
+    public function setStatusIdPending()
+    {
+        $this->status_id = static::PENDING_STATUS_ID;
+    }
+
+    public function setStatusIdApproved()
+    {
+        $this->status_id = static::APPROVED_STATUS_ID;
+    }
+
+    public function setStatusIdDeclined()
+    {
+        $this->status_id = static::DECLINED_STATUS_ID;
+    }
+
+    public function setStatusIdActive()
+    {
+        $this->status_id = static::ACTIVE_STATUS_ID;
+    }
+
+    public function setStatusIdCancelled()
+    {
+        $this->status_id = static::CANCELLED_STATUS_ID;
+    }
+
+    public function setStatusIdCompleted()
+    {
+        $this->status_id = static::COMPLETED_STATUS_ID;
+    }
+
     /**
      * Return the start year of the holiday requests we are concerned with
      * If nothing has been specified, we presume we are dealing with the current year

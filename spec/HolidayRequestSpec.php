@@ -17,6 +17,49 @@ class HolidayRequestSpec extends ObjectBehavior
         $this->shouldHaveType('App\HolidayRequest');
     }
 
+//    const PENDING_STATUS_ID     = 1;
+//    const APPROVED_STATUS_ID    = 2;
+//    const DECLINED_STATUS_ID    = 3;
+//    const ACTIVE_STATUS_ID      = 4;
+//    const CANCELLED_STATUS_ID   = 5;
+//    const COMPLETED_STATUS_ID   = 6;
+    // -- Check correct status id has been set after setters
+    function it_will_set_correct_status_id_after_set_status_id_pending_is_called()
+    {
+        $this->setStatusIdPending();
+        $this->status_id->shouldBe(HolidayRequest::PENDING_STATUS_ID);
+    }
+
+    function it_will_set_correct_status_id_after_set_status_id_approved_is_called()
+    {
+        $this->setStatusIdApproved();
+        $this->status_id->shouldBe(HolidayRequest::APPROVED_STATUS_ID);
+    }
+
+    function it_will_set_correct_status_id_after_set_status_id_declined_is_called()
+    {
+        $this->setStatusIdDeclined();
+        $this->status_id->shouldBe(HolidayRequest::DECLINED_STATUS_ID);
+    }
+
+    function it_will_set_correct_status_id_after_set_status_id_active_is_called()
+    {
+        $this->setStatusIdActive();
+        $this->status_id->shouldBe(HolidayRequest::ACTIVE_STATUS_ID);
+    }
+
+    function it_will_set_correct_status_id_after_set_status_id_cancelled_is_called()
+    {
+        $this->setStatusIdCancelled();
+        $this->status_id->shouldBe(HolidayRequest::CANCELLED_STATUS_ID);
+    }
+
+    function it_will_set_correct_status_id_after_set_status_id_completed_is_called()
+    {
+        $this->setStatusIdCompleted();
+        $this->status_id->shouldBe(HolidayRequest::COMPLETED_STATUS_ID);
+    }
+
     // -- Check correct status id has been set after transitions
     function it_will_set_the_appropriate_status_after_being_set_to_approved()
     {

@@ -53,21 +53,49 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	public $available_holiday_balance 		= 0;
 	public $unavailable_holiday_balance 	= 0;
 
-	public $super_user 						= 0;
+	public $lead 							= false;
+	public $super_user 						= false;
+
+
+	/*
+	 * -- Relationships
+	 */
+
 
 	public function department()
 	{
 		return $this->belongsTo('App\Department', 'id', 'department_id');
 	}
 
+	/**
+	 * Concatenate the First and Last name values
+	 *
+	 * @return string
+	 */
 	public function fullName()
 	{
 		return $this->first_name.' '.$this->last_name;
 	}
 
-	private function isDepartmentLead()
+	/**
+	 * Is this user a Department Lead
+	 *
+	 * @return bool
+	 */
+	public function isDepartmentLead()
 	{
-		return $this->lead;
+		return $this->lead == 1;
+	}
+
+	/**
+	 * Is this user regarded as a Super User
+	 * This will generally be a user that can manage multiple Teams
+	 *
+	 * @return bool
+	 */
+	public function isSuperUser()
+	{
+		return $this->super_user == 1;
 	}
 
 	/**
@@ -186,18 +214,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	}
 
 	/**
-	 * Is this user regarded as a Super User
-	 * This will generally be a user that can manage multiple Teams
-	 *
-	 * @return bool
-	 */
-	private function isSuperUser()
-	{
-		// @TODO Retrieve actual value
-		return $this->super_user;
-	}
-
-	/**
 	 * Validate a Holiday Request
 	 *
 	 * @throws Exception
@@ -232,7 +248,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	/**
 	 * Ensure the user is able to approve Holiday Requests
-	 * - Only Department Leads can approve Requests
+	 * - Only Department Leads (or Super Users) can approve Requests
 	 * - Users cannot approve their own Requests - regardless of their 'Lead' status
 	 *
 	 * @throws Exception
@@ -241,7 +257,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 */
 	private function canApproveHolidayRequests(HolidayRequest $holiday_request)
 	{
-		if ( ! $this->hasApproveHolidayRequestPermission()) {
+		if ( ! $this->hasManageHolidayRequestPermission()) {
 			throw new Exception('Only Department Leads can approve Holiday Requests');
 		}
 
@@ -257,14 +273,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	}
 
 	/**
-	 * Can this User approve Holiday Requests
+	 * Can this User manage Holiday Requests
 	 * Generally they will be a Department Lead but this may be extended to allow Team Leads to deputise
 	 * There is possibly a Super User that can approve Requests in the absence of relevant Department Lead
 	 *
 	 * @throws Exception
 	 * @return bool
 	 */
-	private function hasApproveHolidayRequestPermission()
+	public function hasManageHolidayRequestPermission()
 	{
 		return $this->isSuperUser() || $this->isDepartmentLead();
 	}
@@ -277,7 +293,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 */
 	public function viewDepartmentHolidaySummary(Department $department)
 	{
-		if ( ! $this->hasApproveHolidayRequestPermission()) {
+		if ( ! $this->hasManageHolidayRequestPermission()) {
 			throw new Exception('Only Team Leads can view Holiday summaries');
 		}
 

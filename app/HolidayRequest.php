@@ -427,7 +427,6 @@ class HolidayRequest extends Model
         // @TODO Return a multi-dimensional array for each Team member
         $summary = [];
 
-        return $summary;
         // Each member will hold an array of each status and their values
         if ( ! empty($department->members)) {
             foreach ($department->members as $member) {

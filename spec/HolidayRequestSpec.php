@@ -26,7 +26,7 @@ class HolidayRequestSpec extends ObjectBehavior
         $this->status_id->shouldBe(HolidayRequest::APPROVED_STATUS_ID);
     }
 
-    public function it_will_set_the_appropriate_status_after_being_set_to_declined()
+    function it_will_set_the_appropriate_status_after_being_set_to_declined()
     {
         // Set the status to Pending which will pass the decline validation
         $this->status_id = HolidayRequest::PENDING_STATUS_ID;
@@ -34,7 +34,7 @@ class HolidayRequestSpec extends ObjectBehavior
         $this->status_id->shouldBe(HolidayRequest::DECLINED_STATUS_ID);
     }
 
-    public function it_will_set_the_appropriate_status_after_being_set_to_cancelled()
+    function it_will_set_the_appropriate_status_after_being_set_to_cancelled()
     {
         // Set the status to Pending which will pass the cancellation validation
         $this->status_id = HolidayRequest::PENDING_STATUS_ID;

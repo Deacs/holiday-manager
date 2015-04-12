@@ -17,12 +17,6 @@ class HolidayRequestSpec extends ObjectBehavior
         $this->shouldHaveType('App\HolidayRequest');
     }
 
-//    const PENDING_STATUS_ID     = 1;
-//    const APPROVED_STATUS_ID    = 2;
-//    const DECLINED_STATUS_ID    = 3;
-//    const ACTIVE_STATUS_ID      = 4;
-//    const CANCELLED_STATUS_ID   = 5;
-//    const COMPLETED_STATUS_ID   = 6;
     // -- Check correct status id has been set after setters
     function it_will_set_correct_status_id_after_set_status_id_pending_is_called()
     {
@@ -188,5 +182,19 @@ class HolidayRequestSpec extends ObjectBehavior
         $this->setDate($dt);
 
         $this->shouldThrow(new Exception('Requested date is a weekend'))->duringPlace();
+    }
+
+    function it_will_return_the_current_year_from_get_holiday_start_year_when_none_set()
+    {
+        $dt = new Carbon();
+
+        $this->getHolidayStartYear()->shouldReturn($dt->year);
+    }
+
+    function it_will_return_2014_from_get_holiday_start_year_when_2014_has_been_set()
+    {
+        $this->setHolidayStartYear(2012);
+
+        $this->getHolidayStartYear(2014);
     }
 }

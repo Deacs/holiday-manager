@@ -53,6 +53,7 @@ class HolidayRequest extends Model
         $this->date = $date;
     }
 
+    // -- Relationships
     public function user()
     {
         return $this->belongsTo('App\User');
@@ -73,41 +74,70 @@ class HolidayRequest extends Model
         return $this->hasOne('App\Status');
     }
 
-    public function setHolidayYearStart($holiday_start_date_year)
+    /**
+     * Set the starting Year of the Holiday Requests we are dealing with
+     *
+     * @param $holiday_start_date_year
+     */
+    public function setHolidayStartYear($holiday_start_date_year)
     {
         $this->holiday_start_date_year = $holiday_start_date_year;
     }
 
-    public function setHolidayYearEnd($holiday_end_date_year)
+    /**
+     * Set the starting Year of the Holiday Requests we are dealing with
+     *
+     * @param $holiday_end_date_year
+     */
+    public function setHolidayEndYear($holiday_end_date_year)
     {
         $this->holiday_end_date_year = $holiday_end_date_year;
     }
 
+    // -- Setters to protect the usage of class constants for Status IDs
+    /**
+     * Set the status ID to pending
+     */
     public function setStatusIdPending()
     {
         $this->status_id = static::PENDING_STATUS_ID;
     }
 
+    /**
+     * Set the status ID to approved
+     */
     public function setStatusIdApproved()
     {
         $this->status_id = static::APPROVED_STATUS_ID;
     }
 
+    /**
+     * Set the status ID to declined
+     */
     public function setStatusIdDeclined()
     {
         $this->status_id = static::DECLINED_STATUS_ID;
     }
 
+    /**
+     * Set the status ID to active
+     */
     public function setStatusIdActive()
     {
         $this->status_id = static::ACTIVE_STATUS_ID;
     }
 
+    /**
+     * Set the status ID to cancelled
+     */
     public function setStatusIdCancelled()
     {
         $this->status_id = static::CANCELLED_STATUS_ID;
     }
 
+    /**
+     * Set the status ID to completed
+     */
     public function setStatusIdCompleted()
     {
         $this->status_id = static::COMPLETED_STATUS_ID;
@@ -415,7 +445,8 @@ class HolidayRequest extends Model
                 return true;
         }
     }
-
+    
+    // -- Send notifications
     /**
      * Send an approved notification
      *

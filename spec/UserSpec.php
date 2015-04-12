@@ -108,9 +108,9 @@ class UserSpec extends ObjectBehavior
         $requesting_user = new User();
         $holiday_request = new HolidayRequest();
 
-        $requesting_user->department_id = 1;
         $requesting_user->id            = 1;
-        $holiday_request->user          = $requesting_user;
+        $requesting_user->department_id = 1;
+        $holiday_request->requester($requesting_user);
 
         $this->id                       = 2;
         $this->lead                     = 1;
@@ -119,19 +119,33 @@ class UserSpec extends ObjectBehavior
         $this->shouldThrow(new Exception('You may only approve Holiday Requests from members of your own Department'))->duringApproveTeamHolidayRequest($holiday_request);
     }
 
+    function it_is_a_super_user_and_will_be_allowed_to_approve_holiday_for_members_of_another_team()
+    {
+        $requesting_user = new User();
+        $holiday_request = new HolidayRequest();
+
+        $requesting_user->id            = 1;
+        $requesting_user->department_id = 1;
+        $holiday_request->requester($requesting_user);
+
+        $this->id                       = 2;
+        $this->super_user               = 1;
+        $this->department_id            = 1;
+
+        $this->approveTeamHolidayRequest($holiday_request)->shouldReturn(true);
+    }
+
     function it_is_department_lead_and_can_approve_holiday_for_own_department_members()
     {
         $requesting_user = new User();
         $holiday_request = new HolidayRequest();
 
-        $holiday_request->user      = $requesting_user;
+        $requesting_user->id        = 2;
+        $holiday_request->requester($requesting_user);
         $this->id                   = 1;
         $this->lead                 = 1;
 
-        $holiday_request->user_id   = 2;
-        $this->approveTeamHolidayRequest($holiday_request);
-
-        $this->shouldNotThrow(new Exception('You may only approve Holiday Requests from members of your own Department'))->duringApproveTeamHolidayRequest($holiday_request);
+        $this->approveTeamHolidayRequest($holiday_request)->shouldReturn(true);
     }
 
     function it_will_be_prevented_from_approving_holiday_requests_if_not_department_lead(HolidayRequest $holiday_request)
@@ -142,11 +156,14 @@ class UserSpec extends ObjectBehavior
 
     function it_will_be_prevented_from_approving_own_holiday_request()
     {
+        $requesting_user = new User();
         $holiday_request = new HolidayRequest();
+
+        $requesting_user->id        = 2;
+        $holiday_request->requester($requesting_user);
 
         $this->lead                 = 1;
         $this->id                   = 2;
-        $holiday_request->user_id   = 2;
 
         $this->shouldThrow(new Exception('You cannot approve your own Holiday Requests'))->duringApproveTeamHolidayRequest($holiday_request);
     }

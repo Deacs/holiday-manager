@@ -36,12 +36,17 @@ class HolidayRequest extends Model
     const CANCELLED_STATUS_ID   = 5;
     const COMPLETED_STATUS_ID   = 6;
 
+    public $requester;
+
     // The date of the requested holiday
     public $date;
     public $holiday_start_date_year;
     public $holiday_end_date_year;
     public $holiday_start_date;
     public $holiday_end_date;
+
+    // The default status for a request is Pending
+    public $status_id           = self::PENDING_STATUS_ID;
 
     /**
      * Specify the date for the request
@@ -72,6 +77,11 @@ class HolidayRequest extends Model
     public function status()
     {
         return $this->hasOne('App\Status');
+    }
+
+    public function requester(User $requester)
+    {
+        $this->requester = $requester;
     }
 
     /**

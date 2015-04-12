@@ -237,13 +237,16 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 * the requesting user is a member of
 	 *
 	 * @throws Exception
+	 * @return bool
 	 * @param HolidayRequest $holiday_request
 	 */
 	public function approveTeamHolidayRequest(HolidayRequest $holiday_request)
 	{
 		if ($this->canApproveHolidayRequests($holiday_request)) {
-			$holiday_request->approve();
+			return $holiday_request->approve();
 		}
+
+		return false;
 	}
 
 	/**
@@ -261,11 +264,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 			throw new Exception('Only Department Leads can approve Holiday Requests');
 		}
 
-		if ($this->id == $holiday_request->user_id) {
+		if ($this->id == $holiday_request->requester->id) {
 			throw new Exception('You cannot approve your own Holiday Requests');
 		}
 
-		if ($this->department_id != $holiday_request->user->department_id) {
+		if ($this->department_id != $holiday_request->requester->department_id) {
 			throw new Exception('You may only approve Holiday Requests from members of your own Department');
 		}
 

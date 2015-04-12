@@ -8,6 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use \App\HolidayRequest as HolidayRequest;
 use \App\User as User;
+use \App\Status as Status;
 use \Exception as Exception;
 
 class UserSpec extends ObjectBehavior
@@ -82,7 +83,7 @@ class UserSpec extends ObjectBehavior
     function it_can_cancel_a_pending_holiday_request()
     {
         $holiday_request = new HolidayRequest();
-        $holiday_request->status_id = 1;
+        $holiday_request->status_id = Status::PENDING_STATUS_ID;
 
         $this->cancelHolidayRequest($holiday_request)->shouldReturn(true);
     }
@@ -90,7 +91,7 @@ class UserSpec extends ObjectBehavior
     function it_can_cancel_an_approved_holiday_request()
     {
         $holiday_request = new HolidayRequest();
-        $holiday_request->status_id = 2;
+        $holiday_request->status_id = Status::APPROVED_STATUS_ID;
 
         $this->cancelHolidayRequest($holiday_request)->shouldReturn(true);
     }

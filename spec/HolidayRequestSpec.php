@@ -193,8 +193,8 @@ class HolidayRequestSpec extends ObjectBehavior
 
     function it_will_return_2014_from_get_holiday_start_year_when_2014_has_been_set()
     {
-        $this->setHolidayStartYear(2012);
+        $this->setHolidayStartYear(2014);
 
-        $this->getHolidayStartYear(2014);
+        $this->getHolidayStartYear()->shouldReturn(2014);
     }
 }

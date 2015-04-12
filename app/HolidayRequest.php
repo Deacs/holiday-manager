@@ -445,7 +445,7 @@ class HolidayRequest extends Model
                 return true;
         }
     }
-    
+
     // -- Send notifications
     /**
      * Send an approved notification

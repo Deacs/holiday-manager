@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon as Carbon;
 use \Exception as Exception;
 use \App\Department as Department;
+use \App\Status as Status;
 
 class HolidayRequest extends Model
 {
@@ -29,12 +30,12 @@ class HolidayRequest extends Model
         'declined_by'
     ];
 
-    const PENDING_STATUS_ID     = 1;
-    const APPROVED_STATUS_ID    = 2;
-    const DECLINED_STATUS_ID    = 3;
-    const ACTIVE_STATUS_ID      = 4;
-    const CANCELLED_STATUS_ID   = 5;
-    const COMPLETED_STATUS_ID   = 6;
+//    const PENDING_STATUS_ID     = 1;
+//    const APPROVED_STATUS_ID    = 2;
+//    const DECLINED_STATUS_ID    = 3;
+//    const ACTIVE_STATUS_ID      = 4;
+//    const CANCELLED_STATUS_ID   = 5;
+//    const COMPLETED_STATUS_ID   = 6;
 
     public $requester;
 
@@ -46,7 +47,7 @@ class HolidayRequest extends Model
     public $holiday_end_date;
 
     // The default status for a request is Pending
-    public $status_id           = self::PENDING_STATUS_ID;
+    public $status_id           = Status::PENDING_STATUS_ID;
 
     /**
      * Specify the date for the request
@@ -110,7 +111,7 @@ class HolidayRequest extends Model
      */
     public function setStatusIdPending()
     {
-        $this->status_id = static::PENDING_STATUS_ID;
+        $this->status_id = Status::PENDING_STATUS_ID;
     }
 
     /**
@@ -118,7 +119,7 @@ class HolidayRequest extends Model
      */
     public function setStatusIdApproved()
     {
-        $this->status_id = static::APPROVED_STATUS_ID;
+        $this->status_id = Status::APPROVED_STATUS_ID;
     }
 
     /**
@@ -126,7 +127,7 @@ class HolidayRequest extends Model
      */
     public function setStatusIdDeclined()
     {
-        $this->status_id = static::DECLINED_STATUS_ID;
+        $this->status_id = Status::DECLINED_STATUS_ID;
     }
 
     /**
@@ -134,7 +135,7 @@ class HolidayRequest extends Model
      */
     public function setStatusIdActive()
     {
-        $this->status_id = static::ACTIVE_STATUS_ID;
+        $this->status_id = Status::ACTIVE_STATUS_ID;
     }
 
     /**
@@ -142,7 +143,7 @@ class HolidayRequest extends Model
      */
     public function setStatusIdCancelled()
     {
-        $this->status_id = static::CANCELLED_STATUS_ID;
+        $this->status_id = Status::CANCELLED_STATUS_ID;
     }
 
     /**
@@ -150,7 +151,7 @@ class HolidayRequest extends Model
      */
     public function setStatusIdCompleted()
     {
-        $this->status_id = static::COMPLETED_STATUS_ID;
+        $this->status_id = Status::COMPLETED_STATUS_ID;
     }
 
     /**
@@ -176,7 +177,7 @@ class HolidayRequest extends Model
      */
     public function isPending()
     {
-        return $this->status_id == self::PENDING_STATUS_ID;
+        return $this->status_id == Status::PENDING_STATUS_ID;
     }
 
     /**
@@ -186,7 +187,7 @@ class HolidayRequest extends Model
      */
     public function isApproved()
     {
-        return $this->status_id == self::APPROVED_STATUS_ID;
+        return $this->status_id == Status::APPROVED_STATUS_ID;
     }
 
     /**
@@ -196,7 +197,7 @@ class HolidayRequest extends Model
      */
     public function isDeclined()
     {
-        return $this->status_id == self::DECLINED_STATUS_ID;
+        return $this->status_id == Status::DECLINED_STATUS_ID;
     }
 
     /**
@@ -206,7 +207,7 @@ class HolidayRequest extends Model
      */
     public function isActive()
     {
-        return $this->status_id == self::ACTIVE_STATUS_ID;
+        return $this->status_id == Status::ACTIVE_STATUS_ID;
     }
 
     /**
@@ -216,7 +217,7 @@ class HolidayRequest extends Model
      */
     public function isCancelled()
     {
-        return $this->status_id == self::CANCELLED_STATUS_ID;
+        return $this->status_id == Status::CANCELLED_STATUS_ID;
     }
 
     /**
@@ -226,7 +227,7 @@ class HolidayRequest extends Model
      */
     public function isCompleted()
     {
-        return $this->status_id == self::COMPLETED_STATUS_ID;
+        return $this->status_id == Status::COMPLETED_STATUS_ID;
     }
 
     /**
@@ -278,7 +279,7 @@ class HolidayRequest extends Model
     public function approve()
     {
         if ($this->canBeApproved()) {
-            $this->status_id = self::APPROVED_STATUS_ID;
+            $this->status_id = Status::APPROVED_STATUS_ID;
             // $this->save();
             $this->sendApprovalNotification();
 
@@ -296,7 +297,7 @@ class HolidayRequest extends Model
     public function cancel()
     {
         if ($this->canBeCancelled()) {
-            $this->status_id = self::CANCELLED_STATUS_ID;
+            $this->status_id = Status::CANCELLED_STATUS_ID;
             // $this->save();
             $this->sendCancellationNotification();
 
@@ -314,7 +315,7 @@ class HolidayRequest extends Model
     public function decline()
     {
         if ($this->canBeDeclined()) {
-            $this->status_id = self::DECLINED_STATUS_ID;
+            $this->status_id = Status::DECLINED_STATUS_ID;
             //$this->save();
             $this->sendDeclineNotification();
 

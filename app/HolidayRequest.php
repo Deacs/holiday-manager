@@ -47,7 +47,7 @@ class HolidayRequest extends Model
     public $holiday_end_date;
 
     // The default status for a request is Pending
-    public $status_id           = Status::PENDING_STATUS_ID;
+    public $status_id           = Status::PENDING_ID;
 
     /**
      * Specify the date for the request
@@ -111,7 +111,7 @@ class HolidayRequest extends Model
      */
     public function setStatusIdPending()
     {
-        $this->status_id = Status::PENDING_STATUS_ID;
+        $this->status_id = Status::PENDING_ID;
     }
 
     /**
@@ -119,7 +119,7 @@ class HolidayRequest extends Model
      */
     public function setStatusIdApproved()
     {
-        $this->status_id = Status::APPROVED_STATUS_ID;
+        $this->status_id = Status::APPROVED_ID;
     }
 
     /**
@@ -127,7 +127,7 @@ class HolidayRequest extends Model
      */
     public function setStatusIdDeclined()
     {
-        $this->status_id = Status::DECLINED_STATUS_ID;
+        $this->status_id = Status::DECLINED_ID;
     }
 
     /**
@@ -135,7 +135,7 @@ class HolidayRequest extends Model
      */
     public function setStatusIdActive()
     {
-        $this->status_id = Status::ACTIVE_STATUS_ID;
+        $this->status_id = Status::ACTIVE_ID;
     }
 
     /**
@@ -143,7 +143,7 @@ class HolidayRequest extends Model
      */
     public function setStatusIdCancelled()
     {
-        $this->status_id = Status::CANCELLED_STATUS_ID;
+        $this->status_id = Status::CANCELLED_ID;
     }
 
     /**
@@ -151,7 +151,7 @@ class HolidayRequest extends Model
      */
     public function setStatusIdCompleted()
     {
-        $this->status_id = Status::COMPLETED_STATUS_ID;
+        $this->status_id = Status::COMPLETED_ID;
     }
 
     /**
@@ -177,7 +177,7 @@ class HolidayRequest extends Model
      */
     public function isPending()
     {
-        return $this->status_id == Status::PENDING_STATUS_ID;
+        return $this->status_id == Status::PENDING_ID;
     }
 
     /**
@@ -187,7 +187,7 @@ class HolidayRequest extends Model
      */
     public function isApproved()
     {
-        return $this->status_id == Status::APPROVED_STATUS_ID;
+        return $this->status_id == Status::APPROVED_ID;
     }
 
     /**
@@ -197,7 +197,7 @@ class HolidayRequest extends Model
      */
     public function isDeclined()
     {
-        return $this->status_id == Status::DECLINED_STATUS_ID;
+        return $this->status_id == Status::DECLINED_ID;
     }
 
     /**
@@ -207,7 +207,7 @@ class HolidayRequest extends Model
      */
     public function isActive()
     {
-        return $this->status_id == Status::ACTIVE_STATUS_ID;
+        return $this->status_id == Status::ACTIVE_ID;
     }
 
     /**
@@ -217,7 +217,7 @@ class HolidayRequest extends Model
      */
     public function isCancelled()
     {
-        return $this->status_id == Status::CANCELLED_STATUS_ID;
+        return $this->status_id == Status::CANCELLED_ID;
     }
 
     /**
@@ -227,7 +227,7 @@ class HolidayRequest extends Model
      */
     public function isCompleted()
     {
-        return $this->status_id == Status::COMPLETED_STATUS_ID;
+        return $this->status_id == Status::COMPLETED_ID;
     }
 
     /**
@@ -279,7 +279,7 @@ class HolidayRequest extends Model
     public function approve()
     {
         if ($this->canBeApproved()) {
-            $this->status_id = Status::APPROVED_STATUS_ID;
+            $this->status_id = Status::APPROVED_ID;
             // $this->save();
             $this->sendApprovalNotification();
 
@@ -297,7 +297,7 @@ class HolidayRequest extends Model
     public function cancel()
     {
         if ($this->canBeCancelled()) {
-            $this->status_id = Status::CANCELLED_STATUS_ID;
+            $this->status_id = Status::CANCELLED_ID;
             // $this->save();
             $this->sendCancellationNotification();
 
@@ -315,7 +315,7 @@ class HolidayRequest extends Model
     public function decline()
     {
         if ($this->canBeDeclined()) {
-            $this->status_id = Status::DECLINED_STATUS_ID;
+            $this->status_id = Status::DECLINED_ID;
             //$this->save();
             $this->sendDeclineNotification();
 

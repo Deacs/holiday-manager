@@ -83,7 +83,7 @@ class UserSpec extends ObjectBehavior
     function it_can_cancel_a_pending_holiday_request()
     {
         $holiday_request = new HolidayRequest();
-        $holiday_request->status_id = Status::PENDING_STATUS_ID;
+        $holiday_request->status_id = Status::PENDING_ID;
 
         $this->cancelHolidayRequest($holiday_request)->shouldReturn(true);
     }
@@ -91,7 +91,7 @@ class UserSpec extends ObjectBehavior
     function it_can_cancel_an_approved_holiday_request()
     {
         $holiday_request = new HolidayRequest();
-        $holiday_request->status_id = Status::APPROVED_STATUS_ID;
+        $holiday_request->status_id = Status::APPROVED_ID;
 
         $this->cancelHolidayRequest($holiday_request)->shouldReturn(true);
     }

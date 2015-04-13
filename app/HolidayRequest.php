@@ -30,14 +30,8 @@ class HolidayRequest extends Model
         'declined_by'
     ];
 
-//    const PENDING_STATUS_ID     = 1;
-//    const APPROVED_STATUS_ID    = 2;
-//    const DECLINED_STATUS_ID    = 3;
-//    const ACTIVE_STATUS_ID      = 4;
-//    const CANCELLED_STATUS_ID   = 5;
-//    const COMPLETED_STATUS_ID   = 6;
-
-    public $requester;
+    public $requesting_user;
+    public $approving_user;
 
     // The date of the requested holiday
     public $date;
@@ -47,7 +41,7 @@ class HolidayRequest extends Model
     public $holiday_end_date;
 
     // The default status for a request is Pending
-    public $status_id           = Status::PENDING_ID;
+    public $status_id = Status::PENDING_ID;
 
     /**
      * Specify the date for the request
@@ -80,9 +74,14 @@ class HolidayRequest extends Model
         return $this->hasOne('App\Status');
     }
 
-    public function requester(User $requester)
+    public function requestingUser(User $requesting_user)
     {
-        $this->requester = $requester;
+        $this->requesting_user = $requesting_user;
+    }
+
+    public function approvingUser(User $approving_user)
+    {
+        $this->approving_user = $approving_user;
     }
 
     /**
@@ -278,6 +277,8 @@ class HolidayRequest extends Model
      */
     public function approve()
     {
+        $this->validateUserApproveAction();
+
         if ($this->canBeApproved()) {
             $this->status_id = Status::APPROVED_ID;
             // $this->save();
@@ -289,6 +290,32 @@ class HolidayRequest extends Model
         return false;
     }
 
+    private function validateUserApproveAction()
+    {
+        if ( ! $this->approving_user->hasManageHolidayRequestPermission()) {
+            throw new Exception('Only Department Leads can approve Holiday Requests');
+        }
+
+        if ($this->approving_user->id == $this->requesting_user->id) {
+            throw new Exception('You cannot approve your own Holiday Requests');
+        }
+
+        if ( ! $this->approving_user->isSuperUser() && ($this->approving_user->department_id != $this->requesting_user->department_id)) {
+            throw new Exception('You may only approve Holiday Requests from members of your own Department');
+        }
+
+        return true;
+    }
+
+    private function validateUserCancelAction()
+    {
+        if ($this->requesting_user->id != $this->user_id) {
+            throw new Exception('You can only cancel your own Holiday Requests');
+        }
+
+        return true;
+    }
+
     /**
      * Cancel an existing Holiday Request
      *
@@ -296,6 +323,8 @@ class HolidayRequest extends Model
      */
     public function cancel()
     {
+        $this->validateUserCancelAction();
+
         if ($this->canBeCancelled()) {
             $this->status_id = Status::CANCELLED_ID;
             // $this->save();
@@ -507,6 +536,31 @@ class HolidayRequest extends Model
         }
 
         return $summary;
+    }
+
+    /**
+     * Ensure the user attempting to approve this request has suitable permissions
+     * - Only Department Leads (or Super Users) can approve Requests
+     * - Users cannot approve their own Requests - regardless of their 'Lead' status
+     *
+     * @throws Exception
+     * @return bool
+     */
+    private function canApproveHolidayRequests()
+    {
+        if ( ! $this->hasManageHolidayRequestPermission()) {
+            throw new Exception('Only Department Leads can approve Holiday Requests');
+        }
+
+        if ($this->approving_user->id == $this->requesting_user->id) {
+            throw new Exception('You cannot approve your own Holiday Requests');
+        }
+
+        if ($this->approving_user->department_id != $this->requesting_user->department_id) {
+            throw new Exception('You may only approve Holiday Requests from members of your own Department');
+        }
+
+        return true;
     }
 
 }

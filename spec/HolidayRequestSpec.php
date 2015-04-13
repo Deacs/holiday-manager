@@ -58,6 +58,15 @@ class HolidayRequestSpec extends ObjectBehavior
     // -- Check correct status id has been set after transitions
     function it_will_set_the_appropriate_status_after_being_set_to_approved()
     {
+        $requesting_user    = new User();
+        $approving_user     = new User();
+
+        $requesting_user->id    = 1;
+        $approving_user->lead   = 1;
+        $approving_user->id     = 2;
+
+        $this->requestingUser($requesting_user);
+        $this->approvingUser($approving_user);
         $this->approve();
         $this->status_id->shouldBe(Status::APPROVED_ID);
     }
@@ -70,6 +79,11 @@ class HolidayRequestSpec extends ObjectBehavior
 
     function it_will_set_the_appropriate_status_after_being_set_to_cancelled()
     {
+        $this->user_id          = 1;
+        $requesting_user        = new User();
+        $requesting_user->id    = 1;
+        $this->requestingUser($requesting_user);
+
         $this->cancel();
         $this->status_id->shouldBe(Status::CANCELLED_ID);
     }
@@ -77,54 +91,120 @@ class HolidayRequestSpec extends ObjectBehavior
     // -- Manage transitions between status
     function it_will_be_prevented_from_being_approved_when_it_is_approved()
     {
+        $requesting_user    = new User();
+        $approving_user     = new User();
+
+        $requesting_user->id    = 1;
+        $approving_user->lead   = 1;
+        $approving_user->id     = 2;
+
+        $this->requestingUser($requesting_user);
+        $this->approvingUser($approving_user);
         $this->status_id = Status::APPROVED_ID;
         $this->shouldThrow(new Exception('Holiday Request has already been approved'))->duringApprove();
     }
 
     function it_will_be_prevented_from_being_approved_when_it_has_been_declined()
     {
+        $requesting_user    = new User();
+        $approving_user     = new User();
+
+        $requesting_user->id    = 1;
+        $approving_user->lead   = 1;
+        $approving_user->id     = 2;
+
+        $this->requestingUser($requesting_user);
+        $this->approvingUser($approving_user);
         $this->status_id = Status::DECLINED_ID;
         $this->shouldThrow(new Exception('Holiday Request cannot be approved, it has already been declined'))->duringApprove();
     }
 
     function it_will_be_prevented_from_being_approved_when_it_is_active()
     {
+        $requesting_user    = new User();
+        $approving_user     = new User();
+
+        $requesting_user->id    = 1;
+        $approving_user->lead   = 1;
+        $approving_user->id     = 2;
+
+        $this->requestingUser($requesting_user);
+        $this->approvingUser($approving_user);
         $this->status_id = Status::ACTIVE_ID;
         $this->shouldThrow(new Exception('Holiday Request cannot be approved, it is currently active'))->duringApprove();
     }
 
     function it_will_be_prevented_from_being_approved_when_it_has_been_cancelled()
     {
+        $requesting_user    = new User();
+        $approving_user     = new User();
+
+        $requesting_user->id    = 1;
+        $approving_user->lead   = 1;
+        $approving_user->id     = 2;
+
+        $this->requestingUser($requesting_user);
+        $this->approvingUser($approving_user);
         $this->status_id = Status::CANCELLED_ID;
         $this->shouldThrow(new Exception('Holiday Request cannot be approved, it has been cancelled'))->duringApprove();
     }
 
     function it_will_be_prevented_from_being_approved_when_it_has_been_completed()
     {
+        $requesting_user    = new User();
+        $approving_user     = new User();
+
+        $requesting_user->id    = 1;
+        $approving_user->lead   = 1;
+        $approving_user->id     = 2;
+
+        $this->requestingUser($requesting_user);
+        $this->approvingUser($approving_user);
+
         $this->status_id = Status::COMPLETED_ID;
         $this->shouldThrow(new Exception('Holiday Request cannot be approved, it has already been completed'))->duringApprove();
     }
 
     function it_will_be_prevented_from_being_cancelled_when_it_has_been_declined()
     {
+        $this->user_id          = 1;
+        $requesting_user        = new User();
+        $requesting_user->id    = 1;
+        $this->requestingUser($requesting_user);
+
         $this->status_id = Status::DECLINED_ID;
         $this->shouldThrow(new Exception('Holiday Request cannot be cancelled, it has already been declined'))->duringCancel();
     }
 
     function it_will_be_prevented_from_being_cancelled_when_it_is_active()
     {
+        $this->user_id          = 1;
+        $requesting_user        = new User();
+        $requesting_user->id    = 1;
+        $this->requestingUser($requesting_user);
+
         $this->status_id = Status::ACTIVE_ID;
         $this->shouldThrow(new \Exception('Holiday Request cannot be cancelled, it is currently active'))->duringCancel();
     }
 
     function it_will_be_prevented_from_being_cancelled_when_it_has_been_cancelled()
     {
+        $this->user_id          = 1;
+        $requesting_user        = new User();
+        $requesting_user->id    = 1;
+        $this->requestingUser($requesting_user);
+
         $this->status_id = Status::CANCELLED_ID;
         $this->shouldThrow(new Exception('Holiday Request has already been cancelled'))->duringCancel();
     }
 
     function it_will_be_prevented_from_being_cancelled_when_it_has_been_completed()
     {
+        $this->user_id          = 1;
+        $requesting_user        = new User();
+        $requesting_user->id    = 1;
+        $this->requestingUser($requesting_user);
+
         $this->status_id = Status::COMPLETED_ID;
         $this->shouldThrow(new Exception('Holiday Request cannot be cancelled, it has already been completed'))->duringCancel();
     }
@@ -191,5 +271,98 @@ class HolidayRequestSpec extends ObjectBehavior
         $this->setHolidayStartYear(2014);
 
         $this->getHolidayStartYear()->shouldReturn(2014);
+    }
+
+    function it_will_be_prevent_a_user_from_approving_their_own_holiday_request()
+    {
+        $requesting_user    = new User();
+        $approving_user     = new User();
+
+        $requesting_user->id    = 2;
+
+        $approving_user->lead   = 1;
+        $approving_user->id     = 2;
+
+        $this->requestingUser($requesting_user);
+        $this->approvingUser($approving_user);
+
+        $this->shouldThrow(new Exception('You cannot approve your own Holiday Requests'))->duringApprove();
+    }
+
+    function it_will_prevent_non_department_leads_from_approving_holiday_requests()
+    {
+        $requesting_user    = new User();
+        $approving_user     = new User();
+
+        $requesting_user->id    = 1;
+        $approving_user->lead   = 0;
+
+        $this->requestingUser($requesting_user);
+        $this->approvingUser($approving_user);
+
+        $this->shouldThrow(new Exception('Only Department Leads can approve Holiday Requests'))->duringApprove();
+    }
+
+    function it_will_allow_department_lead_to_approve_holiday_for_own_department_members()
+    {
+        $requesting_user    = new User();
+        $approving_user     = new User();
+
+        $requesting_user->id            = 1;
+        $requesting_user->department_id = 1;
+        $approving_user->lead           = 2;
+        $approving_user->department_id  = 1;
+        $approving_user->lead           = 1;
+
+        $this->requestingUser($requesting_user);
+        $this->approvingUser($approving_user);
+
+        $this->approve()->shouldReturn(true);
+    }
+
+    function it_will_prevent_department_lead_from_approving_holiday_requests_for_members_of_another_team()
+    {
+        $requesting_user    = new User();
+        $approving_user     = new User();
+
+        $requesting_user->id            = 1;
+        $approving_user->department_id  = 1;
+        $approving_user->lead           = 1;
+
+        $requesting_user->department_id = 2;
+
+        $this->requestingUser($requesting_user);
+        $this->approvingUser($approving_user);
+
+        $this->shouldThrow(new Exception('You may only approve Holiday Requests from members of your own Department'))->duringApprove();
+    }
+
+    function it_will_allow_a_super_user_to_approve_holiday_for_members_of_another_team()
+    {
+        $requesting_user    = new User();
+        $approving_user     = new User();
+
+        $requesting_user->id            = 1;
+        $requesting_user->department_id = 1;
+
+        $approving_user->id             = 2;
+        $approving_user->super_user     = 1;
+        $approving_user->department_id  = 2;
+
+        $this->requestingUser($requesting_user);
+        $this->approvingUser($approving_user);
+
+        $this->approve()->shouldReturn(true);
+    }
+
+    function it_will_prevent_a_user_cancelling_requests_of_others()
+    {
+        $this->user_id          = 1;
+        $this->status_id        = Status::PENDING_ID;
+        $requesting_user        = new User();
+        $requesting_user->id    = 2;
+        $this->requestingUser($requesting_user);
+
+        $this->shouldThrow(new Exception('You can only cancel your own Holiday Requests'))->duringCancel();
     }
 }

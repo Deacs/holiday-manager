@@ -57,11 +57,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	public $super_user 						= false;
 
 
-	/*
-	 * -- Relationships
-	 */
-
-
+	// Relationships
 	public function department()
 	{
 		return $this->belongsTo('App\Department', 'id', 'department_id');
@@ -153,10 +149,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	{
 		return [
 			'Annual Allowance'  => $this->getAnnualHolidayAllowance(),
-			'Completed Holiday' => $this->completedBalance(),
-			'Active Holiday'    => $this->activeBalance(),
-			'Pending Requests'  => $this->pendingBalance(),
-			'Approved Requests' => $this->approvedBalance(),
+			'Completed Holiday' => $this->completedHolidayBalance(),
+			'Active Holiday'    => $this->activeHolidayBalance(),
+			'Pending Requests'  => $this->pendingHolidayBalance(),
+			'Approved Requests' => $this->approvedHolidayBalance(),
 			'Available Balance' => $this->availableHolidayAllowance(),
 		];
 	}
@@ -169,7 +165,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 */
 	public function unavailableHolidayBalance()
 	{
-		return ($this->pendingBalance() + $this->approvedBalance() + $this->activeBalance() + $this->completedBalance());
+		return ($this->pendingHolidayBalance() + $this->approvedHolidayBalance() + $this->activeHolidayBalance() + $this->completedHolidayBalance());
 	}
 
 	/**
@@ -182,33 +178,33 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		return $this->getAnnualHolidayAllowance() - $this->unavailableHolidayBalance();
 	}
 
-	public function pendingBalance()
+	public function pendingHolidayBalance()
 	{
 		// @TODO Ensure that returned requests are for the current year
 		return $this->pending_holiday_balance;
 	}
 
-	public function approvedBalance()
+	public function approvedHolidayBalance()
 	{
 		return $this->approved_holiday_balance;
 	}
 
-	public function declinedBalance()
+	public function declinedHolidayBalance()
 	{
 		return 0;
 	}
 
-	public function activeBalance()
+	public function activeHolidayBalance()
 	{
 		return $this->active_holiday_balance;
 	}
 
-	public function cancelledBalance()
+	public function cancelledHolidayBalance()
 	{
 		return 0;
 	}
 
-	public function completedBalance()
+	public function completedHolidayBalance()
 	{
 		return $this->completed_holiday_balance;
 	}
@@ -232,50 +228,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	}
 
 	/**
-	 * Approve requested holiday for a team member
-	 * This action is only allowable by a user flagged as lead for the department
-	 * the requesting user is a member of
-	 *
-	 * @throws Exception
-	 * @return bool
-	 * @param HolidayRequest $holiday_request
-	 */
-	public function approveTeamHolidayRequest(HolidayRequest $holiday_request)
-	{
-		if ($this->canApproveHolidayRequests($holiday_request)) {
-			return $holiday_request->approve();
-		}
-
-		return false;
-	}
-
-	/**
-	 * Ensure the user is able to approve Holiday Requests
-	 * - Only Department Leads (or Super Users) can approve Requests
-	 * - Users cannot approve their own Requests - regardless of their 'Lead' status
-	 *
-	 * @throws Exception
-	 * @return bool
-	 * @param HolidayRequest $holiday_request
-	 */
-	private function canApproveHolidayRequests(HolidayRequest $holiday_request)
-	{
-		if ( ! $this->hasManageHolidayRequestPermission()) {
-			throw new Exception('Only Department Leads can approve Holiday Requests');
-		}
-
-		if ($this->id == $holiday_request->requester->id) {
-			throw new Exception('You cannot approve your own Holiday Requests');
-		}
-
-		if ($this->department_id != $holiday_request->requester->department_id) {
-			throw new Exception('You may only approve Holiday Requests from members of your own Department');
-		}
-
-		return true;
-	}
-
-	/**
 	 * Can this User manage Holiday Requests
 	 * Generally they will be a Department Lead but this may be extended to allow Team Leads to deputise
 	 * There is possibly a Super User that can approve Requests in the absence of relevant Department Lead
@@ -293,6 +245,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 *
 	 * @throws Exception
 	 * @return bool
+	 * @param Department $department
 	 */
 	public function viewDepartmentHolidaySummary(Department $department)
 	{

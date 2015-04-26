@@ -138,24 +138,24 @@ class UserSpec extends ObjectBehavior
         ]);
     }
 
-//    function it_will_return_holiday_summary_for_department_if_team_lead(Department $department)
-//    {
-//        $this->lead = 1;
-//
-//        $this->viewDepartmentHolidaySummary($department)->shouldReturn([]);
-//    }
+    function it_will_return_holiday_summary_for_department_if_team_lead(Department $department)
+    {
+        $this->lead = 1;
 
-//    function it_will_be_prevented_from_viewing_team_holiday_summary_if_not_team_lead(Department $department)
-//    {
-//        $this->lead = 0;
-//
-//        $this->shouldThrow(new Exception('Only Team Leads can view Holiday summaries'))->duringViewDepartmentHolidaySummary($department);
-//    }
+        $this->viewDepartmentHolidaySummary($department)->shouldReturn([]);
+    }
 
-//    function it_is_notified_by_email_when_holiday_request_is_approved(HolidayRequest $holiday_request)
-//    {
-//        $holiday_request->approve();
-//        //$holiday_request->sendApprovalNotification($this)->shouldBeCalled();
-//        //$holiday_request->sendApprovalNotification()->shouldBeCalled();
-//    }
+    function it_will_be_prevented_from_viewing_team_holiday_summary_if_not_team_lead(Department $department)
+    {
+        $this->lead = 0;
+
+        $this->shouldThrow(new Exception('Only Team Leads can view Holiday summaries'))->duringViewDepartmentHolidaySummary($department);
+    }
+
+    function it_is_notified_by_email_when_holiday_request_is_approved(HolidayRequest $holiday_request)
+    {
+        $holiday_request->approve();
+        //$holiday_request->sendApprovalNotification($this)->shouldBeCalled();
+        //$holiday_request->sendApprovalNotification()->shouldBeCalled();
+    }
 }

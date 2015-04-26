@@ -365,4 +365,20 @@ class HolidayRequestSpec extends ObjectBehavior
 
         $this->shouldThrow(new Exception('You can only cancel your own Holiday Requests'))->duringCancel();
     }
+
+    function it_triggers_an_email_notification_when_holiday_request_is_approved()
+    {
+        $requesting_user    = new User();
+        $approving_user     = new User();
+
+        $requesting_user->id    = 1;
+        $approving_user->lead   = 1;
+        $approving_user->id     = 2;
+
+        $this->requestingUser($requesting_user);
+        $this->approvingUser($approving_user);
+
+        $this->approve();
+        $this->sendApprovalNotification()->shouldReturn(true);
+    }
 }

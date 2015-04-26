@@ -281,7 +281,7 @@ class HolidayRequest extends Model
 
         if ($this->canBeApproved()) {
             $this->status_id = Status::APPROVED_ID;
-            // $this->save();
+            //$this->place();
             $this->sendApprovalNotification();
 
             return true;
@@ -327,7 +327,7 @@ class HolidayRequest extends Model
 
         if ($this->canBeCancelled()) {
             $this->status_id = Status::CANCELLED_ID;
-            // $this->save();
+            // $this->place();
             $this->sendCancellationNotification();
 
             return true;
@@ -345,7 +345,7 @@ class HolidayRequest extends Model
     {
         if ($this->canBeDeclined()) {
             $this->status_id = Status::DECLINED_ID;
-            //$this->save();
+            //$this->place();
             $this->sendDeclineNotification();
 
             return true;

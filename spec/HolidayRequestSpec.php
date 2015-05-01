@@ -65,6 +65,9 @@ class HolidayRequestSpec extends ObjectBehavior
         $approving_user->lead   = 1;
         $approving_user->id     = 2;
 
+        // Ensure the date validation passes
+        $this->makeValidDate();
+
         $this->requestingUser($requesting_user);
         $this->approvingUser($approving_user);
         $this->approve();
@@ -73,6 +76,9 @@ class HolidayRequestSpec extends ObjectBehavior
 
     function it_will_set_the_appropriate_status_after_being_set_to_declined()
     {
+        // Ensure the date validation passes
+        $this->makeValidDate();
+
         $this->decline();
         $this->status_id->shouldBe(Status::DECLINED_ID);
     }
@@ -83,6 +89,9 @@ class HolidayRequestSpec extends ObjectBehavior
         $requesting_user        = new User();
         $requesting_user->id    = 1;
         $this->requestingUser($requesting_user);
+
+        // Ensure the date validation passes
+        $this->makeValidDate();
 
         $this->cancel();
         $this->status_id->shouldBe(Status::CANCELLED_ID);
@@ -314,6 +323,9 @@ class HolidayRequestSpec extends ObjectBehavior
         $approving_user->department_id  = 1;
         $approving_user->lead           = 1;
 
+        // Ensure the date validation passes
+        $this->makeValidDate();
+
         $this->requestingUser($requesting_user);
         $this->approvingUser($approving_user);
 
@@ -349,6 +361,9 @@ class HolidayRequestSpec extends ObjectBehavior
         $approving_user->super_user     = 1;
         $approving_user->department_id  = 2;
 
+        // Ensure the date validation passes
+        $this->makeValidDate();
+
         $this->requestingUser($requesting_user);
         $this->approvingUser($approving_user);
 
@@ -366,7 +381,7 @@ class HolidayRequestSpec extends ObjectBehavior
         $this->shouldThrow(new Exception('You can only cancel your own Holiday Requests'))->duringCancel();
     }
 
-    function it_triggers_an_email_notification_when_holiday_request_is_approved()
+    function it_returns_true_when_triggering_an_email_notification_on_successful_holiday_request_approval()
     {
         $requesting_user    = new User();
         $approving_user     = new User();
@@ -375,10 +390,24 @@ class HolidayRequestSpec extends ObjectBehavior
         $approving_user->lead   = 1;
         $approving_user->id     = 2;
 
+        // Ensure the date validation passes
+        $this->makeValidDate();
+
         $this->requestingUser($requesting_user);
         $this->approvingUser($approving_user);
 
         $this->approve();
         $this->sendApprovalNotification()->shouldReturn(true);
     }
+
+    // Utility Functions
+
+    // MAke a date object that will satisfy the date validation methods
+    private function makeValidDate()
+    {
+        // Ensure the weekend validation passes
+        $dt = new Carbon('next friday');
+        $this->setDate($dt);
+    }
+
 }

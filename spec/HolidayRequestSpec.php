@@ -400,14 +400,22 @@ class HolidayRequestSpec extends ObjectBehavior
         $this->sendApprovalNotification()->shouldReturn(true);
     }
 
-    // Utility Functions
+    // -- Utility Functions
 
-    // MAke a date object that will satisfy the date validation methods
+    /**
+     * Ensure the date set is valid
+     * Date validation checks for a date in the future, that is not a weekend and is this year
+     *
+     * @return $this
+     */
     private function makeValidDate()
     {
         // Ensure the weekend validation passes
         $dt = new Carbon('next friday');
+        $dt->year(date('Y'));
         $this->setDate($dt);
+
+        return $this;
     }
 
 }

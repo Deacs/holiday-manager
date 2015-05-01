@@ -254,7 +254,7 @@ class HolidayRequest extends Model
 
         switch (true) {
             // The requested date cannot be in the past
-            case !$this->date->isFuture():
+            case $this->date->isPast():
                 throw new Exception('You cannot make a Holiday Request for a date in the past');
                 break;
             // The requested date must be within the current year
@@ -290,6 +290,12 @@ class HolidayRequest extends Model
         return false;
     }
 
+    /**
+     * Validate that the user can approve requests
+     *
+     * @throws Exception
+     * @return bool
+     */
     private function validateUserApproveAction()
     {
         if ( ! $this->approving_user->hasManageHolidayRequestPermission()) {
@@ -307,6 +313,12 @@ class HolidayRequest extends Model
         return true;
     }
 
+    /**
+     * Validate that the user can cancel requests
+     *
+     * @throws Exception
+     * @return bool
+     */
     private function validateUserCancelAction()
     {
         if ($this->requesting_user->id != $this->user_id) {

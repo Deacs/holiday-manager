@@ -412,7 +412,9 @@ class HolidayRequestSpec extends ObjectBehavior
     {
         // Ensure the weekend validation passes
         $dt = new Carbon('next friday');
-        $dt->year(date('Y'));
+        // Prevent validation failures when next Friday is actually the following year
+        $dt->year((new Carbon())->year);
+
         $this->setDate($dt);
 
         return $this;

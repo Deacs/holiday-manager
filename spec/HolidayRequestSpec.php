@@ -319,7 +319,7 @@ class HolidayRequestSpec extends ObjectBehavior
 
         $requesting_user->id            = 1;
         $requesting_user->department_id = 1;
-        $approving_user->lead           = 2;
+        $approving_user->id             = 2;
         $approving_user->department_id  = 1;
         $approving_user->lead           = 1;
 
@@ -330,6 +330,20 @@ class HolidayRequestSpec extends ObjectBehavior
         $this->approvingUser($approving_user);
 
         $this->approve()->shouldReturn(true);
+    }
+
+    function it_will_return_false_when_checking_department_ids_for_requester_and_approver_when_they_do_not_match()
+    {
+        $requesting_user    = new User();
+        $approving_user     = new User();
+
+        $requesting_user->department_id = 1;
+        $approving_user->department_id  = 2;
+
+        $this->requestingUser($requesting_user);
+        $this->approvingUser($approving_user);
+
+        $this->approverMatchesRequesterDepartment()->shouldReturn(false);
     }
 
     function it_will_prevent_department_lead_from_approving_holiday_requests_for_members_of_another_team()

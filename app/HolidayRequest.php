@@ -165,8 +165,7 @@ class HolidayRequest extends Model
             return $this->holiday_start_date_year;
         }
 
-        $dt = new Carbon();
-        return $dt->year;
+        return (new Carbon())->year;
     }
 
     /**
@@ -220,7 +219,7 @@ class HolidayRequest extends Model
     }
 
     /**
-     * Has this request completed i.e. an approved holiday request is in teh past and has been taken
+     * Has this request completed i.e. an approved holiday request is in the past and has been taken
      *
      * @return bool
      */
@@ -238,6 +237,7 @@ class HolidayRequest extends Model
     public function place()
     {
         if ($this->validate()) {
+            // Actual DB interaction required here
             return true;
         }
     }
@@ -250,15 +250,13 @@ class HolidayRequest extends Model
      */
     private function validate()
     {
-        $dt = new Carbon();
-
         switch (true) {
             // The requested date cannot be in the past
             case $this->date->isPast():
                 throw new Exception('You cannot make a Holiday Request for a date in the past');
                 break;
             // The requested date must be within the current year
-            case $dt->year != $this->date->year:
+            case (new Carbon())->year != $this->date->year:
                 throw new Exception('Holiday Requests can only be made for the current year');
                 break;
             // The requested date ia a weekend
@@ -306,7 +304,7 @@ class HolidayRequest extends Model
             throw new Exception('You cannot approve your own Holiday Requests');
         }
 
-        if ( ! $this->approving_user->isSuperUser() && ($this->approving_user->department_id != $this->requesting_user->department_id)) {
+        if ( ! $this->approving_user->isSuperUser() && ! $this->approverMatchesRequesterDepartment()) {
             throw new Exception('You may only approve Holiday Requests from members of your own Department');
         }
 
@@ -568,11 +566,21 @@ class HolidayRequest extends Model
             throw new Exception('You cannot approve your own Holiday Requests');
         }
 
-        if ($this->approving_user->department_id != $this->requesting_user->department_id) {
+        if ( ! $this->approverMatchesRequesterDepartment()) {
             throw new Exception('You may only approve Holiday Requests from members of your own Department');
         }
 
         return true;
+    }
+
+    /**
+     * Approving users must belong to the same Department as the requesting user
+     *
+     * @return bool
+     */
+    public function approverMatchesRequesterDepartment()
+    {
+        return $this->approving_user->department_id == $this->requesting_user->department_id;
     }
 
 }

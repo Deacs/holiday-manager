@@ -237,8 +237,9 @@ class HolidayRequest extends Model
     public function place()
     {
         if ($this->validate()) {
-            // Actual DB interaction required here
             return true;
+            // Actual DB interaction required here
+            //return $this->save();
         }
     }
 
@@ -337,7 +338,7 @@ class HolidayRequest extends Model
 
         if ($this->canBeCancelled()) {
             $this->status_id = Status::CANCELLED_ID;
-            $this->place();
+            //$this->save();
             $this->sendCancellationNotification();
 
             return true;
@@ -355,7 +356,7 @@ class HolidayRequest extends Model
     {
         if ($this->canBeDeclined()) {
             $this->status_id = Status::DECLINED_ID;
-            $this->place();
+            //$this->save();
             $this->sendDeclineNotification();
 
             return true;
@@ -528,27 +529,6 @@ class HolidayRequest extends Model
     }
 
     /**
-     * Return a summary of Requests for the specified Team
-     *
-     * @return array
-     * @param Department $department
-     */
-    public function getDepartmentSummary($department)
-    {
-        // @TODO Return a multi-dimensional array for each Team member
-        $summary = [];
-
-        // Each member will hold an array of each status and their values
-        if ( ! empty($department->members)) {
-            foreach ($department->members as $member) {
-                $summary[$member->fullName()] = [];
-            }
-        }
-
-        return $summary;
-    }
-
-    /**
      * Ensure the user attempting to approve this request has suitable permissions
      * - Only Department Leads (or Super Users) can approve Requests
      * - Users cannot approve their own Requests - regardless of their 'Lead' status
@@ -581,6 +561,27 @@ class HolidayRequest extends Model
     public function approverMatchesRequesterDepartment()
     {
         return $this->approving_user->department_id == $this->requesting_user->department_id;
+    }
+
+    /**
+     * Return a summary of Requests for the specified Team
+     *
+     * @return array
+     * @param Department $department
+     */
+    public function getDepartmentSummary($department)
+    {
+        // @TODO Return a multi-dimensional array for each Team member
+        $summary = [];
+
+        // Each member will hold an array of each status and their values
+        if ( ! empty($department->members)) {
+            foreach ($department->members as $member) {
+                $summary[$member->fullName()] = [];
+            }
+        }
+
+        return $summary;
     }
 
 }

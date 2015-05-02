@@ -11,6 +11,8 @@ class Department extends Model {
 		'location_id'
 	];
 
+	const EXETER_ID = 1;
+	const LONDON_ID = 2;
 
 	public function location()
 	{
@@ -20,6 +22,16 @@ class Department extends Model {
 	public function members()
 	{
 		return $this->hasMany('App\User');
+	}
+
+	public function scopeExeter($query)
+	{
+		return $query->where('location_id', static::EXETER_ID);
+	}
+
+	public function london()
+	{
+		return [];
 	}
 
 }

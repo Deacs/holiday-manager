@@ -48,7 +48,8 @@ return [
 
 		'sqlite' => [
 			'driver'   => 'sqlite',
-			'database' => storage_path().'/caliente.sqlite',
+//			'database' => storage_path().'/caliente.sqlite',
+			'database' => ':memory:',
 			'prefix'   => '',
 		],
 

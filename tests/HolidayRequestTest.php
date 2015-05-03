@@ -15,7 +15,7 @@ class HolidayRequestTest extends DbTestCase {
         $this->repository = new HolidayRepository;
     }
 
-    public function test_return_requests_by_user_id_returns_correct_rows()
+    public function test_return_requests_by_user_id()
     {
         $user = Factory::create('App\User');
         // Holiday Requests for the newly created User
@@ -24,19 +24,35 @@ class HolidayRequestTest extends DbTestCase {
         Factory::times(3)->create('App\HolidayRequest');
 
         $requests = $this->repository->getRequestsByUserId($user->id);
-
+        // Sanity check - did all scaffolded records make it to the DB
+        $this->assertCount(5, $this->repository->getAllRequests());
         $this->assertCount(2, $requests);
     }
 
-    public function test_return_requests_by_status_id_returns_correct_rows()
+    public function test_return_requests_by_status_id()
     {
         $status = Factory::create('App\Status');
         Factory::times(4)->create('App\HolidayRequest', ['status_id' => $status->id]);
         Factory::times(6)->create('App\HolidayRequest');
 
         $requests = $this->repository->getRequestsByStatusId($status->id);
-
+        // Sanity check - did all scaffolded records make it to the DB
+        $this->assertCount(10, $this->repository->getAllRequests());
         $this->assertCount(4, $requests);
+    }
+
+    public function test_return_requests_approved_by_user_id()
+    {
+        $user = Factory::create('App\User', ['lead' => 1]);
+        $status = Factory::create('App\Status', ['id' => \App\Status::APPROVED_ID]);
+        Factory::times(4)->create('App\HolidayRequest', ['approved_by' => $user->id, 'status_id' => $status->id]);
+        Factory::times(5)->create('App\HolidayRequest');
+
+        $requests = $this->repository->getRequestsApprovedByUserId($user->id);
+        // Sanity check - did all scaffolded records make it to the DB
+        $this->assertCount(9, $this->repository->getAllRequests());
+        $this->assertCount(4, $requests);
+
     }
 
 }

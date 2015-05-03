@@ -5,18 +5,20 @@ use Laracasts\TestDummy\Factory;
 
 class DepartmentTest extends TestCase {
 
-    public function test_basic_example()
+    public function setUp()
     {
-        Factory::create('App\User');
+        parent::setUp();
+
+        Artisan::call('migrate');
     }
 
-//    public function setUp()
-//    {
-//        parent::setUp();
-//
-//        Artisan::call('migrate');
-//    }
-//
+    public function test_basic_example()
+    {
+        $department = Factory::create('App\HolidayRequest');
+
+        dd($department->toArray());
+    }
+
 //    public function test_fetches_departments()
 //    {
 ////        var_dump($this->app['config']['database']);

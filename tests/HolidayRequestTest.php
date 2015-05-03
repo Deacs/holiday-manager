@@ -8,6 +8,8 @@ use App\Repositories\HolidayRepository;
 
 class HolidayRequestTest extends DbTestCase {
 
+    protected $repository;
+
     public function setUp()
     {
         parent::setUp();
@@ -52,7 +54,21 @@ class HolidayRequestTest extends DbTestCase {
         // Sanity check - did all scaffolded records make it to the DB
         $this->assertCount(9, $this->repository->getAllRequests());
         $this->assertCount(4, $requests);
+    }
 
+    public function test_return_requests_by_department_id()
+    {
+        $department = Factory::create('App\Department', ['id' => 1]);
+        $user_1 = Factory::create('App\User', ['department_id' => $department->id]);
+        $user_2 = Factory::create('App\User', ['department_id' => $department->id]);
+        Factory::times(3)->create('App\HolidayRequest', ['user_id' => $user_1->id]);
+        Factory::times(1)->create('App\HolidayRequest', ['user_id' => $user_2->id]);
+        Factory::times(3)->create('App\HolidayRequest');
+
+        $requests = $this->repository->getRequestsByDepartmentId($department->id);
+        // Sanity check - did all scaffolded records make it to the DB
+        $this->assertCount(7, $this->repository->getAllRequests());
+        $this->assertCount(4, $requests);
     }
 
 }

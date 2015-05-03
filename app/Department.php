@@ -11,6 +11,16 @@ class Department extends Model {
 		'location_id'
 	];
 
+	const ENGINEERING 			= 1;
+	const MARKETING 			= 2;
+	const INVESTMENTS 			= 3;
+	const PRODUCT 				= 4;
+	const COMPLETIONS 			= 5;
+	const FINANCE 				= 6;
+	const LEGAL 				= 7;
+	const BONDS 				= 8;
+	const BUSINESS_DEVELOPMENT 	= 9;
+
 	public function location()
 	{
 		return $this->belongsTo('location');

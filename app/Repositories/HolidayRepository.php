@@ -43,5 +43,13 @@ class HolidayRepository {
     {
         return HolidayRequest::where('status_id', Status::APPROVED_ID)->where('approved_by', $userId)->get();
     }
+
+    public function getRequestsByDepartmentId($departmentId)
+    {
+        return \DB::table('holiday_requests')
+                ->leftJoin('users', 'users.id', '=', 'holiday_requests.user_id')
+                ->where('users.department_id', $departmentId)
+                ->get();
+    }
 }
 

@@ -2,15 +2,25 @@
 
 use \App\Department as Department;
 use Laracasts\TestDummy\Factory;
+use Laracasts\TestDummy\DbTestCase;
 
-class DepartmentTest extends TestCase {
+class DepartmentTest extends DbTestCase {
 
-    public function setUp()
-    {
-        parent::setUp();
-
-        Artisan::call('migrate');
-    }
+//    public function setUp()
+//    {
+//        parent::setUp();
+//
+//        Artisan::call('migrate');
+//    }
+//
+//    public function tearDown()
+//    {
+//        parent::tearDown();
+//
+//        Artisan::call('migrate:refresh');
+//
+//        User::truncate();
+//    }
 
     public function test_basic_example()
     {

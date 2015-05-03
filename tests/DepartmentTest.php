@@ -6,27 +6,11 @@ use Laracasts\TestDummy\DbTestCase;
 
 class DepartmentTest extends DbTestCase {
 
-//    public function setUp()
-//    {
-//        parent::setUp();
-//
-//        Artisan::call('migrate');
-//    }
-//
-//    public function tearDown()
-//    {
-//        parent::tearDown();
-//
-//        Artisan::call('migrate:refresh');
-//
-//        User::truncate();
-//    }
-
     public function test_basic_example()
     {
-        $department = Factory::create('App\HolidayRequest');
-
-        dd($department->toArray());
+//        $department = Factory::create('App\HolidayRequest');
+//
+//        dd($department->toArray());
     }
 
 //    public function test_fetches_departments()

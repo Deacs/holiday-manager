@@ -31,6 +31,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		'email',
 		'telephone',
 		'department_id',
+		'location_id',
 		'password',
 		'annual_holiday_allowance'
 	];
@@ -61,6 +62,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	public function department()
 	{
 		return $this->belongsTo('App\Department', 'id', 'department_id');
+	}
+
+	public function location()
+	{
+		return $this->belongsTo('App\Location', 'id', 'location_id');
 	}
 
 	/**
@@ -118,10 +124,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 */
 	public function cancelHolidayRequest(HolidayRequest $holiday_request)
 	{
-		if ($this->id !== $holiday_request->user_id) {
-			throw new \Exception('You can only cancel your own Holiday Requests');
-		}
-
 		return $holiday_request->cancel();
 	}
 

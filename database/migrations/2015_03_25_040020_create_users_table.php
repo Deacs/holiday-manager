@@ -19,9 +19,11 @@ class CreateUsersTable extends Migration {
             $table->string('email')->unique();
             $table->string('telephone')->nullable();
 			$table->integer('department_id')->foreign('department_id')->references('id')->on('departments');
+			$table->integer('location_id')->foreign('location_id')->references('id')->on('locations');
             $table->boolean('lead')->default(0);
 			$table->integer('annual_holiday_allowance')->default(25);
 			$table->index('department_id');
+			$table->index('location_id');
             $table->timestamps();
         });
 	}

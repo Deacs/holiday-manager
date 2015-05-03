@@ -11,4 +11,17 @@ class Status extends Model {
     const CANCELLED_ID   = 5;
     const COMPLETED_ID   = 6;
 
+    protected $table = 'status';
+
+    protected $fillable = [
+        'title'
+    ];
+
+    // Relationships
+
+    public function holidayRequests()
+    {
+        return $this->belongsToMany('App\HolidayRequest');
+    }
+
 }

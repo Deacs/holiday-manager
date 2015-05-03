@@ -11,9 +11,6 @@ class Department extends Model {
 		'location_id'
 	];
 
-	const EXETER_ID = 1;
-	const LONDON_ID = 2;
-
 	public function location()
 	{
 		return $this->belongsTo('location');
@@ -26,12 +23,26 @@ class Department extends Model {
 
 	public function scopeExeter($query)
 	{
-		return $query->where('location_id', static::EXETER_ID);
+		return $query->where('location_id', Location::EXETER_ID);
 	}
 
-	public function london()
+	public function scopeLondon($query)
 	{
-		return [];
+		return $query->where('location_id', Location::LONDON_ID);
 	}
 
+	public function scopeScotland($query)
+	{
+		return $query->where('location_id', Location::SCOTLAND_ID);
+	}
+
+	public function scopeManchester($query)
+	{
+		return $query->where('location_id', Location::MANCHESTER_ID);
+	}
+
+	public function scopeBarcelona($query)
+	{
+		return $query->where('location_id', Location::BARCELONA_ID);
+	}
 }

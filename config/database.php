@@ -26,7 +26,8 @@ return [
 	|
 	*/
 
-	'default' => 'sqlite',
+	//'default' => 'sqlite',
+	'default' => $app->environment() == 'testing' ? 'sqlite_testing' : 'sqlite',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -46,10 +47,18 @@ return [
 
 	'connections' => [
 
+		'sqlite_testing' => [
+			'driver'   => 'sqlite',
+			'database' => ':memory:',
+			'prefix'   => '',
+		],
+
+
+		// Use get_env() value for database
+
 		'sqlite' => [
 			'driver'   => 'sqlite',
-//			'database' => storage_path().'/caliente.sqlite',
-			'database' => ':memory:',
+			'database' => storage_path().'/caliente.sqlite',
 			'prefix'   => '',
 		],
 

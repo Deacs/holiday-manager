@@ -55,48 +55,6 @@ class HolidayRequestSpec extends ObjectBehavior
         $this->status_id->shouldBe(Status::COMPLETED_ID);
     }
 
-    // -- Check correct status id has been set after transitions
-//    function it_will_set_the_appropriate_status_after_being_set_to_approved()
-//    {
-//        $requesting_user    = new User();
-//        $approving_user     = new User();
-//
-//        $requesting_user->id    = 1;
-//        $approving_user->lead   = 1;
-//        $approving_user->id     = 2;
-//
-//        // Ensure the date validation passes
-//        $this->makeValidDate();
-//
-//        $this->requestingUser($requesting_user);
-//        $this->approvingUser($approving_user);
-//        $this->approve();
-//        $this->status_id->shouldBe(Status::APPROVED_ID);
-//    }
-//
-//    function it_will_set_the_appropriate_status_after_being_set_to_declined()
-//    {
-//        // Ensure the date validation passes
-//        $this->makeValidDate();
-//
-//        $this->decline();
-//        $this->status_id->shouldBe(Status::DECLINED_ID);
-//    }
-
-//    function it_will_set_the_appropriate_status_after_being_set_to_cancelled()
-//    {
-//        $this->user_id          = 1;
-//        $requesting_user        = new User();
-//        $requesting_user->id    = 1;
-//        $this->requestingUser($requesting_user);
-//
-//        // Ensure the date validation passes
-//        $this->makeValidDate();
-//
-//        $this->cancel();
-//        $this->status_id->shouldBe(Status::CANCELLED_ID);
-//    }
-
     // -- Manage transitions between status
     function it_will_be_prevented_from_being_approved_when_it_is_approved()
     {
@@ -220,37 +178,37 @@ class HolidayRequestSpec extends ObjectBehavior
 
     function it_will_be_prevented_from_being_declined_when_it_is_declined()
     {
+        $this->createValidRequestingAndApprovingUsers();
+
         $this->status_id = Status::DECLINED_ID;
         $this->shouldThrow(new Exception('Holiday Request has already been declined'))->duringDecline();
     }
 
     function it_will_be_prevented_from_being_declined_when_it_is_active()
     {
+        $this->createValidRequestingAndApprovingUsers();
+
         $this->status_id = Status::ACTIVE_ID;
         $this->shouldThrow(new Exception('Holiday Request cannot be declined, it is currently active'))->duringDecline();
     }
 
     function it_will_be_prevented_from_being_declined_when_it_has_been_cancelled()
     {
+        $this->createValidRequestingAndApprovingUsers();
+
         $this->status_id = Status::CANCELLED_ID;
         $this->shouldThrow(new Exception('Holiday Request cannot be declined, it has already been cancelled'))->duringDecline();
     }
 
     function it_will_be_prevented_from_being_declined_when_it_has_been_completed()
     {
+        $this->createValidRequestingAndApprovingUsers();
+
         $this->status_id = Status::COMPLETED_ID;
         $this->shouldThrow(new Exception('Holiday Request cannot be declined, it has already been completed'))->duringDecline();
     }
 
-//    function it_will_be_prevented_from_requesting_holiday_that_starts_in_the_past()
-//    {
-//        // Set the test day as a Monday to ensure the weekend validation passes
-//        $dt = new Carbon('this monday');
-//        $this->setDate($dt->subWeeks(2));
 //
-//        $this->shouldThrow(new Exception('You cannot make a Holiday Request for a date in the past'))->duringPlace();
-//    }
-
 //    function it_will_be_prevented_from_requesting_holiday_outside_of_the_current_year()
 //    {
 //        $dt = Carbon::create();
@@ -413,6 +371,21 @@ class HolidayRequestSpec extends ObjectBehavior
 //    }
 
 //    // -- Utility Functions
+
+        private function createValidRequestingAndApprovingUsers()
+        {
+            $requesting_user    = new User();
+            $approving_user     = new User();
+
+            $requesting_user->id    = 1;
+            $approving_user->lead   = 1;
+            $approving_user->id     = 2;
+
+            $this->requestingUser($requesting_user);
+            $this->approvingUser($approving_user);
+
+            return $this;
+        }
 //
 //    /**
 //     * Ensure the date set is valid

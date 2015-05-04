@@ -24,21 +24,77 @@ class HolidayRequestTest extends DbTestCase {
     {
         $department         = Factory::create('App\Department', ['id' => 1]);
         $requesting_user    = Factory::create('App\User', ['department_id' => $department->id]);
-        $approving_user     = Factory::create('App\User', ['department_id' => $department->id, 'lead' => 1]);
-        $holiday_request    = Factory::create('App\HolidayRequest', ['request_date' => $this->makeValidDate(), 'status_id' => Status::PENDING_ID]);
+        $approving_user     = Factory::create('App\User', ['department_id' => $department->id]);
+        $holiday_request    = Factory::create('App\HolidayRequest');
 
-//        $requesting_user->id    = 1;
-//        $approving_user->lead   = 1;
-//        $approving_user->id     = 2;
+        $holiday_request->setRequestDate($this->makeValidDate());
+        $holiday_request->requestingUser($requesting_user);
+        $approving_user->lead = 1;
+        $holiday_request->approvingUser($approving_user);
+        $holiday_request->approve();
 
-        // Ensure the date validation passes
-//        $this->makeValidDate();
-//
-//        $this->requestingUser($requesting_user);
-//        $this->approvingUser($approving_user);
-//        $this->approve();
-//        $this->status_id->shouldBe(Status::APPROVED_ID);
+        $this->assertEquals(Status::APPROVED_ID, $holiday_request->status_id);
     }
+
+    function test_the_appropriate_status_is_set_after_being_set_to_declined()
+    {
+        $department         = Factory::create('App\Department', ['id' => 1]);
+        $requesting_user    = Factory::create('App\User', ['department_id' => $department->id]);
+        $approving_user     = Factory::create('App\User', ['department_id' => $department->id]);
+        $holiday_request    = Factory::create('App\HolidayRequest');
+
+        $holiday_request->setRequestDate($this->makeValidDate());
+        $holiday_request->requestingUser($requesting_user);
+        $approving_user->lead = 1;
+        $holiday_request->approvingUser($approving_user);
+        $holiday_request->decline();
+
+        $this->assertEquals(Status::DECLINED_ID, $holiday_request->status_id);
+    }
+
+    function test_the_appropriate_status_is_set_after_being_set_to_cancelled()
+    {
+        $requesting_user    = Factory::create('App\User');
+        $holiday_request    = Factory::create('App\HolidayRequest', ['user_id' => $requesting_user->id]);
+
+        $holiday_request->requestingUser($requesting_user);
+        $holiday_request->cancel();
+
+        $this->assertEquals(Status::CANCELLED_ID, $holiday_request->status_id);
+    }
+
+    // -- Test that failed validations throw the correct exceptions
+    /**
+     * @expectedExceptionMessage Right Message
+     */
+    function test_a_request_for_a_past_date_throws_exception()
+    {
+        // Set the test day as a Monday to ensure the weekend validation passes
+        $dt = new Carbon('this monday');
+
+        $holiday_request = Factory::create('App\HolidayRequest');
+        $holiday_request->setRequestDate($dt->subWeeks(2));
+
+        try {
+            $holiday_request->place();
+            return false;
+        } catch (Exception $e) {
+            $this->assertEquals($e->getMessage(), 'You cannot make a Holiday Request for a date in the past');
+        }
+
+        // There should be no records in the DB
+        $this->assertCount(10, $this->repository->getAllRequests());
+    }
+
+    function test_a_request_outside_of_the_current_year_throws_exception()
+//    {
+//        $dt = Carbon::create();
+//        $this->setDate($dt->addYear());
+//
+//        $this->shouldThrow(new \Exception('Holiday Requests can only be made for the current year'))->duringPlace();
+//    }
+
+    // ------------------
 
     public function test_get_requests_by_user_id()
     {

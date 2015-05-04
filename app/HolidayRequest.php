@@ -237,8 +237,7 @@ class HolidayRequest extends Model
     public function place()
     {
         if ($this->validate()) {
-            return true;
-            // Actual DB interaction required here
+            //return true;
             return $this->save();
         }
     }
@@ -288,6 +287,45 @@ class HolidayRequest extends Model
 
         return false;
     }
+    /**
+     * Cancel an existing Holiday Request
+     *
+     * @return bool
+     */
+    public function cancel()
+    {
+        $this->validateUserCancelAction();
+
+        if ($this->canBeCancelled()) {
+            $this->status_id = Status::CANCELLED_ID;
+            $this->save();
+            $this->sendCancellationNotification();
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Decline a holiday request
+     *
+     * @return bool
+     */
+    public function decline()
+    {
+        $this->validateUserDeclineAction();
+
+        if ($this->canBeDeclined()) {
+            $this->status_id = Status::DECLINED_ID;
+            $this->save();
+            $this->sendDeclineNotification();
+
+            return true;
+        }
+
+        return false;
+    }
 
     /**
      * Validate that the user can approve requests
@@ -328,41 +366,22 @@ class HolidayRequest extends Model
     }
 
     /**
-     * Cancel an existing Holiday Request
+     * Validate that the user can decline requests
      *
+     * @throws Exception
      * @return bool
      */
-    public function cancel()
+    private function validateUserDeclineAction()
     {
-        $this->validateUserCancelAction();
-
-        if ($this->canBeCancelled()) {
-            $this->status_id = Status::CANCELLED_ID;
-            //$this->save();
-            $this->sendCancellationNotification();
-
-            return true;
+        if ( ! $this->approving_user->hasManageHolidayRequestPermission()) {
+            throw new Exception('Only Department Leads can decline Holiday Requests');
         }
 
-        return false;
-    }
-
-    /**
-     * Decline a holiday request
-     *
-     * @return bool
-     */
-    public function decline()
-    {
-        if ($this->canBeDeclined()) {
-            $this->status_id = Status::DECLINED_ID;
-            //$this->save();
-            $this->sendDeclineNotification();
-
-            return true;
+        if ( ! $this->approving_user->isSuperUser() && ! $this->approverMatchesRequesterDepartment()) {
+            throw new Exception('You may only decline Holiday Requests from members of your own Department');
         }
 
-        return false;
+        return true;
     }
 
     /**

@@ -32,6 +32,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		'telephone',
 		'department_id',
 		'location_id',
+		'lead',
 		'annual_holiday_allowance'
 	];
 

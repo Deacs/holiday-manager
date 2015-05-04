@@ -32,14 +32,14 @@ $factory('App\Location', [
     'telephone' => $faker->phoneNumber
 ]);
 
+$factory('App\Status', [
+    'title' => $faker->word,
+]);
+
 $factory('App\HolidayRequest', [
     'user_id'       => 'factory:App\User',
-    'date'          => $faker->dateTime,
+    'request_date'  => $faker->dateTime,
     'status_id'     => 'factory:App\Status',
     'approved_by'   => 'factory:App\User',
     'declined_by'   => 'factory:App\User'
-]);
-
-$factory('App\Status', [
-    'title' => $faker->word,
 ]);

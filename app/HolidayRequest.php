@@ -24,7 +24,7 @@ class HolidayRequest extends Model
 
     protected $fillable = [
         'user_id',
-        'date',
+        'request_date',
         'status_id',
         'approved_by',
         'declined_by'
@@ -34,7 +34,7 @@ class HolidayRequest extends Model
     public $approving_user;
 
     // The date of the requested holiday
-    public $date;
+    public $request_date;
     public $holiday_start_date_year;
     public $holiday_end_date_year;
     public $holiday_start_date;
@@ -50,7 +50,7 @@ class HolidayRequest extends Model
      */
     public function setDate($date)
     {
-        $this->date = $date;
+        $this->request_date = $date;
     }
 
     // -- Relationships
@@ -253,15 +253,15 @@ class HolidayRequest extends Model
     {
         switch (true) {
             // The requested date cannot be in the past
-            case $this->date->isPast():
+            case $this->request_date->isPast():
                 throw new Exception('You cannot make a Holiday Request for a date in the past');
                 break;
             // The requested date must be within the current year
-            case (new Carbon())->year != $this->date->year:
+            case (new Carbon())->year != $this->request_date->year:
                 throw new Exception('Holiday Requests can only be made for the current year');
                 break;
             // The requested date ia a weekend
-            case $this->date->isWeekend():
+            case $this->request_date->isWeekend():
                 throw new Exception('Requested date is a weekend');
                 break;
             default:

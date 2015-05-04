@@ -7,6 +7,8 @@ class HolidayRepository {
 
     /**
      * Return all Holiday Requests
+     *
+     * @return HolidayRequest | null
      */
     public function getAllRequests()
     {
@@ -15,7 +17,7 @@ class HolidayRepository {
     /**
      * Return Holiday Requests with the provided User ID
      *
-     * @return
+     * @return HolidayRequest | null
      * @param $userId
      */
     public function getRequestsByUserId($userId)
@@ -26,7 +28,7 @@ class HolidayRepository {
     /**
      * Return Holiday Requests with the provided Status ID
      *
-     * @return
+     * @return HolidayRequest | null
      * @param $statusId
      */
     public function getRequestsByStatusId($statusId)
@@ -36,7 +38,8 @@ class HolidayRepository {
 
     /**
      * Return Holiday Requests that have been approved by the specified User ID
-     * @return
+     *
+     * @return HolidayRequest | null
      * @param $userId
      */
     public function getRequestsApprovedByUserId($userId)
@@ -44,12 +47,22 @@ class HolidayRepository {
         return HolidayRequest::where('status_id', Status::APPROVED_ID)->where('approved_by', $userId)->get();
     }
 
+    /**
+     * Return Holiday Requests submitted by users belonging to the specified Department ID
+     *
+     * @return HolidayRequest | null
+     * @param $departmentId
+     */
     public function getRequestsByDepartmentId($departmentId)
     {
-        return \DB::table('holiday_requests')
-                ->leftJoin('users', 'users.id', '=', 'holiday_requests.user_id')
+        return HolidayRequest::leftJoin('users', 'users.id', '=', 'holiday_requests.user_id')
                 ->where('users.department_id', $departmentId)
                 ->get();
+    }
+
+    public function getRequestsInSpecifiedYear($year)
+    {
+        return HolidayRequest::where( \DB::raw("strftime('%Y',request_date)"), '=', $year )->get();
     }
 }
 

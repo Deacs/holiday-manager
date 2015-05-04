@@ -270,9 +270,7 @@ class HolidayRequestSpec extends ObjectBehavior
 
     function it_will_return_the_current_year_from_get_holiday_start_year_when_none_set()
     {
-        $dt = new Carbon();
-
-        $this->getHolidayStartYear()->shouldReturn($dt->year);
+        $this->getHolidayStartYear()->shouldReturn((new Carbon())->year);
     }
 
     function it_will_return_2014_from_get_holiday_start_year_when_2014_has_been_set()

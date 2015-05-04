@@ -238,19 +238,19 @@ class HolidayRequestSpec extends ObjectBehavior
 //        $this->shouldThrow(new Exception('You cannot approve your own Holiday Requests'))->duringApprove();
 //    }
 
-    function it_will_prevent_non_department_leads_from_approving_holiday_requests()
-    {
-        $requesting_user    = new User();
-        $approving_user     = new User();
-
-        $requesting_user->id    = 1;
-        $approving_user->lead   = 0;
-
-        $this->requestingUser($requesting_user);
-        $this->approvingUser($approving_user);
-
-        $this->shouldThrow(new Exception('Only Department Leads can approve Holiday Requests'))->duringApprove();
-    }
+//    function it_will_prevent_non_department_leads_from_approving_holiday_requests()
+//    {
+//        $requesting_user    = new User();
+//        $approving_user     = new User();
+//
+//        $requesting_user->id    = 1;
+//        $approving_user->lead   = 0;
+//
+//        $this->requestingUser($requesting_user);
+//        $this->approvingUser($approving_user);
+//
+//        $this->shouldThrow(new Exception('Only Department Leads can approve Holiday Requests'))->duringApprove();
+//    }
 
 //    function it_will_allow_department_lead_to_approve_holiday_for_own_department_members()
 //    {

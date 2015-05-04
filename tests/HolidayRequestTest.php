@@ -118,7 +118,7 @@ class HolidayRequestTest extends DbTestCase {
     {
         $user               = Factory::create('App\User');
         $user->lead         = 1;
-        $holiday_request    = Factory::create('App\HolidayRequest');
+        $holiday_request    = new HolidayRequest();
 
         $holiday_request->setRequestDate($this->makeValidDate());
         $holiday_request->requestingUser($user);
@@ -130,7 +130,30 @@ class HolidayRequestTest extends DbTestCase {
         } catch (Exception $e) {
             $this->assertEquals('You cannot approve your own Holiday Requests', $e->getMessage());
         }
+
+        $this->assertCount(0, $this->repository->getAllRequests());
     }
+
+    function test_non_department_leads_attempting_to_approve_request_will_throw_exception()
+    {
+        $user               = Factory::create('App\User');
+        $user->lead         = 0;
+        $holiday_request    = new HolidayRequest();
+
+        $holiday_request->setRequestDate($this->makeValidDate());
+        $holiday_request->requestingUser($user);
+        $holiday_request->approvingUser($user);
+
+        try {
+            $holiday_request->approve();
+            return false;
+        } catch (Exception $e) {
+            $this->assertEquals('Only Department Leads can approve Holiday Requests', $e->getMessage());
+        }
+
+        $this->assertCount(0, $this->repository->getAllRequests());
+    }
+
 
     // ------------------
 

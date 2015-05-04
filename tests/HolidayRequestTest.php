@@ -6,6 +6,7 @@ use Laracasts\TestDummy\Factory;
 use Laracasts\TestDummy\DbTestCase;
 use \Carbon\Carbon as Carbon;
 use App\Repositories\HolidayRepository;
+use App\Status as Status;
 
 class HolidayRequestTest extends DbTestCase {
 
@@ -16,6 +17,27 @@ class HolidayRequestTest extends DbTestCase {
         parent::setUp();
 
         $this->repository = new HolidayRepository;
+    }
+
+    // -- Check correct status id has been set after transitions
+    function test_the_appropriate_status_is_set_after_being_set_to_approved()
+    {
+        $department         = Factory::create('App\Department', ['id' => 1]);
+        $requesting_user    = Factory::create('App\User', ['department_id' => $department->id]);
+        $approving_user     = Factory::create('App\User', ['department_id' => $department->id, 'lead' => 1]);
+        $holiday_request    = Factory::create('App\HolidayRequest', ['request_date' => $this->makeValidDate(), 'status_id' => Status::PENDING_ID]);
+
+//        $requesting_user->id    = 1;
+//        $approving_user->lead   = 1;
+//        $approving_user->id     = 2;
+
+        // Ensure the date validation passes
+//        $this->makeValidDate();
+//
+//        $this->requestingUser($requesting_user);
+//        $this->approvingUser($approving_user);
+//        $this->approve();
+//        $this->status_id->shouldBe(Status::APPROVED_ID);
     }
 
     public function test_get_requests_by_user_id()
@@ -86,9 +108,38 @@ class HolidayRequestTest extends DbTestCase {
         $this->assertCount(3, $requests);
     }
 
-//    public function test_invalid_request_does_not_save()
+//    public function test_valid_request_saves()
 //    {
+//        $user = Factory::create('App\User');
+//        // Set the date for following year
+//        $dt = (new Carbon)->addYear();
+//        $holiday_request = Factory::create('App\HolidayRequest');
 //
+//        $holiday_request->setRequestDate((new Carbon)->addYear());
+//
+//        // Validation should reject the Request
+//        $user->addHolidayRequest($holiday_request);
+//
+//        // There should be no record in the DB
+//        $this->assertCount(5, $this->repository->getAllRequests());
 //    }
+
+    // -- Utility Functions
+
+    /**
+     * Ensure the date set is valid
+     * Date validation checks for a date in the future, that is not a weekend and is this year
+     *
+     * @return $this
+     */
+    private function makeValidDate()
+    {
+        // Ensure the weekend validation passes
+        $dt = new Carbon('next friday');
+        // Prevent validation failures when next Friday is actually the following year
+        $dt->year((new Carbon())->year);
+
+        return $dt;
+    }
 
 }

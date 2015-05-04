@@ -46,11 +46,11 @@ class HolidayRequest extends Model
     /**
      * Specify the date for the request
      *
-     * @param $date
+     * @param $request_date
      */
-    public function setDate($date)
+    public function setRequestDate($request_date)
     {
-        $this->request_date = $date;
+        $this->request_date = $request_date;
     }
 
     // -- Relationships
@@ -239,7 +239,7 @@ class HolidayRequest extends Model
         if ($this->validate()) {
             return true;
             // Actual DB interaction required here
-            //return $this->save();
+            return $this->save();
         }
     }
 

@@ -68,18 +68,17 @@ class UserSpec extends ObjectBehavior
         $this->hasManageHolidayRequestPermission()->shouldReturn(true);
     }
 
-
-    function it_can_add_a_holiday_request()
-    {
-        $holiday_request = new HolidayRequest();
-        $holiday_request->user_id = $this->id;
-        $dt = new Carbon();
-        // Set the current day to a weekday to satisfy the Weekday validation
-        $dt = $dt->next(1);
-        $holiday_request->setDate($dt->addWeek());
-
-        $this->addHolidayRequest($holiday_request)->shouldReturn(true);
-    }
+//    function it_can_add_a_holiday_request()
+//    {
+//        $holiday_request = new HolidayRequest();
+//        $holiday_request->user_id = $this->id;
+//        $dt = new Carbon();
+//        // Set the current day to a weekday to satisfy the Weekday validation
+//        $dt = $dt->next(1);
+//        $holiday_request->setDate($dt->addWeek());
+//
+//        $this->addHolidayRequest($holiday_request)->shouldReturn(true);
+//    }
 
     function it_can_see_a_full_allowance_of_available_holiday_when_no_holiday_has_been_requested_taken_or_active()
     {

@@ -220,57 +220,7 @@ class HolidayRequestSpec extends ObjectBehavior
         $this->getHolidayStartYear()->shouldReturn(2014);
     }
 
-//    // -- User Permissions
-//
-//    function it_will_be_prevent_a_user_from_approving_their_own_holiday_request()
-//    {
-//        $requesting_user    = new User();
-//        $approving_user     = new User();
-//
-//        $requesting_user->id    = 2;
-//
-//        $approving_user->lead   = 1;
-//        $approving_user->id     = 2;
-//
-//        $this->requestingUser($requesting_user);
-//        $this->approvingUser($approving_user);
-//
-//        $this->shouldThrow(new Exception('You cannot approve your own Holiday Requests'))->duringApprove();
-//    }
-
-//    function it_will_prevent_non_department_leads_from_approving_holiday_requests()
-//    {
-//        $requesting_user    = new User();
-//        $approving_user     = new User();
-//
-//        $requesting_user->id    = 1;
-//        $approving_user->lead   = 0;
-//
-//        $this->requestingUser($requesting_user);
-//        $this->approvingUser($approving_user);
-//
-//        $this->shouldThrow(new Exception('Only Department Leads can approve Holiday Requests'))->duringApprove();
-//    }
-
-//    function it_will_allow_department_lead_to_approve_holiday_for_own_department_members()
-//    {
-//        $requesting_user    = new User();
-//        $approving_user     = new User();
-//
-//        $requesting_user->id            = 1;
-//        $requesting_user->department_id = 1;
-//        $approving_user->id             = 2;
-//        $approving_user->department_id  = 1;
-//        $approving_user->lead           = 1;
-//
-//        // Ensure the date validation passes
-//        $this->makeValidDate();
-//
-//        $this->requestingUser($requesting_user);
-//        $this->approvingUser($approving_user);
-//
-//        $this->approve()->shouldReturn(true);
-//    }
+    // -- User Permissions
 
     function it_will_return_false_when_checking_department_ids_for_requester_and_approver_when_they_do_not_match()
     {
@@ -284,23 +234,6 @@ class HolidayRequestSpec extends ObjectBehavior
         $this->approvingUser($approving_user);
 
         $this->approverMatchesRequesterDepartment()->shouldReturn(false);
-    }
-
-    function it_will_prevent_department_lead_from_approving_holiday_requests_for_members_of_another_team()
-    {
-        $requesting_user    = new User();
-        $approving_user     = new User();
-
-        $requesting_user->id            = 1;
-        $approving_user->department_id  = 1;
-        $approving_user->lead           = 1;
-
-        $requesting_user->department_id = 2;
-
-        $this->requestingUser($requesting_user);
-        $this->approvingUser($approving_user);
-
-        $this->shouldThrow(new Exception('You may only approve Holiday Requests from members of your own Department'))->duringApprove();
     }
 
 //    function it_will_allow_a_super_user_to_approve_holiday_for_members_of_another_team()

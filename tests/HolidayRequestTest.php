@@ -112,7 +112,7 @@ class HolidayRequestTest extends DbTestCase {
         $this->assertCount(0, $this->repository->getAllRequests());
     }
 
-    // -- Test User Permissions and actions are handled correctly
+    // -- Test User permissions and actions errors are handled correctly
 
     function test_user_attempting_to_approve_own_request_will_throw_exception()
     {
@@ -154,8 +154,65 @@ class HolidayRequestTest extends DbTestCase {
         $this->assertCount(0, $this->repository->getAllRequests());
     }
 
+    function test_department_lead_attempting_approval_of_request_for_members_of_another_team_will_throw_exception()
+    {
+        $holiday_request = new HolidayRequest();
+        $requesting_user = Factory::create('App\User', ['department_id' => 1]);
+        $approving_user = Factory::create('App\User', ['department_id' => 2]);
+        $approving_user->lead = 1;
+
+        $holiday_request->setRequestDate($this->makeValidDate());
+        $holiday_request->requestingUser($requesting_user);
+        $holiday_request->approvingUser($approving_user);
+
+        try {
+            $holiday_request->approve();
+            return false;
+        } catch (Exception $e) {
+            $this->assertEquals('You may only approve Holiday Requests from members of your own Department', $e->getMessage());
+        }
+
+        $this->assertCount(0, $this->repository->getAllRequests());
+    }
+
+    // TODO
+    // Requests cannot be declined by users other than dept lead or super user
+
+    // Requests can only be cancelled by requesting user
+
+    // -- Test allowable actions
+
+    // Dept leads can approve their own team's request
+
+    // Super Users can approve requests from members of any team
+
+    // Requests will be correctly stored
+
+    // A user can cancel their own requests
+
+//    function it_will_allow_department_lead_to_approve_holiday_for_own_department_members()
+//    {
+//        $requesting_user    = new User();
+//        $approving_user     = new User();
+//
+//        $requesting_user->id            = 1;
+//        $requesting_user->department_id = 1;
+//        $approving_user->id             = 2;
+//        $approving_user->department_id  = 1;
+//        $approving_user->lead           = 1;
+//
+//        // Ensure the date validation passes
+//        $this->makeValidDate();
+//
+//        $this->requestingUser($requesting_user);
+//        $this->approvingUser($approving_user);
+//
+//        $this->approve()->shouldReturn(true);
+//    }
 
     // ------------------
+
+    // -- Test collection returns by parameter
 
     public function test_get_requests_by_user_id()
     {
@@ -224,22 +281,6 @@ class HolidayRequestTest extends DbTestCase {
         $this->assertCount(5, $this->repository->getAllRequests());
         $this->assertCount(3, $requests);
     }
-
-//    public function test_valid_request_saves()
-//    {
-//        $user = Factory::create('App\User');
-//        // Set the date for following year
-//        $dt = (new Carbon)->addYear();
-//        $holiday_request = Factory::create('App\HolidayRequest');
-//
-//        $holiday_request->setRequestDate((new Carbon)->addYear());
-//
-//        // Validation should reject the Request
-//        $user->addHolidayRequest($holiday_request);
-//
-//        // There should be no record in the DB
-//        $this->assertCount(5, $this->repository->getAllRequests());
-//    }
 
     // -- Utility Functions
 

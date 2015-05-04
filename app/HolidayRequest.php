@@ -334,6 +334,7 @@ class HolidayRequest extends Model
      */
     private function validateUserApproveAction()
     {
+//        var_dump($this->approving_user->email);
         if ( ! $this->approving_user->hasManageHolidayRequestPermission()) {
             throw new Exception('Only Department Leads can approve Holiday Requests');
         }

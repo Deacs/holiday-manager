@@ -208,24 +208,6 @@ class HolidayRequestSpec extends ObjectBehavior
         $this->shouldThrow(new Exception('Holiday Request cannot be declined, it has already been completed'))->duringDecline();
     }
 
-//
-//    function it_will_be_prevented_from_requesting_holiday_outside_of_the_current_year()
-//    {
-//        $dt = Carbon::create();
-//        $this->setDate($dt->addYear());
-//
-//        $this->shouldThrow(new \Exception('Holiday Requests can only be made for the current year'))->duringPlace();
-//    }
-
-//    function it_will_prevent_a_holiday_request_being_accepted_for_a_weekend()
-//    {
-//        // Set the test date to next Saturday to ensure the future date validation passes
-//        $dt = new Carbon('next saturday');
-//        $this->setDate($dt);
-//
-//        $this->shouldThrow(new Exception('Requested date is a weekend'))->duringPlace();
-//    }
-
     function it_will_return_the_current_year_from_get_holiday_start_year_when_none_set()
     {
         $this->getHolidayStartYear()->shouldReturn((new Carbon())->year);
@@ -238,21 +220,23 @@ class HolidayRequestSpec extends ObjectBehavior
         $this->getHolidayStartYear()->shouldReturn(2014);
     }
 
-    function it_will_be_prevent_a_user_from_approving_their_own_holiday_request()
-    {
-        $requesting_user    = new User();
-        $approving_user     = new User();
-
-        $requesting_user->id    = 2;
-
-        $approving_user->lead   = 1;
-        $approving_user->id     = 2;
-
-        $this->requestingUser($requesting_user);
-        $this->approvingUser($approving_user);
-
-        $this->shouldThrow(new Exception('You cannot approve your own Holiday Requests'))->duringApprove();
-    }
+//    // -- User Permissions
+//
+//    function it_will_be_prevent_a_user_from_approving_their_own_holiday_request()
+//    {
+//        $requesting_user    = new User();
+//        $approving_user     = new User();
+//
+//        $requesting_user->id    = 2;
+//
+//        $approving_user->lead   = 1;
+//        $approving_user->id     = 2;
+//
+//        $this->requestingUser($requesting_user);
+//        $this->approvingUser($approving_user);
+//
+//        $this->shouldThrow(new Exception('You cannot approve your own Holiday Requests'))->duringApprove();
+//    }
 
     function it_will_prevent_non_department_leads_from_approving_holiday_requests()
     {
@@ -386,23 +370,5 @@ class HolidayRequestSpec extends ObjectBehavior
 
             return $this;
         }
-//
-//    /**
-//     * Ensure the date set is valid
-//     * Date validation checks for a date in the future, that is not a weekend and is this year
-//     *
-//     * @return $this
-//     */
-//    private function makeValidDate()
-//    {
-//        // Ensure the weekend validation passes
-//        $dt = new Carbon('next friday');
-//        // Prevent validation failures when next Friday is actually the following year
-//        $dt->year((new Carbon())->year);
-//
-//        $this->setDate($dt);
-//
-//        return $this;
-//    }
 
 }

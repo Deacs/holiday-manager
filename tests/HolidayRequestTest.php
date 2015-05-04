@@ -65,21 +65,17 @@ class HolidayRequestTest extends DbTestCase {
     }
 
     // -- Test that failed validations throw the correct exceptions
-    /**
-     * @expectedExceptionMessage Right Message
-     */
     function test_a_request_for_a_past_date_throws_exception()
     {
         $holiday_request = new HolidayRequest();
         // Set the test day as a Monday to ensure the weekend validation passes
-        $dt = new Carbon('this monday');
-        $holiday_request->setRequestDate($dt->subWeeks(2));
+        $holiday_request->setRequestDate((new Carbon('this monday'))->subWeeks(2));
 
         try {
             $holiday_request->place();
             return false;
         } catch (Exception $e) {
-            $this->assertEquals($e->getMessage(), 'You cannot make a Holiday Request for a date in the past');
+            $this->assertEquals('You cannot make a Holiday Request for a date in the past', $e->getMessage());
         }
 
         $this->assertCount(0, $this->repository->getAllRequests());
@@ -88,22 +84,53 @@ class HolidayRequestTest extends DbTestCase {
     function test_a_request_outside_of_the_current_year_throws_exception()
     {
         $holiday_request = new HolidayRequest();
-        $dt = Carbon::create();
-        $holiday_request->setRequestDate($dt->addYear());
+        $holiday_request->setRequestDate((new Carbon())->addYear());
 
         try {
             $holiday_request->place();
             return false;
         } catch (Exception $e) {
-            $this->assertEquals($e->getMessage(), 'Holiday Requests can only be made for the current year');
+            $this->assertEquals('Holiday Requests can only be made for the current year', $e->getMessage());
         }
 
         $this->assertCount(0, $this->repository->getAllRequests());
     }
-//    {
-//
-//        $this->shouldThrow(new \Exception('Holiday Requests can only be made for the current year'))->duringPlace();
-//    }
+
+    function test_a_request_for_a_weekend_will_throw_an_exception()
+    {
+        $holiday_request = new HolidayRequest();
+        // Set the test date to next Saturday to ensure the future date validation passes
+        $holiday_request->setRequestDate(new Carbon('next saturday'));
+
+        try {
+            $holiday_request->place();
+            return false;
+        } catch (Exception $e) {
+            $this->assertEquals('Requested date is a weekend', $e->getMessage());
+        }
+
+        $this->assertCount(0, $this->repository->getAllRequests());
+    }
+
+    // -- Test User Permissions and actions are handled correctly
+
+    function test_user_attempting_to_approve_own_request_will_throw_exception()
+    {
+        $user               = Factory::create('App\User');
+        $user->lead         = 1;
+        $holiday_request    = Factory::create('App\HolidayRequest');
+
+        $holiday_request->setRequestDate($this->makeValidDate());
+        $holiday_request->requestingUser($user);
+        $holiday_request->approvingUser($user);
+
+        try {
+            $holiday_request->approve();
+            return false;
+        } catch (Exception $e) {
+            $this->assertEquals('You cannot approve your own Holiday Requests', $e->getMessage());
+        }
+    }
 
     // ------------------
 

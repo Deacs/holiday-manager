@@ -2,6 +2,7 @@
 
 // https://laracasts.com/lessons/whats-new-in-testdummy
 
+use App\HolidayRequest;
 use Laracasts\TestDummy\Factory;
 use Laracasts\TestDummy\DbTestCase;
 use \Carbon\Carbon as Carbon;
@@ -69,10 +70,9 @@ class HolidayRequestTest extends DbTestCase {
      */
     function test_a_request_for_a_past_date_throws_exception()
     {
+        $holiday_request = new HolidayRequest();
         // Set the test day as a Monday to ensure the weekend validation passes
         $dt = new Carbon('this monday');
-
-        $holiday_request = Factory::create('App\HolidayRequest');
         $holiday_request->setRequestDate($dt->subWeeks(2));
 
         try {
@@ -82,14 +82,25 @@ class HolidayRequestTest extends DbTestCase {
             $this->assertEquals($e->getMessage(), 'You cannot make a Holiday Request for a date in the past');
         }
 
-        // There should be no records in the DB
-        $this->assertCount(10, $this->repository->getAllRequests());
+        $this->assertCount(0, $this->repository->getAllRequests());
     }
 
     function test_a_request_outside_of_the_current_year_throws_exception()
+    {
+        $holiday_request = new HolidayRequest();
+        $dt = Carbon::create();
+        $holiday_request->setRequestDate($dt->addYear());
+
+        try {
+            $holiday_request->place();
+            return false;
+        } catch (Exception $e) {
+            $this->assertEquals($e->getMessage(), 'Holiday Requests can only be made for the current year');
+        }
+
+        $this->assertCount(0, $this->repository->getAllRequests());
+    }
 //    {
-//        $dt = Carbon::create();
-//        $this->setDate($dt->addYear());
 //
 //        $this->shouldThrow(new \Exception('Holiday Requests can only be made for the current year'))->duringPlace();
 //    }

@@ -236,8 +236,7 @@ class HolidayRequest extends Model
      */
     public function place()
     {
-        if ($this->validate()) {
-            //return true;
+        if ($this->validateDate()) {
             return $this->save();
         }
     }
@@ -248,7 +247,7 @@ class HolidayRequest extends Model
      * @throws Exception
      * @return bool
      */
-    private function validate()
+    private function validateDate()
     {
         switch (true) {
             // The requested date cannot be in the past

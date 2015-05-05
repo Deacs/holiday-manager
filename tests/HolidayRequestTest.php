@@ -174,19 +174,38 @@ class HolidayRequestTest extends DbTestCase {
 
         $this->assertCount(0, $this->repository->getAllRequests());
     }
-
-    // TODO
-    // Requests cannot be declined by users other than dept lead or super user
-    function test_non_department_lead_or_super_user_attempting_decline_of_request_will_throw_exception()
+    
+    function test_non_department_lead_attempting_decline_of_request_will_throw_exception()
     {
-        $holiday_request = Factory::create('App\HolidayRequest', ['status_id' => Status::PENDING_ID]);
+        $holiday_request = Factory::create('App\HolidayRequest');
+        $approving_user = Factory::create('App\User');
+        $approving_user->lead = 0;
+        $approving_user->super_user = 0;
+        $holiday_request->approvingUser($approving_user);
 
-
-
+        try {
+            $holiday_request->decline();
+            return false;
+        } catch (Exception $e) {
+            $this->assertEquals('Only Department Leads can decline Holiday Requests', $e->getMessage());
+        }
     }
 
     // Requests can only be cancelled by requesting user
+    function test_cancellation_attempt_by_user_other_than_requesting_user_will_throw_exception()
+    {
+        $holiday_request = Factory::create('App\HolidayRequest');
+        $requesting_user = Factory::create('App\User');
+        $cancelling_user = Factory::create('App\User');
+        $holiday_request->user_id = $requesting_user->id;
+        $holiday_request->requestingUser($cancelling_user);
 
+        try {
+            $cancelling_user->cancelHolidayRequest($holiday_request);
+        } catch (Exception $e) {
+            $this->assertEquals('You can only cancel your own Holiday Requests', $e->getMessage());
+        }
+    }
     // -- Test allowable actions
 
     // Dept leads can approve their own team's request

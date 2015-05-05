@@ -3,11 +3,9 @@
 namespace spec\App;
 
 use Carbon\Carbon;
-use Illuminate\Support\Facades\App;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use \App\User as User;
-use \App\HolidayRequest as HolidayRequest;
 use \App\Status as Status;
 use \Exception as Exception;
 
@@ -235,38 +233,6 @@ class HolidayRequestSpec extends ObjectBehavior
 
         $this->approverMatchesRequesterDepartment()->shouldReturn(false);
     }
-
-//    function it_will_allow_a_super_user_to_approve_holiday_for_members_of_another_team()
-//    {
-//        $requesting_user    = new User();
-//        $approving_user     = new User();
-//
-//        $requesting_user->id            = 1;
-//        $requesting_user->department_id = 1;
-//
-//        $approving_user->id             = 2;
-//        $approving_user->super_user     = 1;
-//        $approving_user->department_id  = 2;
-//
-//        // Ensure the date validation passes
-//        $this->makeValidDate();
-//
-//        $this->requestingUser($requesting_user);
-//        $this->approvingUser($approving_user);
-//
-//        $this->approve()->shouldReturn(true);
-//    }
-
-//    function it_will_prevent_a_user_cancelling_requests_of_others()
-//    {
-//        $this->user_id          = 1;
-//        $this->status_id        = Status::PENDING_ID;
-//        $requesting_user        = new User();
-//        $requesting_user->id    = 2;
-//        $this->requestingUser($requesting_user);
-//
-//        $this->shouldThrow(new Exception('You can only cancel your own Holiday Requests'))->duringCancel();
-//    }
 
 //    function it_returns_true_when_triggering_an_email_notification_on_successful_holiday_request_approval()
 //    {

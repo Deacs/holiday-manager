@@ -65,7 +65,7 @@ class HolidayRequestTest extends DbTestCase {
     }
 
     // -- Test that failed validations throw the correct exceptions
-    function test_a_request_for_a_past_date_throws_exception()
+    function test_request_for_a_past_date_throws_exception()
     {
         $holiday_request = new HolidayRequest();
         // Set the test day as a Monday to ensure the weekend validation passes
@@ -81,7 +81,7 @@ class HolidayRequestTest extends DbTestCase {
         $this->assertCount(0, $this->repository->getAllRequests());
     }
 
-    function test_a_request_outside_of_the_current_year_throws_exception()
+    function test_request_outside_of_the_current_year_throws_exception()
     {
         $holiday_request = new HolidayRequest();
         $holiday_request->setRequestDate((new Carbon())->addYear());
@@ -96,7 +96,7 @@ class HolidayRequestTest extends DbTestCase {
         $this->assertCount(0, $this->repository->getAllRequests());
     }
 
-    function test_a_request_for_a_weekend_will_throw_an_exception()
+    function test_request_for_a_weekend_will_throw_an_exception()
     {
         $holiday_request = new HolidayRequest();
         // Set the test date to next Saturday to ensure the future date validation passes
@@ -177,6 +177,13 @@ class HolidayRequestTest extends DbTestCase {
 
     // TODO
     // Requests cannot be declined by users other than dept lead or super user
+    function test_non_department_lead_or_super_user_attempting_decline_of_request_will_throw_exception()
+    {
+        $holiday_request = Factory::create('App\HolidayRequest', ['status_id' => Status::PENDING_ID]);
+
+
+
+    }
 
     // Requests can only be cancelled by requesting user
 
@@ -189,6 +196,8 @@ class HolidayRequestTest extends DbTestCase {
     // Requests will be correctly stored
 
     // A user can cancel their own requests
+
+    // -- Test correct notifications are triggered
 
 //    function it_will_allow_department_lead_to_approve_holiday_for_own_department_members()
 //    {

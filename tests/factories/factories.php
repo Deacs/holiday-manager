@@ -8,6 +8,7 @@ $factory('App\User', [
     'department_id'             => 'factory:App\Department',
     'location_id'               => 'factory:App\Location',
     'lead'                      => 0,
+    'super_user'                => 0,
     'annual_holiday_allowance'  => 25
 ]);
 
@@ -19,6 +20,19 @@ $factory('App\User', 'lead_user', [
     'department_id'             => 'factory:App\Department',
     'location_id'               => 'factory:App\Location',
     'lead'                      => 1,
+    'super_user'                => 0,
+    'annual_holiday_allowance'  => 25
+]);
+
+$factory('App\User', 'super_user', [
+    'first_name'                => $faker->firstNameMale,
+    'last_name'                 => $faker->lastName,
+    'email'                     => $faker->email,
+    'telephone'                 => $faker->phoneNumber,
+    'department_id'             => 'factory:App\Department',
+    'location_id'               => 'factory:App\Location',
+    'lead'                      => 0,
+    'super_user'                => 1,
     'annual_holiday_allowance'  => 25
 ]);
 

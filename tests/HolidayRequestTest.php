@@ -174,7 +174,7 @@ class HolidayRequestTest extends DbTestCase {
 
         $this->assertCount(0, $this->repository->getAllRequests());
     }
-    
+
     function test_non_department_lead_attempting_decline_of_request_will_throw_exception()
     {
         $holiday_request = Factory::create('App\HolidayRequest');
@@ -191,7 +191,6 @@ class HolidayRequestTest extends DbTestCase {
         }
     }
 
-    // Requests can only be cancelled by requesting user
     function test_cancellation_attempt_by_user_other_than_requesting_user_will_throw_exception()
     {
         $holiday_request = Factory::create('App\HolidayRequest');
@@ -206,39 +205,57 @@ class HolidayRequestTest extends DbTestCase {
             $this->assertEquals('You can only cancel your own Holiday Requests', $e->getMessage());
         }
     }
+
     // -- Test allowable actions
 
-    // Dept leads can approve their own team's request
+    function test_department_leads_can_approve_their_teams_requests()
+    {
+        $department         = Factory::create('App\Department');
+        $holiday_request    = Factory::create('App\HolidayRequest');
+        $requesting_user    = Factory::create('App\User', ['department_id' => $department->id]);
+        $approving_user     = Factory::create('App\User', ['department_id' => $department->id]);
+        $approving_user->lead = 1;
+        $holiday_request->requestingUser($requesting_user);
+        $holiday_request->approvingUser($approving_user);
+        $holiday_request->setRequestDate($this->makeValidDate());
 
-    // Super Users can approve requests from members of any team
+        $holiday_request->approve();
 
-    // Requests will be correctly stored
+        $this->assertEquals(Status::APPROVED_ID, $holiday_request->status_id);
+    }
 
-    // A user can cancel their own requests
+    function test_super_users_can_approve_any_teams_requests()
+    {
+        $department_1       = Factory::create('App\Department');
+        $department_2       = Factory::create('App\Department');
+        $holiday_request    = Factory::create('App\HolidayRequest');
+        $requesting_user    = Factory::create('App\User', ['department_id' => $department_1->id]);
+        $approving_user     = Factory::create('App\User', ['department_id' => $department_2->id]);
+        $approving_user->super_user = 1;
+        $holiday_request->requestingUser($requesting_user);
+        $holiday_request->approvingUser($approving_user);
+        $holiday_request->setRequestDate($this->makeValidDate());
 
+        $holiday_request->approve();
+
+        $this->assertEquals(Status::APPROVED_ID, $holiday_request->status_id);
+    }
+
+    function test_user_can_cancel_own_requests()
+    {
+        $holiday_request    = Factory::create('App\HolidayRequest');
+        $requesting_user    = Factory::create('App\User');
+        $holiday_request->user_id = $requesting_user->id;
+        $holiday_request->requestingUser($requesting_user);
+        $holiday_request->setRequestDate($this->makeValidDate());
+
+        $holiday_request->cancel();
+
+        $this->assertEquals(Status::CANCELLED_ID, $holiday_request->status_id);
+    }
+
+    // TODO
     // -- Test correct notifications are triggered
-
-//    function it_will_allow_department_lead_to_approve_holiday_for_own_department_members()
-//    {
-//        $requesting_user    = new User();
-//        $approving_user     = new User();
-//
-//        $requesting_user->id            = 1;
-//        $requesting_user->department_id = 1;
-//        $approving_user->id             = 2;
-//        $approving_user->department_id  = 1;
-//        $approving_user->lead           = 1;
-//
-//        // Ensure the date validation passes
-//        $this->makeValidDate();
-//
-//        $this->requestingUser($requesting_user);
-//        $this->approvingUser($approving_user);
-//
-//        $this->approve()->shouldReturn(true);
-//    }
-
-    // ------------------
 
     // -- Test collection returns by parameter
 

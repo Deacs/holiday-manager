@@ -37,6 +37,8 @@ class HolidayRequest extends Model
     public $holiday_end_date_year;
     public $holiday_start_date;
     public $holiday_end_date;
+    public $approved_by;
+    public $declined_by;
 
     // The default status for a request is Pending
     public $status_id = Status::PENDING_ID;
@@ -49,6 +51,11 @@ class HolidayRequest extends Model
     public function setRequestDate($request_date)
     {
         $this->request_date = $request_date;
+    }
+
+    public function getRequestDate()
+    {
+        return $this->request_date;
     }
 
     // -- Relationships
@@ -332,7 +339,6 @@ class HolidayRequest extends Model
      */
     private function validateUserApproveAction()
     {
-//        var_dump($this->approving_user->email);
         if ( ! $this->approving_user->hasManageHolidayRequestPermission()) {
             throw new Exception('Only Department Leads can approve Holiday Requests');
         }

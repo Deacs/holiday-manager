@@ -52,8 +52,6 @@ $factory('App\Location', [
 
 $factory('App\HolidayRequest', [
     'user_id'       => 'factory:App\User',
-    'request_date'  => $faker->dateTime,
-    'status_id'     => \App\Status::PENDING_ID, // This needs checking - it doesn't feel right
-    'approved_by'   => 'factory:App\User',
-    'declined_by'   => 'factory:App\User'
+    'request_date'  => $faker->dateTime, // Carbon instance required
+    'status_id'     => \App\Status::PENDING_ID // This needs checking - it doesn't feel right
 ]);

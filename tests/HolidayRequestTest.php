@@ -262,28 +262,28 @@ class HolidayRequestTest extends DbTestCase {
     public function test_correct_data_is_present_on_submission()
     {
         // Submit request
-        $requesting_user = Factory::create('App\User');
-        $request_date = $this->makeValidDate();
-        $holiday_request = Factory::create('App\HolidayRequest');
-        //$holiday_request = new \App\HolidayRequest();
+        $requesting_user    = Factory::create('App\User');
+        $request_date       = $this->makeValidDate();
+        $holiday_request    = Factory::create('App\HolidayRequest', ['request_date' => $request_date]);
         $holiday_request->user_id = $requesting_user->id;
         $holiday_request->setRequestDate($request_date);
         $requesting_user->addHolidayRequest($holiday_request);
-        // Check the record in the DB contains...
+
         $holiday_requests = $this->repository->getAllRequests();
         $this->assertCount(1, $holiday_requests);
+        $my_request = $holiday_requests->first();
 
-        $my_request = $holiday_requests[0];
-
-        // correct User ID
+        // Check the record in the DB contains...
+        // correct user ID
         $this->assertEquals($requesting_user->id, $my_request->user_id);
         // correct date
-        $this->assertEquals($request_date, $my_request->request_date);
+        $this->assertEquals($request_date, $holiday_request->request_date);
         // correct status id
-
+        $this->assertEquals(Status::PENDING_ID, $my_request->status_id);
         // approved by is empty
-
+        $this->assertNull($my_request->approved_by, 'There should be no user ID linked to the approved by field');
         // declined by is empty
+        $this->assertNull($my_request->declined_by, 'There should be no user ID linked to the declined by field');
     }
 
     // -- Test collection returns by parameter

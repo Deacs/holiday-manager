@@ -257,6 +257,35 @@ class HolidayRequestTest extends DbTestCase {
     // TODO
     // -- Test correct notifications are triggered
 
+    // -- Test DB interactions
+
+    public function test_correct_data_is_present_on_submission()
+    {
+        // Submit request
+        $requesting_user = Factory::create('App\User');
+        $request_date = $this->makeValidDate();
+        $holiday_request = Factory::create('App\HolidayRequest');
+        //$holiday_request = new \App\HolidayRequest();
+        $holiday_request->user_id = $requesting_user->id;
+        $holiday_request->setRequestDate($request_date);
+        $requesting_user->addHolidayRequest($holiday_request);
+        // Check the record in the DB contains...
+        $holiday_requests = $this->repository->getAllRequests();
+        $this->assertCount(1, $holiday_requests);
+
+        $my_request = $holiday_requests[0];
+
+        // correct User ID
+        $this->assertEquals($requesting_user->id, $my_request->user_id);
+        // correct date
+        $this->assertEquals($request_date, $my_request->request_date);
+        // correct status id
+
+        // approved by is empty
+
+        // declined by is empty
+    }
+
     // -- Test collection returns by parameter
 
     public function test_get_requests_by_user_id()
@@ -275,11 +304,12 @@ class HolidayRequestTest extends DbTestCase {
 
     public function test_get_requests_by_status_id()
     {
-        $status = Factory::create('App\Status');
-        Factory::times(4)->create('App\HolidayRequest', ['status_id' => $status->id]);
-        Factory::times(6)->create('App\HolidayRequest');
+        $status_1 = Factory::create('App\Status');
+        $status_2 = Factory::create('App\Status');
+        Factory::times(4)->create('App\HolidayRequest', ['status_id' => $status_1->id]);
+        Factory::times(6)->create('App\HolidayRequest', ['status_id' => $status_2->id]);
 
-        $requests = $this->repository->getRequestsByStatusId($status->id);
+        $requests = $this->repository->getRequestsByStatusId($status_1->id);
         // Sanity check - did all scaffolded records make it to the DB
         $this->assertCount(10, $this->repository->getAllRequests());
         $this->assertCount(4, $requests);

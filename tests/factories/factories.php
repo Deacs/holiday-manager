@@ -1,5 +1,9 @@
 <?php
 
+$factory('App\Status', [
+    'title' => $faker->word,
+]);
+
 $factory('App\User', [
     'first_name'                => $faker->firstNameMale,
     'last_name'                 => $faker->lastName,
@@ -46,14 +50,10 @@ $factory('App\Location', [
     'telephone' => $faker->phoneNumber
 ]);
 
-$factory('App\Status', [
-    'title' => $faker->word,
-]);
-
 $factory('App\HolidayRequest', [
     'user_id'       => 'factory:App\User',
     'request_date'  => $faker->dateTime,
-    'status_id'     => 'factory:App\Status',
+    'status_id'     => \App\Status::PENDING_ID, // This needs checking - it doesn't feel right
     'approved_by'   => 'factory:App\User',
     'declined_by'   => 'factory:App\User'
 ]);

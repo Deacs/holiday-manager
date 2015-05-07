@@ -10,8 +10,6 @@
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon as Carbon;
 use \Exception as Exception;
-use \App\Department as Department;
-use \App\Status as Status;
 
 class HolidayRequest extends Model
 {

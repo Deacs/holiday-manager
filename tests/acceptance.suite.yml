@@ -9,6 +9,7 @@ modules:
     enabled:
         - PhpBrowser
         - AcceptanceHelper
+        - Laravel5
     config:
         PhpBrowser:
             url: 'http://localhost:8000/'

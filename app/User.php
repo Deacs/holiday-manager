@@ -21,6 +21,16 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	protected $table = 'users';
 
 	/**
+	 * The attributes excluded from the model's JSON form.
+	 *
+	 * @var array
+	 */
+	protected $hidden = [
+		'password',
+		'remember_token'
+	];
+
+	/**
 	 * The attributes that are mass assignable.
 	 *
 	 * @var array
@@ -29,22 +39,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		'first_name',
 		'last_name',
 		'email',
+		'password',
 		'telephone',
 		'department_id',
 		'location_id',
 		'lead',
 		'super_user',
 		'annual_holiday_allowance'
-	];
-
-	/**
-	 * The attributes excluded from the model's JSON form.
-	 *
-	 * @var array
-	 */
-	protected $hidden = [
-		'password',
-		'remember_token'
 	];
 
 	public $default_annual_holiday_alowance = 25;

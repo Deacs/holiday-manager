@@ -56,75 +56,39 @@ class HolidayRequestSpec extends ObjectBehavior
     // -- Manage transitions between status
     function it_will_be_prevented_from_being_approved_when_it_is_approved()
     {
-        $requesting_user    = new User();
-        $approving_user     = new User();
+        $this->createValidRequestingAndApprovingUsers();
 
-        $requesting_user->id    = 1;
-        $approving_user->lead   = 1;
-        $approving_user->id     = 2;
-
-        $this->requestingUser($requesting_user);
-        $this->approvingUser($approving_user);
         $this->status_id = Status::APPROVED_ID;
         $this->shouldThrow(new Exception('Holiday Request has already been approved'))->duringApprove();
     }
 
     function it_will_be_prevented_from_being_approved_when_it_has_been_declined()
     {
-        $requesting_user    = new User();
-        $approving_user     = new User();
+        $this->createValidRequestingAndApprovingUsers();
 
-        $requesting_user->id    = 1;
-        $approving_user->lead   = 1;
-        $approving_user->id     = 2;
-
-        $this->requestingUser($requesting_user);
-        $this->approvingUser($approving_user);
         $this->status_id = Status::DECLINED_ID;
         $this->shouldThrow(new Exception('Holiday Request cannot be approved, it has already been declined'))->duringApprove();
     }
 
     function it_will_be_prevented_from_being_approved_when_it_is_active()
     {
-        $requesting_user    = new User();
-        $approving_user     = new User();
+        $this->createValidRequestingAndApprovingUsers();
 
-        $requesting_user->id    = 1;
-        $approving_user->lead   = 1;
-        $approving_user->id     = 2;
-
-        $this->requestingUser($requesting_user);
-        $this->approvingUser($approving_user);
         $this->status_id = Status::ACTIVE_ID;
         $this->shouldThrow(new Exception('Holiday Request cannot be approved, it is currently active'))->duringApprove();
     }
 
     function it_will_be_prevented_from_being_approved_when_it_has_been_cancelled()
     {
-        $requesting_user    = new User();
-        $approving_user     = new User();
+        $this->createValidRequestingAndApprovingUsers();
 
-        $requesting_user->id    = 1;
-        $approving_user->lead   = 1;
-        $approving_user->id     = 2;
-
-        $this->requestingUser($requesting_user);
-        $this->approvingUser($approving_user);
         $this->status_id = Status::CANCELLED_ID;
         $this->shouldThrow(new Exception('Holiday Request cannot be approved, it has been cancelled'))->duringApprove();
     }
 
     function it_will_be_prevented_from_being_approved_when_it_has_been_completed()
     {
-        $requesting_user    = new User();
-        $approving_user     = new User();
-
-        $requesting_user->id    = 1;
-        $approving_user->lead   = 1;
-        $approving_user->id     = 2;
-
-        $this->requestingUser($requesting_user);
-        $this->approvingUser($approving_user);
+        $this->createValidRequestingAndApprovingUsers();
 
         $this->status_id = Status::COMPLETED_ID;
         $this->shouldThrow(new Exception('Holiday Request cannot be approved, it has already been completed'))->duringApprove();
@@ -132,10 +96,7 @@ class HolidayRequestSpec extends ObjectBehavior
 
     function it_will_be_prevented_from_being_cancelled_when_it_has_been_declined()
     {
-        $this->user_id          = 1;
-        $requesting_user        = new User();
-        $requesting_user->id    = 1;
-        $this->requestingUser($requesting_user);
+        $this->createRequestingUserMatchingRecordedUser();
 
         $this->status_id = Status::DECLINED_ID;
         $this->shouldThrow(new Exception('Holiday Request cannot be cancelled, it has already been declined'))->duringCancel();
@@ -143,10 +104,7 @@ class HolidayRequestSpec extends ObjectBehavior
 
     function it_will_be_prevented_from_being_cancelled_when_it_is_active()
     {
-        $this->user_id          = 1;
-        $requesting_user        = new User();
-        $requesting_user->id    = 1;
-        $this->requestingUser($requesting_user);
+        $this->createRequestingUserMatchingRecordedUser();
 
         $this->status_id = Status::ACTIVE_ID;
         $this->shouldThrow(new \Exception('Holiday Request cannot be cancelled, it is currently active'))->duringCancel();
@@ -154,10 +112,7 @@ class HolidayRequestSpec extends ObjectBehavior
 
     function it_will_be_prevented_from_being_cancelled_when_it_has_been_cancelled()
     {
-        $this->user_id          = 1;
-        $requesting_user        = new User();
-        $requesting_user->id    = 1;
-        $this->requestingUser($requesting_user);
+        $this->createRequestingUserMatchingRecordedUser();
 
         $this->status_id = Status::CANCELLED_ID;
         $this->shouldThrow(new Exception('Holiday Request has already been cancelled'))->duringCancel();
@@ -165,10 +120,7 @@ class HolidayRequestSpec extends ObjectBehavior
 
     function it_will_be_prevented_from_being_cancelled_when_it_has_been_completed()
     {
-        $this->user_id          = 1;
-        $requesting_user        = new User();
-        $requesting_user->id    = 1;
-        $this->requestingUser($requesting_user);
+        $this->createRequestingUserMatchingRecordedUser();
 
         $this->status_id = Status::COMPLETED_ID;
         $this->shouldThrow(new Exception('Holiday Request cannot be cancelled, it has already been completed'))->duringCancel();
@@ -218,6 +170,29 @@ class HolidayRequestSpec extends ObjectBehavior
         $this->getHolidayStartYear()->shouldReturn(2014);
     }
 
+    // -- Date validation
+    function it_will_throw_exception_when_validate_date_is_checking_date_in_the_past()
+    {
+        $this->setRequestDate((new Carbon())->subYear());
+
+        $this->shouldThrow(new Exception('You cannot make a Holiday Request for a date in the past'))->duringValidateDate();
+    }
+
+    function it_will_throw_exception_when_validate_date_is_checking_a_year_other_than_the_current()
+    {
+        $this->setRequestDate((new Carbon())->addYear());
+
+        $this->shouldThrow(new Exception('Holiday Requests can only be made for the current year'))->duringValidateDate();
+    }
+
+    function it_will_throw_exception_when_validate_date_is_checking_a_date_that_is_a_weekend()
+    {
+        $this->setRequestDate((new Carbon())->endOfWeek());
+
+        $this->shouldThrow(new Exception('Requested date is a weekend'))->duringValidatedate();
+    }
+
+
     // -- User Permissions
 
     function it_will_return_false_when_checking_department_ids_for_requester_and_approver_when_they_do_not_match()
@@ -255,19 +230,41 @@ class HolidayRequestSpec extends ObjectBehavior
 
 //    // -- Utility Functions
 
-        private function createValidRequestingAndApprovingUsers()
-        {
-            $requesting_user    = new User();
-            $approving_user     = new User();
+    /**
+     * Create both a requesting and approving user with sufficient permissions to manage requests
+     * This will satisfy authorisation permission validation
+     * 
+     * @return $this
+     */
+    private function createValidRequestingAndApprovingUsers()
+    {
+        $requesting_user    = new User();
+        $approving_user     = new User();
 
-            $requesting_user->id    = 1;
-            $approving_user->lead   = 1;
-            $approving_user->id     = 2;
+        $requesting_user->id    = 1;
+        $approving_user->lead   = 1;
+        $approving_user->id     = 2;
 
-            $this->requestingUser($requesting_user);
-            $this->approvingUser($approving_user);
+        $this->requestingUser($requesting_user);
+        $this->approvingUser($approving_user);
 
-            return $this;
-        }
+        return $this;
+    }
+
+    /**
+     * Set the user id and create a requesting User object with a matching ID
+     * This will satisfy the validation around Users cancelling their own requests etc
+     *
+     * @return $this
+     */
+    private function createRequestingUserMatchingRecordedUser()
+    {
+        $this->user_id          = 1;
+        $requesting_user        = new User();
+        $requesting_user->id    = 1;
+        $this->requestingUser($requesting_user);
+
+        return $this;
+    }
 
 }

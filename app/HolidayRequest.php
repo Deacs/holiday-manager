@@ -252,7 +252,7 @@ class HolidayRequest extends Model
      * @throws Exception
      * @return bool
      */
-    private function validateDate()
+    public function validateDate()
     {
         switch (true) {
             // The requested date cannot be in the past

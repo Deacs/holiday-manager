@@ -233,7 +233,7 @@ class HolidayRequestSpec extends ObjectBehavior
     /**
      * Create both a requesting and approving user with sufficient permissions to manage requests
      * This will satisfy authorisation permission validation
-     * 
+     *
      * @return $this
      */
     private function createValidRequestingAndApprovingUsers()

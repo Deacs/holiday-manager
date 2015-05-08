@@ -7,3 +7,5 @@
 /storage/caliente.sqlite
 todo.txt
 
+
+tests/_output/*

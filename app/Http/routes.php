@@ -12,6 +12,9 @@
 */
 
 Route::get('/', 'WelcomeController@index');
+//Route::get('/', function () {
+//	dd(\App\User::all());
+//});
 
 Route::get('home', 'HomeController@index');
 

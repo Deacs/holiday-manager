@@ -12,11 +12,12 @@
 */
 
 Route::get('/', 'WelcomeController@index');
-//Route::get('/', function () {
-//	dd(\App\User::all());
-//});
 
 Route::get('home', 'HomeController@index');
+
+Route::get('calendar', function() {
+	return view('calendar');
+});
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',

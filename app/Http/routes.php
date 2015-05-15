@@ -15,9 +15,7 @@ Route::get('/', 'WelcomeController@index');
 
 Route::get('home', 'HomeController@index');
 
-Route::get('calendar', function() {
-	return view('calendar');
-});
+Route::get('calendar', 'CalendarController@index');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',

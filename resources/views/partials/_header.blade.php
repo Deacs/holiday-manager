@@ -9,9 +9,7 @@
     <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('/css/foundation.css') }}" rel="stylesheet" />
     <script src="/js/vendor/modernizr.js"></script>
-    <script src="/js/vendor/jquery.js"></script>
-    <script src="/js/foundation/foundation.js"></script>
-    <script src="/js/foundation/foundation.topbar.js"></script>
+
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>

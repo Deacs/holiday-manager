@@ -1,6 +1,11 @@
 @include('partials/_header')
 @include('navigation/header')
-    @yield('content')
+
+    <div class="row">
+
+        @yield('content')
+
+    </div>
 
 @include('partials/_footer')
 

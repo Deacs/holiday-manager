@@ -11,12 +11,11 @@
         <!-- Top Bar Section -->
         <section class="top-bar-section">
 
-            <!-- Top Bar Left Nav Elements -->
-            <ul class="left">
-
-            </ul>
-
             <ul class="right">
+                <li class="divider"></li>
+                <li><a href="#">Your Holiday</a></li>
+                <li class="divider"></li>
+                <li><a href="#">Manage Requests</a></li>
                 <li class="divider hide-for-small"></li>
                 <li class="has-dropdown hover"><a>Department</a>
                     <ul class="dropdown"><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li>

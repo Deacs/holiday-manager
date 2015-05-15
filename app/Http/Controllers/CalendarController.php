@@ -17,7 +17,7 @@ class CalendarController extends Controller {
 	public function index()
 	{
 		$locations = Location::with('departments')->get();
-		return view('calendar', compact('locations'));
+		return view('calendar.index', compact('locations'));
 	}
 
 	/**

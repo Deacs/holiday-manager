@@ -10,7 +10,6 @@
 
         <!-- Top Bar Section -->
         <section class="top-bar-section">
-
             <ul class="right">
                 <li class="divider"></li>
                 <li><a href="#">Your Holiday</a></li>

@@ -23,7 +23,7 @@
                             <li class="has-dropdown hover"><a>{{ $location->name }}</a>
                                 <ul class="dropdown"><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li>
                                     @foreach ($location->departments as $department)
-                                        <li><a href="#">{{ $department->name }}</a></li>
+                                        <li><a href="/department/{{ $department->id }}">{{ $department->name }}</a></li>
                                     @endforeach
                                 </ul>
                             </li>

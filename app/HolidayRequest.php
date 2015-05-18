@@ -279,9 +279,10 @@ class HolidayRequest extends Model
      */
     public function approve()
     {
-        $this->validateUserApproveAction();
-
         if ($this->canBeApproved()) {
+
+            $this->validateUserApproveAction();
+
             $this->status_id = Status::APPROVED_ID;
             $this->place();
             $this->sendApprovalNotification();
@@ -298,9 +299,10 @@ class HolidayRequest extends Model
      */
     public function cancel()
     {
-        $this->validateUserCancelAction();
-
         if ($this->canBeCancelled()) {
+
+            $this->validateUserCancelAction();
+
             $this->status_id = Status::CANCELLED_ID;
             $this->save();
             $this->sendCancellationNotification();
@@ -318,9 +320,10 @@ class HolidayRequest extends Model
      */
     public function decline()
     {
-        $this->validateUserDeclineAction();
-
         if ($this->canBeDeclined()) {
+
+            $this->validateUserDeclineAction();
+
             $this->status_id = Status::DECLINED_ID;
             $this->save();
             $this->sendDeclineNotification();
@@ -377,7 +380,7 @@ class HolidayRequest extends Model
      */
     private function validateUserDeclineAction()
     {
-        if ( ! $this->approving_user->hasManageHolidayRequestPermission()) {
+        if ( ! $this->approving_user->hasManageHolidayRequestPermission($this)) {
             throw new Exception('Only Department Leads can decline Holiday Requests');
         }
 
@@ -561,7 +564,7 @@ class HolidayRequest extends Model
      */
     private function canApproveHolidayRequests()
     {
-        if ( ! $this->hasManageHolidayRequestPermission()) {
+        if ( ! $this->hasManageHolidayRequestPermission($this)) {
             throw new Exception('Only Department Leads can approve Holiday Requests');
         }
 

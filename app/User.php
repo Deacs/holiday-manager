@@ -240,7 +240,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 * @return bool
 	 * @param Department $department
 	 */
-	public function hasManageHolidayRequestPermission(Department $department)
+	public function hasManageHolidayRequestPermission(Department $department = null)
 	{
 		return $this->isSuperUser() || $this->isDepartmentLead($department);
 	}

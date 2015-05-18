@@ -3,12 +3,9 @@
 namespace spec\App;
 
 use App\Department;
-use Carbon\Carbon;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use \App\HolidayRequest as HolidayRequest;
-use \App\User as User;
-use \App\Status as Status;
 use \Exception as Exception;
 
 class UserSpec extends ObjectBehavior
@@ -28,16 +25,20 @@ class UserSpec extends ObjectBehavior
 
     function it_will_return_false_when_not_department_lead()
     {
-        $this->lead = 0;
+        $department = new Department();
+        $department->lead_id    = 2;
+        $this->id               = 1;
 
-        $this->isDepartmentLead()->shouldReturn(false);
+        $this->isDepartmentLead($department)->shouldReturn(false);
     }
 
     function it_will_return_true_when_department_lead()
     {
-        $this->lead = 1;
+        $department = new Department();
+        $department->lead_id    = 1;
+        $this->id               = 1;
 
-        $this->isDepartmentLead()->shouldReturn(true);
+        $this->isDepartmentLead($department)->shouldReturn(true);
     }
 
     function it_will_return_false_when_not_super_user()
@@ -56,29 +57,21 @@ class UserSpec extends ObjectBehavior
 
     function it_will_return_true_when_checking_has_manage_holiday_request_permission_for_department_lead()
     {
-        $this->lead = 1;
+        $this->id = 1;
+        $department = new Department();
+        $department->lead_id = 1;
 
-        $this->hasManageHolidayRequestPermission()->shouldReturn(true);
+        $this->hasManageHolidayRequestPermission($department)->shouldReturn(true);
     }
 
     function it_will_return_true_when_checking_has_manage_holiday_request_permission_for_super_user()
     {
         $this->super_user = 1;
+        $department = new Department();
+        $department->lead_id = 2;
 
-        $this->hasManageHolidayRequestPermission()->shouldReturn(true);
+        $this->hasManageHolidayRequestPermission($department)->shouldReturn(true);
     }
-
-//    function it_can_add_a_holiday_request()
-//    {
-//        $holiday_request = new HolidayRequest();
-//        $holiday_request->user_id = $this->id;
-//        $dt = new Carbon();
-//        // Set the current day to a weekday to satisfy the Weekday validation
-//        $dt = $dt->next(1);
-//        $holiday_request->setDate($dt->addWeek());
-//
-//        $this->addHolidayRequest($holiday_request)->shouldReturn(true);
-//    }
 
     function it_can_see_a_full_allowance_of_available_holiday_when_no_holiday_has_been_requested_taken_or_active()
     {
@@ -139,14 +132,18 @@ class UserSpec extends ObjectBehavior
 
     function it_will_return_holiday_summary_for_department_if_team_lead(Department $department)
     {
-        $this->lead = 1;
+        $department = new Department();
+        $this->id               = 1;
+        $department->lead_id    = 1;
 
         $this->viewDepartmentHolidaySummary($department)->shouldReturn([]);
     }
 
     function it_will_be_prevented_from_viewing_team_holiday_summary_if_not_team_lead(Department $department)
     {
-        $this->lead = 0;
+        $department = new Department();
+        $department->lead_id    = 2;
+        $this->id               = 1;
 
         $this->shouldThrow(new Exception('Only Team Leads can view Holiday summaries'))->duringViewDepartmentHolidaySummary($department);
     }

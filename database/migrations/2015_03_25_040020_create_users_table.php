@@ -21,7 +21,6 @@ class CreateUsersTable extends Migration {
             $table->string('telephone')->nullable();
 			$table->integer('department_id')->foreign('department_id')->references('id')->on('departments');
 			$table->integer('location_id')->foreign('location_id')->references('id')->on('locations');
-            $table->boolean('lead')->default(0);
             $table->boolean('super_user')->default(0);
 			$table->integer('annual_holiday_allowance')->default(25);
 			$table->index('department_id');

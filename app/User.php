@@ -85,10 +85,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 * Is this user a Department Lead
 	 *
 	 * @return bool
+	 * @param Department $department
 	 */
-	public function isDepartmentLead()
+	public function isDepartmentLead(Department $department)
 	{
-		return $this->lead == 1;
+		return $department->lead_id == $this->id;
 	}
 
 	/**
@@ -236,12 +237,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 * Generally they will be a Department Lead but this may be extended to allow Team Leads to deputise
 	 * There is possibly a Super User that can approve Requests in the absence of relevant Department Lead
 	 *
-	 * @throws Exception
 	 * @return bool
+	 * @param Department $department
 	 */
-	public function hasManageHolidayRequestPermission()
+	public function hasManageHolidayRequestPermission(Department $department)
 	{
-		return $this->isSuperUser() || $this->isDepartmentLead();
+		return $this->isSuperUser() || $this->isDepartmentLead($department);
 	}
 
 	/**
@@ -253,7 +254,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 */
 	public function viewDepartmentHolidaySummary(Department $department)
 	{
-		if ( ! $this->hasManageHolidayRequestPermission()) {
+		if ( ! $this->hasManageHolidayRequestPermission($department)) {
 			throw new Exception('Only Team Leads can view Holiday summaries');
 		}
 

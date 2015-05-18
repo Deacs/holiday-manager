@@ -1,12 +1,12 @@
 <?php namespace App\Http\Controllers;
 
-use App\Department as Department;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Location;
 use Illuminate\Http\Request;
 
-class DepartmentController extends Controller {
+class LocationController extends Controller {
 
 	/**
 	 * Display a listing of the resource.
@@ -15,7 +15,7 @@ class DepartmentController extends Controller {
 	 */
 	public function index()
 	{
-		return 'index for Department';
+		//
 	}
 
 	/**
@@ -46,8 +46,8 @@ class DepartmentController extends Controller {
 	 */
 	public function show($id)
 	{
-		$department = Department::findOrFail($id);
-		return view('department.home')->with('department', $department)->with('lead', $department->lead());
+		$location = Location::find($id);
+		return view('location.home')->with('location', $location);
 	}
 
 	/**

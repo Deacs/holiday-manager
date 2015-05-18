@@ -31,6 +31,11 @@ class Department extends Model {
 		return $this->hasMany('App\User');
 	}
 
+	public function lead()
+	{
+		return User::where('department_id', $this->id)->where('lead', '1')->first();
+	}
+
 	public function scopeExeter($query)
 	{
 		return $query->where('location_id', Location::EXETER_ID);

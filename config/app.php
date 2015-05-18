@@ -146,6 +146,7 @@ return [
 		'App\Providers\RouteServiceProvider',
 		'App\Providers\ComposerServiceProvider',
 
+		'Nwidart\DbExporter\DbExportHandlerServiceProvider',
 	],
 
 	/*

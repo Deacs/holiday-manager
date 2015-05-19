@@ -146,7 +146,11 @@ return [
 		'App\Providers\RouteServiceProvider',
 		'App\Providers\ComposerServiceProvider',
 
+		/*
+		 * Third party providers
+		 */
 		'Nwidart\DbExporter\DbExportHandlerServiceProvider',
+		'Collective\Html\HtmlServiceProvider',
 	],
 
 	/*
@@ -194,6 +198,9 @@ return [
 		'URL'       => 'Illuminate\Support\Facades\URL',
 		'Validator' => 'Illuminate\Support\Facades\Validator',
 		'View'      => 'Illuminate\Support\Facades\View',
+
+		'Form' 		=> 'Collective\Html\FormFacade',
+		'Html' 		=> 'Collective\Html\HtmlFacade',
 
 	],
 

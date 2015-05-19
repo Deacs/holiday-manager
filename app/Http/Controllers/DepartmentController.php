@@ -47,9 +47,7 @@ class DepartmentController extends Controller {
 	public function show($id)
 	{
 		$department = Department::findOrFail($id);
-
-		//dd($department->lead->get());
-		return view('department.home')->with('department', $department)->with('lead', $department->lead);
+		return view('department.home')->with('department', $department)->with('lead', $department->lead)->with('team', $department->team);
 	}
 
 	/**

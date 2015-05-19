@@ -26,14 +26,13 @@ class Department extends Model {
 		return $this->belongsTo('location');
 	}
 
-	public function members()
+	public function team()
 	{
 		return $this->hasMany('App\User');
 	}
 
 	public function lead()
 	{
-		//return User::where('department_id', $this->id)->where('lead', '1')->first();
 		return $this->hasOne('App\User', 'id', 'lead_id');
 	}
 

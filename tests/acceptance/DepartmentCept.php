@@ -7,6 +7,9 @@ $I->amOnPage('/department/1');
 $I->see('Engineering');
 $I->see('Department Lead: David Ives');
 
+$I->see('Team Members');
+$I->see('Rob Crowe');
+
 $I->amOnPage('/department/4');
 $I->see('Product');
 $I->see('Department Lead: Thor Mitchell');

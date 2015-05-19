@@ -20,3 +20,7 @@ $I->click('Department');
 $I->click('London');
 $I->see('Business Development');
 $I->see('Bonds');
+
+$I->click('Department');
+$I->click('Edinburgh');
+$I->see('Gateway');

@@ -7,10 +7,12 @@
     </div>
 
     <div class="large-6 columns">
-        {!! $location->formattedAddress() !!}
+        <div class="panel callout radius">
+            {!! $location->formattedAddress() !!}
+        </div>
     </div>
     <div class="large-2 columns text-right">
-        {!! $location->telephone !!}
+        <span class="radius secondary label">{!! $location->telephone !!}</span>
     </div>
 
 @endsection

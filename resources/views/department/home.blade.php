@@ -9,11 +9,39 @@
     <div class="large-12 columns" role="content">
         <h4>Department Lead: {{ $lead->fullName() }}</h4>
 
-        <h6>Team Members</h6>
+        <h5>Team Members</h5>
 
-        @foreach($team as $member)
-            <li>{{ $member->fullName() }}</li>
-        @endforeach
+        @if(count($team))
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>email</th>
+                    <th>Telephone</th>
+                    <th>Allowance</th>
+                    <th>Requested</th>
+                    <th>Approved</th>
+                    <th>Available</th>
+                    <th>On Leave</th>
+                </tr>
+                @foreach($team as $member)
+                    <tr>
+                        <td><strong>{!! $member->fullName() !!}</strong></td>
+                        <td>{!! $member->email !!}</td>
+                        <td>{!! $member->telephone !!}</td>
+                        <td>{!! $member->getAnnualHolidayAllowance() !!}</td>
+                        <td>{!! link_to('/foo', $member->pendingHolidayBalance(), ['class' => 'button tiny success']) !!}</td>
+                        <td>{!! link_to('/foo', $member->approvedHolidayBalance(), ['class' => 'button tiny success']) !!}</td>
+                        <td>{!! link_to('/foo', $member->availableHolidayAllowance(), ['class' => 'button tiny success']) !!}</td>
+                        <td>{!! link_to('/foo', $member->onApprovedLeave() ? 'YES' : 'NO', ['class' => 'button tiny alert']) !!}</td>
+                    </tr>
+                @endforeach
+            </table>
+        @else
+            <div data-alert="" class="alert-box info radius">
+                No Team Members associated with {!! $department->name !!}
+                <a href="#" class="close">×</a>
+            </div>
+        @endif
     </div>
 
 @endsection

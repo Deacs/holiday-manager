@@ -13,7 +13,9 @@ $I->see('Rob Crowe');
 $I->amOnPage('/department/4');
 $I->see('Product');
 $I->see('Department Lead: Thor Mitchell');
+$I->dontSee('No team members associated with Product');
 
 $I->amOnPage('department/10');
 $I->see('Gateway');
 $I->see('Department Lead: Michael Wilkinson');
+$I->see('No team members associated with Gateway');

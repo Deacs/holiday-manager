@@ -12,7 +12,7 @@
         <h6>Team Members</h6>
 
         @foreach($team as $member)
-            <li>{{  $member->fullName() }}</li>
+            <li>{{ $member->fullName() }}</li>
         @endforeach
     </div>
 

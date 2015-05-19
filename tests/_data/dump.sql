@@ -98,7 +98,7 @@ LOCK TABLES `locations` WRITE;
 INSERT INTO `locations` (`id`, `name`, `address`, `telephone`, `created_at`, `updated_at`)
 VALUES
 	(1,'Exeter','Innovation Centre, Rennes Drive, Exeter, EX4 4RN','01392 241319','0000-00-00 00:00:00','0000-00-00 00:00:00'),
-	(2,'London','Dean Street, Soho','0181 1234567','0000-00-00 00:00:00','0000-00-00 00:00:00'),
+	(2,'London','62 Dean Street, London, W1D 4QF','0181 1234567','0000-00-00 00:00:00','0000-00-00 00:00:00'),
 	(3,'Edinburgh','Silicon Walk, 25 Greenside Ln, Edinburgh, EH1 3AA','0111 1234567','2015-24-03 22:34:16','0000-00-00 00:00:00');
 
 /*!40000 ALTER TABLE `locations` ENABLE KEYS */;

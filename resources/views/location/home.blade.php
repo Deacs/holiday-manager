@@ -6,8 +6,11 @@
         <h1>{{ $location->name }}</h1>
     </div>
 
-    <div class="large-12 columns" role="content">
-        Data for location here
+    <div class="large-6 columns">
+        {!! $location->formattedAddress() !!}
+    </div>
+    <div class="large-2 columns text-right">
+        {!! $location->telephone !!}
     </div>
 
 @endsection

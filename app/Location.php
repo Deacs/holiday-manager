@@ -28,4 +28,9 @@ class Location extends Model {
         return $this->hasMany('App\Department');
     }
 
+    public function formattedAddress()
+    {
+        return str_replace(',', '<br />', $this->address);
+    }
+
 }

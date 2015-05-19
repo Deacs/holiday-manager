@@ -16,14 +16,15 @@
                 <li class="divider"></li>
                 <li><a href="#">Manage Requests</a></li>
                 <li class="divider hide-for-small"></li>
-                <li class="has-dropdown hover"><a>Department</a>
+                <li class="has-dropdown hover"><a>Teams</a>
                     <ul class="dropdown"><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li>
-                        <li><label>Dropdown Level 1 Label</label></li>
+                        <li><label>Select a Location</label></li>
                         @foreach ($locations as $location)
-                            <li class="has-dropdown hover"><a hef="/location/{{ $location->id  }}">{{ $location->name }}</a>
+                            <li class="has-dropdown hover">{!! link_to_route('location_home', $location->name, ['id' => $location->id]) !!}</a>
                                 <ul class="dropdown"><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li>
+                                    <li><label>Select a Department</label></li>
                                     @foreach ($location->departments as $department)
-                                        <li><a href="/department/{{ $department->id }}">{{ $department->name }}</a></li>
+                                        <li>{!! link_to_route('department_home', $department->name, ['id' => $department->id]) !!}</li>
                                     @endforeach
                                 </ul>
                             </li>

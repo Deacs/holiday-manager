@@ -10,17 +10,17 @@ $I->see('Holiday Manager');
 $I->see('Your Holiday');
 $I->see('Manage Requests');
 
-$I->click('Department');
+$I->click('Teams');
 $I->click('Exeter');
 $I->see('Engineering');
 $I->see('Legal');
 $I->see('Engineering');
 
-$I->click('Department');
+$I->click('Teams');
 $I->click('London');
 $I->see('Business Development');
 $I->see('Bonds');
 
-$I->click('Department');
+$I->click('Teams');
 $I->click('Edinburgh');
 $I->see('Gateway');

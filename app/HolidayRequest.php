@@ -342,16 +342,17 @@ class HolidayRequest extends Model
      */
     private function validateUserApproveAction()
     {
-        if ( ! $this->approving_user->hasManageHolidayRequestPermission()) {
+
+        if ( ! $this->approving_user->isSuperUser() && ! $this->approverMatchesRequesterDepartment()) {
+            throw new Exception('You may only approve Holiday Requests from members of your own Department');
+        }
+
+        if ( ! $this->approving_user->hasManageHolidayRequestPermission($this->requesting_user->department)) {
             throw new Exception('Only Department Leads can approve Holiday Requests');
         }
 
         if ($this->approving_user->id == $this->requesting_user->id) {
             throw new Exception('You cannot approve your own Holiday Requests');
-        }
-
-        if ( ! $this->approving_user->isSuperUser() && ! $this->approverMatchesRequesterDepartment()) {
-            throw new Exception('You may only approve Holiday Requests from members of your own Department');
         }
 
         return true;
@@ -380,7 +381,7 @@ class HolidayRequest extends Model
      */
     private function validateUserDeclineAction()
     {
-        if ( ! $this->approving_user->hasManageHolidayRequestPermission($this)) {
+        if ( ! $this->approving_user->hasManageHolidayRequestPermission($this->requesting_user->department)) {
             throw new Exception('Only Department Leads can decline Holiday Requests');
         }
 
@@ -564,7 +565,7 @@ class HolidayRequest extends Model
      */
     private function canApproveHolidayRequests()
     {
-        if ( ! $this->hasManageHolidayRequestPermission($this)) {
+        if ( ! $this->hasManageHolidayRequestPermission($this->requesting_user->department)) {
             throw new Exception('Only Department Leads can approve Holiday Requests');
         }
 

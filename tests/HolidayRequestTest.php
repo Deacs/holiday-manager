@@ -23,14 +23,13 @@ class HolidayRequestTest extends DbTestCase {
     // -- Check correct status id has been set after transitions
     function test_the_appropriate_status_is_set_after_being_set_to_approved()
     {
-        $department         = Factory::create('App\Department', ['id' => 1]);
-        $requesting_user    = Factory::create('App\User', ['department_id' => $department->id]);
-        $approving_user     = Factory::create('App\User', ['department_id' => $department->id]);
+        $department         = Factory::create('App\Department', ['id' => 1, 'lead_id' => 2]);
+        $requesting_user    = Factory::create('App\User', ['id' => 1, 'department_id' => $department->id]);
+        $approving_user     = Factory::create('App\User', ['id' => 2, 'department_id' => $department->id]);
         $holiday_request    = Factory::create('App\HolidayRequest');
 
         $holiday_request->setRequestDate($this->makeValidDate());
         $holiday_request->requestingUser($requesting_user);
-        $approving_user->lead = 1;
         $holiday_request->approvingUser($approving_user);
         $holiday_request->approve();
 
@@ -39,14 +38,13 @@ class HolidayRequestTest extends DbTestCase {
 
     function test_the_appropriate_status_is_set_after_being_set_to_declined()
     {
-        $department         = Factory::create('App\Department', ['id' => 1]);
-        $requesting_user    = Factory::create('App\User', ['department_id' => $department->id]);
-        $approving_user     = Factory::create('App\User', ['department_id' => $department->id]);
+        $department         = Factory::create('App\Department', ['id' => 1, 'lead_id' => 2]);
+        $requesting_user    = Factory::create('App\User', ['id' => 1, 'department_id' => $department->id]);
+        $approving_user     = Factory::create('App\User', ['id' => 2, 'department_id' => $department->id]);
         $holiday_request    = Factory::create('App\HolidayRequest');
 
         $holiday_request->setRequestDate($this->makeValidDate());
         $holiday_request->requestingUser($requesting_user);
-        $approving_user->lead = 1;
         $holiday_request->approvingUser($approving_user);
         $holiday_request->decline();
 
@@ -63,8 +61,8 @@ class HolidayRequestTest extends DbTestCase {
 
         $this->assertEquals(Status::CANCELLED_ID, $holiday_request->status_id);
     }
-
-    // -- Test that failed validations throw the correct exceptions
+//
+//    // -- Test that failed validations throw the correct exceptions
     function test_request_for_a_past_date_throws_exception()
     {
         $holiday_request = new HolidayRequest();
@@ -112,7 +110,7 @@ class HolidayRequestTest extends DbTestCase {
         $this->assertCount(0, $this->repository->getAllRequests());
     }
 
-    // -- Test User permissions and actions errors are handled correctly
+//    // -- Test User permissions and actions errors are handled correctly
 
     function test_user_attempting_to_approve_own_request_will_throw_exception()
     {
@@ -136,13 +134,14 @@ class HolidayRequestTest extends DbTestCase {
 
     function test_non_department_leads_attempting_to_approve_request_will_throw_exception()
     {
-        $user               = Factory::create('App\User');
-        $user->lead         = 0;
+        $department         = Factory::create('App\Department', ['lead_id' => 3]);
+        $requesting_user    = Factory::create('App\User', ['id' => 1, 'department_id' => $department->id]);
+        $approving_user     = Factory::create('App\User', ['id' => 2, 'department_id' => $department->id]);
         $holiday_request    = new HolidayRequest();
 
         $holiday_request->setRequestDate($this->makeValidDate());
-        $holiday_request->requestingUser($user);
-        $holiday_request->approvingUser($user);
+        $holiday_request->requestingUser($requesting_user);
+        $holiday_request->approvingUser($approving_user);
 
         try {
             $holiday_request->approve();
@@ -156,10 +155,11 @@ class HolidayRequestTest extends DbTestCase {
 
     function test_department_lead_attempting_approval_of_request_for_members_of_another_team_will_throw_exception()
     {
-        $holiday_request = new HolidayRequest();
-        $requesting_user = Factory::create('App\User', ['department_id' => 1]);
-        $approving_user = Factory::create('App\User', ['department_id' => 2]);
-        $approving_user->lead = 1;
+        $requesting_department  = Factory::create('App\Department', ['lead_id' => 3]);
+        $approving_department   = Factory::create('App\Department', ['lead_id' => 2]);
+        $requesting_user        = Factory::create('App\User', ['id' => 1, 'department_id' => $requesting_department->id]);
+        $approving_user         = Factory::create('App\User', ['id' => 2, 'department_id' => $approving_department->id]);
+        $holiday_request        = new HolidayRequest();
 
         $holiday_request->setRequestDate($this->makeValidDate());
         $holiday_request->requestingUser($requesting_user);
@@ -175,21 +175,6 @@ class HolidayRequestTest extends DbTestCase {
         $this->assertCount(0, $this->repository->getAllRequests());
     }
 
-    function test_non_department_lead_attempting_decline_of_request_will_throw_exception()
-    {
-        $holiday_request = Factory::create('App\HolidayRequest');
-        $approving_user = Factory::create('App\User');
-        $approving_user->lead = 0;
-        $approving_user->super_user = 0;
-        $holiday_request->approvingUser($approving_user);
-
-        try {
-            $holiday_request->decline();
-            return false;
-        } catch (Exception $e) {
-            $this->assertEquals('Only Department Leads can decline Holiday Requests', $e->getMessage());
-        }
-    }
 
     function test_cancellation_attempt_by_user_other_than_requesting_user_will_throw_exception()
     {
@@ -205,16 +190,15 @@ class HolidayRequestTest extends DbTestCase {
             $this->assertEquals('You can only cancel your own Holiday Requests', $e->getMessage());
         }
     }
-
-    // -- Test allowable actions
+//
+//    // -- Test allowable actions
 
     function test_department_leads_can_approve_their_teams_requests()
     {
-        $department         = Factory::create('App\Department');
+        $department         = Factory::create('App\Department', ['lead_id' => 2]);
         $holiday_request    = Factory::create('App\HolidayRequest');
-        $requesting_user    = Factory::create('App\User', ['department_id' => $department->id]);
-        $approving_user     = Factory::create('App\User', ['department_id' => $department->id]);
-        $approving_user->lead = 1;
+        $requesting_user    = Factory::create('App\User', ['id' => 3, 'department_id' => $department->id]);
+        $approving_user     = Factory::create('App\User', ['id' => 2, 'department_id' => $department->id]);
         $holiday_request->requestingUser($requesting_user);
         $holiday_request->approvingUser($approving_user);
         $holiday_request->setRequestDate($this->makeValidDate());
@@ -286,7 +270,7 @@ class HolidayRequestTest extends DbTestCase {
         $this->assertNull($my_request->declined_by, 'There should be no user ID linked to the declined by field');
     }
 
-    // -- Test collection returns by parameter
+//    // -- Test collection returns by parameter
 
     public function test_get_requests_by_user_id()
     {
@@ -317,7 +301,7 @@ class HolidayRequestTest extends DbTestCase {
 
     public function test_get_requests_approved_by_user_id()
     {
-        $user = Factory::create('App\User', ['lead' => 1]);
+        $user = Factory::create('App\User');
         $status = Factory::create('App\Status', ['id' => \App\Status::APPROVED_ID]);
         Factory::times(4)->create('App\HolidayRequest', ['approved_by' => $user->id, 'status_id' => $status->id]);
         Factory::times(5)->create('App\HolidayRequest');

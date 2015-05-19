@@ -34,7 +34,7 @@ class Department extends Model {
 	public function lead()
 	{
 		//return User::where('department_id', $this->id)->where('lead', '1')->first();
-		return $this->hasOne('App\User', 'lead_id', 'id');
+		return $this->hasOne('App\User', 'id', 'lead_id');
 	}
 
 	public function scopeExeter($query)

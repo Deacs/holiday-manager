@@ -28,6 +28,7 @@ DROP TABLE IF EXISTS `departments`;
 CREATE TABLE `departments` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `slug` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `lead_id` int(11) NOT NULL,
   `location_id` int(11) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -38,18 +39,18 @@ CREATE TABLE `departments` (
 LOCK TABLES `departments` WRITE;
 /*!40000 ALTER TABLE `departments` DISABLE KEYS */;
 
-INSERT INTO `departments` (`id`, `name`, `lead_id`, `location_id`, `created_at`, `updated_at`)
+INSERT INTO `departments` (`id`, `name`, `slug`, `lead_id`, `location_id`, `created_at`, `updated_at`)
 VALUES
-	(1, 'Engineering', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-	(2, 'Marketing', 4, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-	(3, 'Investments', 13, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-	(4, 'Product', 14, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-	(5, 'Completions', 7, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-	(6, 'Finance', 7, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-	(7, 'Legal', 11, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-	(8, 'Bonds', 12, 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-	(9, 'Business Development', 9, 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-	(10, 'Gateway', 13, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+	(1, 'Engineering', 'engineering', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+	(2, 'Marketing', 'marketing', 4, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+	(3, 'Investments', 'investments', 13, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+	(4, 'Product', 'product', 14, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+	(5, 'Completions', 'completions', 7, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+	(6, 'Finance', 'finance', 7, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+	(7, 'Legal', 'legal', 11, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+	(8, 'Bonds', 'bonds', 12, 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+	(9, 'Business Development', 'business-development', 9, 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+	(10, 'Gateway', 'gateway', 13, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
 
 /*!40000 ALTER TABLE `departments` ENABLE KEYS */;

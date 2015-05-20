@@ -4,14 +4,14 @@ use App\User;
 
 Route::get('/', ['as' => 'home', 'uses' => 'ManagerController@index']);
 
-Route::get('location/{id}',
+Route::get('location/{slug}',
 	[
 		'as' 	=> 'location.home',
 		'uses' 	=> 'LocationController@show'
 	]
 );
 
-Route::get('department/{id}',
+Route::get('department/{slug}',
 	[
 		'as' 	=> 'department.home',
 		'uses' 	=> 'DepartmentController@show'

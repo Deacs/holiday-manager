@@ -40,13 +40,13 @@ class LocationController extends Controller {
 
 	/**
 	 * Display the specified resource.
-	 *
-	 * @param  int  $id
 	 * @return Response
+	 * @param $slug
+	 * @internal param int $id
 	 */
-	public function show($id)
+	public function show($slug)
 	{
-		$location = Location::find($id);
+		$location = Location::where('slug', $slug)->first();
 		return view('location.home')->with('location', $location)->with('departments', $location->departments);
 	}
 

@@ -41,12 +41,13 @@ class DepartmentController extends Controller {
 	/**
 	 * Display the specified resource.
 	 *
-	 * @param  int  $id
 	 * @return Response
+	 * @param $slug
+	 * @internal param int $id
 	 */
-	public function show($id)
+	public function show($slug)
 	{
-		$department = Department::findOrFail($id);
+		$department = Department::where('slug', $slug)->first();
 		return view('department.home')->with('department', $department)->with('lead', $department->lead)->with('team', $department->team);
 	}
 

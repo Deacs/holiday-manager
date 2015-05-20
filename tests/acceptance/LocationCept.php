@@ -7,3 +7,7 @@ $I->amOnPage('/location/1');
 $I->see('Exeter');
 $I->see('Innovation Centre');
 $I->see('01392 241319');
+
+$I->see('Engineering');
+$I->click('Engineering');
+$I->canSeeCurrentUrlEquals('/department/1');

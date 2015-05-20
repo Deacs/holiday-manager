@@ -15,4 +15,19 @@
         <span class="radius secondary label">{!! $location->telephone !!}</span>
     </div>
 
+    <div class="large-12 columns">
+        @if (count($departments))
+            <ul>
+                @foreach ($departments as $department)
+                    <li>{!! link_to_route('department.home', $department->name, ['id' => $department->id]) !!}</li>
+                @endforeach
+            </ul>
+        @else
+            <div data-alert="" class="alert-box info radius">
+                No Departments associated with {!! $location->name !!}
+                <a href="#" class="close">×</a>
+            </div>
+        @endif
+    </div>
+
 @endsection

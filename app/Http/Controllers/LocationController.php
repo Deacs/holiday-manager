@@ -47,7 +47,7 @@ class LocationController extends Controller {
 	public function show($id)
 	{
 		$location = Location::find($id);
-		return view('location.home')->with('location', $location);
+		return view('location.home')->with('location', $location)->with('departments', $location->departments);
 	}
 
 	/**

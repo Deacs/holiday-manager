@@ -23,6 +23,14 @@ class UserSpec extends ObjectBehavior
         $this->fullName()->shouldReturn('John Smith');
     }
 
+    function it_returns_a_correctly_formatted_slug()
+    {
+        $this->first_name   = 'John';
+        $this->last_name    = 'Smith';
+
+        $this->slug()->shouldReturn('john-smith');
+    }
+
     function it_will_return_false_when_not_department_lead()
     {
         $department = new Department();

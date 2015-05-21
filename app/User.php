@@ -82,6 +82,16 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	}
 
 	/**
+	 * Create a URL ready slug
+	 *
+	 * @return mixed
+	 */
+	public function slug()
+	{
+		return strtolower(str_replace(' ', '-', $this->fullName()));
+	}
+
+	/**
 	 * Is this user a Department Lead
 	 *
 	 * @return bool

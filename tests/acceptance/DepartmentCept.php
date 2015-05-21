@@ -9,6 +9,8 @@ $I->see('Department Lead: David Ives');
 
 $I->see('Team Members');
 $I->see('Rob Crowe');
+$I->click('Rob Crowe', '.member-link');
+$I->canSeeCurrentUrlEquals('/member/rob-crowe');
 
 $I->amOnPage('/department/product');
 $I->see('Product');

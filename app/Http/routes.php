@@ -18,6 +18,13 @@ Route::get('department/{slug}',
 	]
 );
 
+Route::get('member/{slug}',
+	[
+		'as' 	=> 'member.home',
+		'uses' 	=> 'UserController@show'
+	]
+);
+
 Route::get('calendar', 'CalendarController@index');
 
 Route::controllers([

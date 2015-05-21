@@ -8,6 +8,8 @@ $I->see('Exeter');
 $I->see('Innovation Centre');
 $I->see('01392 241319');
 
-$I->see('Engineering');
+$I->seeElement('.department-link');
+
+$I->see('Engineering', '.department-link');
 $I->click('Engineering');
 $I->canSeeCurrentUrlEquals('/department/engineering');

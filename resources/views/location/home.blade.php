@@ -19,7 +19,7 @@
         @if (count($departments))
             <ul>
                 @foreach ($departments as $department)
-                    <li>{!! link_to_route('department.home', $department->name, ['id' => $department->id]) !!}</li>
+                    <li class="department-link">{!! link_to_route('department.home', $department->name, ['slug' => $department->slug]) !!}</li>
                 @endforeach
             </ul>
         @else

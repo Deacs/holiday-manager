@@ -2,7 +2,7 @@
     <nav class="top-bar" data-topbar="" role="navigation" data-options="sticky_on: large">
         <!-- Title -->
         <ul class="title-area">
-            <li class="name"><h1><a href="#">Holiday Manager</a></h1></li>
+            <li class="name"><h1>{!! link_to_route('home', 'Holiday Planner') !!}</h1></li>
 
             <!-- Mobile Menu Toggle -->
             <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
@@ -31,6 +31,7 @@
                         @endforeach
                     </ul>
                 </li>
+                <li>{!! link_to_route('login.home', 'Login') !!}</li>
             </ul>
         </section>
     </nav>

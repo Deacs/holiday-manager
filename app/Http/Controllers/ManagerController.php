@@ -16,6 +16,11 @@ class ManagerController extends Controller {
 		return view('manager.index');
 	}
 
+	public function test()
+	{
+		$this->middleware('lead');
+	}
+
 	/**
 	 * Show the form for creating a new resource.
 	 *

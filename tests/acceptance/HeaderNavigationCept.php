@@ -7,6 +7,10 @@ $I->wantTo('test the correct header navigation elements are available');
 $I->amOnPage('/');
 $I->see('Holiday Manager');
 
+$I->see('Login');
+$I->click('Login');
+$I->canSeeCurrentUrlEquals('/login');
+
 $I->see('Your Holiday');
 $I->see('Manage Requests');
 
@@ -24,3 +28,9 @@ $I->see('Bonds');
 $I->click('Teams');
 $I->click('Edinburgh');
 $I->see('Gateway');
+
+// Check the Home link returns us correctly
+$I->see('Holiday Planner');
+$I->click('Holiday Planner');
+$I->canSeeCurrentUrlEquals('/');
+

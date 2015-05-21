@@ -2,11 +2,18 @@
 
 use App\User;
 
-Route::get('test', function () {
-	$user = Auth::loginUsingId(2);
+Auth::loginUsingId(1);
 
-	dd($user);
-});
+//Route::get('test', 'ManagerController@test');
+
+Route::get('test', ['middleware' => 'lead:engineering', function () {
+
+	dd('Middleware Passed Test');
+//	dd('Passed Middleware');
+//	$user = Auth::loginUsingId(2);
+//
+//	dd($user);
+}]);
 
 Route::get('/', ['as' => 'home', 'uses' => 'ManagerController@index']);
 
@@ -35,7 +42,14 @@ Route::get('calendar', 'CalendarController@index');
 
 Route::get('login',
 	[
-		'as' 	=>'login',
+		'as' 	=> 'login.home',
+		'uses' 	=> 'LoginController@index'
+	]
+);
+
+Route::post('login',
+	[
+		'as' 	=> 'login.attempt',
 		'uses' 	=> 'LoginController@index'
 	]
 );

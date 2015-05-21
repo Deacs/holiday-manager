@@ -46,7 +46,7 @@ class LocationController extends Controller {
 	 */
 	public function show($slug)
 	{
-		$location = Location::where('slug', $slug)->first();
+		$location = Location::where('slug', $slug)->firstOrFail();
 		return view('location.home')->with('location', $location)->with('departments', $location->departments);
 	}
 

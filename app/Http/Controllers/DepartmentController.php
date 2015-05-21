@@ -47,7 +47,7 @@ class DepartmentController extends Controller {
 	 */
 	public function show($slug)
 	{
-		$department = Department::where('slug', $slug)->first();
+		$department = Department::where('slug', $slug)->firstOrFail();
 		return view('department.home')->with('department', $department)->with('lead', $department->lead)->with('team', $department->team);
 	}
 

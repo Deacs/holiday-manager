@@ -5,6 +5,8 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 
+use App\User as User;
+
 class UserController extends Controller {
 
 	/**
@@ -46,7 +48,7 @@ class UserController extends Controller {
 	 */
 	public function show($slug)
 	{
-		$user = User::where('slug', $slug);
+		$user = User::where('slug', $slug)->firstOrFail();
 		return view('member.home')->with('member',$user);
 	}
 

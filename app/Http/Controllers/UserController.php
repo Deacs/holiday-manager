@@ -40,12 +40,14 @@ class UserController extends Controller {
 	/**
 	 * Display the specified resource.
 	 *
-	 * @param  int  $id
 	 * @return Response
+	 * @param $slug
+	 * @internal param int $id
 	 */
-	public function show($id)
+	public function show($slug)
 	{
-		//
+		$user = User::where('slug', $slug);
+		return view('member.home')->with('member',$user);
 	}
 
 	/**

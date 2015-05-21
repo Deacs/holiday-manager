@@ -25,7 +25,7 @@
                 </tr>
                 @foreach($team as $member)
                     <tr>
-                        <td><strong>{!! link_to_route('member.home', $member->fullName(), $member->slug(), ['class' => 'member-link']) !!}</strong></td>
+                        <td><strong>{!! link_to_route('member.home', $member->fullName(), [$member->slug], ['class' => 'member-link']) !!}</strong></td>
                         <td>{!! $member->email !!}</td>
                         <td>{!! $member->telephone !!}</td>
                         <td>{!! $member->getAnnualHolidayAllowance() !!}</td>

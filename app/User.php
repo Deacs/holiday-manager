@@ -38,6 +38,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	protected $fillable = [
 		'first_name',
 		'last_name',
+		'slug',
 		'email',
 		'password',
 		'telephone',
@@ -79,16 +80,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	public function fullName()
 	{
 		return $this->first_name.' '.$this->last_name;
-	}
-
-	/**
-	 * Create a URL ready slug
-	 *
-	 * @return mixed
-	 */
-	public function slug()
-	{
-		return strtolower(str_replace(' ', '-', $this->fullName()));
 	}
 
 	/**

@@ -215,9 +215,25 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		return $this->completed_holiday_balance;
 	}
 
+	/**
+	 * Is there an approved Holiday Request recorded for this user today
+	 *
+	 * @return bool
+	 */
 	public function onApprovedLeave()
 	{
 		return false;
+	}
+
+	/**
+	 * Does this user have any approved holiday requests
+	 * Utility to facilitate display logic
+	 * x
+	 * @return bool
+	 */
+	public function hasApprovedHoliday()
+	{
+		return $this->approvedHolidayBalance() > 0;
 	}
 
 	/**

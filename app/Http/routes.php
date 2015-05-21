@@ -2,6 +2,12 @@
 
 use App\User;
 
+Route::get('test', function () {
+	$user = Auth::loginUsingId(2);
+
+	dd($user);
+});
+
 Route::get('/', ['as' => 'home', 'uses' => 'ManagerController@index']);
 
 Route::get('location/{slug}',
@@ -26,6 +32,13 @@ Route::get('member/{slug}',
 );
 
 Route::get('calendar', 'CalendarController@index');
+
+Route::get('login',
+	[
+		'as' 	=>'login',
+		'uses' 	=> 'LoginController@index'
+	]
+);
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',

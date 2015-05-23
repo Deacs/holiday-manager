@@ -4,6 +4,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
 
 class LoginController extends Controller {
 
@@ -15,6 +17,35 @@ class LoginController extends Controller {
 	public function index()
 	{
 		return view('login.home');
+	}
+
+	/**
+	 * Handle an authentication attempt.
+	 *
+	 * @return Response
+	 * @internal param $email
+	 * @internal param $password
+	 */
+	public function authenticate()
+	{
+		if (Auth::attempt(['email' => Input::get('email'), 'password' => Input::get('password')]))
+		{
+			return redirect()->intended('member/'.Auth::user()->slug);
+		}
+
+		return redirect()->back()->withErrors('Entered email or password incorrect. Please try again');
+	}
+
+	/**
+	 * Log a user out and return to the home page
+	 *
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
+	public function logout()
+	{
+		Auth::logout();
+
+		return redirect()->route('home')->with('message', 'Successfully logged out');
 	}
 
 	/**

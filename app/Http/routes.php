@@ -1,12 +1,10 @@
 <?php
 
-use App\User;
-
-Auth::loginUsingId(1);
+//Auth::loginUsingId(1);
 
 //Route::get('test', 'ManagerController@test');
 
-Route::get('test', ['middleware' => 'lead:engineering', function () {
+Route::get('test', ['middleware' => 'lead', function () {
 
 	dd('Middleware Passed Test');
 //	dd('Passed Middleware');
@@ -50,7 +48,14 @@ Route::get('login',
 Route::post('login',
 	[
 		'as' 	=> 'login.attempt',
-		'uses' 	=> 'LoginController@index'
+		'uses' 	=> 'LoginController@authenticate'
+	]
+);
+
+Route::get('logout',
+	[
+		'as' 	=> 'logout',
+		'uses' 	=> 'LoginController@logout'
 	]
 );
 

@@ -1,5 +1,9 @@
 <?php namespace App\Http\Middleware;
 
+/**
+ * Guard against no Department Leads performing reserved actions
+ */
+
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
 use App\Department as Department;
@@ -27,12 +31,12 @@ class DepartmentLead {
 
 	/**
 	 * Handle an incoming request.
-	 *
-	 * @param  \Illuminate\Http\Request  $request
-	 * @param  \Closure  $next
 	 * @return mixed
+	 * @param  \Illuminate\Http\Request $request
+	 * @param  \Closure $next
+	 * @param $department_id
 	 */
-	public function handle($request, Closure $next, $department_id)
+	public function handle($request, Closure $next, $department_id = 2)
 	{
 //		if ($this->auth->guest())
 //		{
@@ -49,6 +53,8 @@ class DepartmentLead {
 
 		$user 		= Auth::user();
 		$department = Department::findOrFail($department_id);
+
+		//dd($department);
 
 		if ( ! $user->isDepartmentLead($department)) {
 			return redirect()->guest('login');

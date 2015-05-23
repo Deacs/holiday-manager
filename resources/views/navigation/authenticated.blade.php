@@ -1,6 +1,3 @@
-<li class="divider"></li>
-<li><a href="#">Your Holiday</a></li>
-<li class="divider"></li>
 <li class="divider hide-for-small"></li>
 <li class="has-dropdown hover"><a>Teams</a>
     <ul class="dropdown"><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li>
@@ -18,6 +15,6 @@
     </ul>
 </li>
 <li class="divider"></li>
-<li>{!! link_to_route('member.home', 'Profile') !!}</li>
+<li>{!! link_to_route('member.home', 'Profile', ['slug' => Auth::user()->slug]) !!}</li>
 <li class="divider"></li>
 <li>{!! link_to_route('logout', 'Logout') !!}</li>

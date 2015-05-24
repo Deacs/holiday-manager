@@ -37,20 +37,36 @@ class AcceptanceHelper extends Module
         $this->login($I, 'darren.westlake@crowdcube.com', 'darren');
     }
 
-    // And this function lets me login a specific user if I need someone else
+    /**
+     * Fail auth by providing incorrect details
+     *
+     * @param AcceptanceTester $I
+     */
+    public function loginWithIncorrectDetails(AcceptanceTester $I)
+    {
+        $this->login($I, 'not.real@crowdcube.com', 'fail');
+    }
+
+    /**
+     * Login the user with the required details
+     *
+     * @param AcceptanceTester $I
+     * @param $email
+     * @param $password
+     */
     public function login(AcceptanceTester $I, $email, $password)
     {
-//        $user = User::where('email', $email)->get();
-//
-//        dd($user);
-
         $I->amOnPage('/login');
         $I->fillField('email', $email);
         $I->fillField('password', $password);
         $I->click('Login', '.btn-primary');
-//        $I->seeCurrentUrlEquals('/member/'.$user->slug);
     }
 
+    /**
+     * Log the user out
+     *
+     * @param AcceptanceTester $I
+     */
     public function logoutUser(AcceptanceTester $I)
     {
         $I->amOnPage('/logout');

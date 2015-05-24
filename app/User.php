@@ -7,7 +7,6 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
 use \Exception as Exception;
-use \App\HolidayRequest as HolidayRequest;
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract {
 
@@ -57,10 +56,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	public $available_holiday_balance 		= 0;
 	public $unavailable_holiday_balance 	= 0;
 
-	public $lead 							= false;
-	public $super_user 						= false;
-
-
 	// Relationships
 	public function department()
 	{
@@ -91,6 +86,15 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	public function isDepartmentLead(Department $department)
 	{
 		return $department->lead_id == $this->id;
+	}
+
+	public function leadDepartment()
+	{
+		if ($this->isDepartmentLead($this->department)) {
+			return $this->department;
+		}
+
+		return false;
 	}
 
 	/**

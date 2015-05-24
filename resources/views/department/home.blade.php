@@ -12,7 +12,7 @@
         <h5>Team Members</h5>
 
         @if(count($team))
-            @include(Auth::user() ? 'department.member_details' : 'department.member_listing')
+            @include(Auth::user()->hasManageHolidayRequestPermission($department) ? 'department.member_details' : 'department.member_listing')
         @else
             <div data-alert="" class="alert-box info radius">
                 No Team Members associated with {!! $department->name !!}

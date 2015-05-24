@@ -37,4 +37,9 @@ class AuthenticatedHeaderNavigationCest
         $I->seeCurrentUrlEquals('/member/tom-leigh');
         $I->see('Tom Leigh');
     }
+
+    public function cantSeeMyTeamOption(AcceptanceTester $I)
+    {
+        $I->dontSeeElement('My Team');
+    }
 }

@@ -11,14 +11,20 @@ class GuestHeaderNavigationCest
     {
     }
 
-    public function dontSeeLoginOption(AcceptanceTester $I)
+    public function cantSeeLoginOption(AcceptanceTester $I)
     {
         $I->amOnPage('/');
         $I->see('Login');
         $I->dontSee('Logout');
     }
 
-    public function dontSeeTeamOptions(AcceptanceTester $I)
+    public function cantSeeProfileOption(AcceptanceTester $I)
+    {
+        $I->amOnPage('/');
+        $I->dontSee('Profile');
+    }
+
+    public function cantSeeTeamOptions(AcceptanceTester $I)
     {
         $I->amOnPage('/');
         $I->dontSee('Teams');

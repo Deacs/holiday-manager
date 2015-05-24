@@ -1,11 +1,11 @@
 <?php
 use \AcceptanceTester;
 
-class DepartmentLeadTeamAdminCest
+class DepartmentSuperUserTeamAdminCest
 {
     public function _before(AcceptanceTester $I)
     {
-        $I->loginEngineeringLeadUser($I);
+        $I->loginSuperUser($I);
     }
 
     public function _after(AcceptanceTester $I)
@@ -40,11 +40,5 @@ class DepartmentLeadTeamAdminCest
     {
         $I->amOnPage('/member/rob-crowe');
         $I->see('No approved holiday requests');
-    }
-
-    public function cannotSeeAdministrationOptionsForOtherDepartments(AcceptanceTester $I)
-    {
-        $I->amOnPage('/department/marketing');
-        $I->dontSee('#team-holiday-status');
     }
 }

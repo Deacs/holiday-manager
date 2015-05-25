@@ -151,6 +151,7 @@ return [
 		 */
 		'Nwidart\DbExporter\DbExportHandlerServiceProvider',
 		'Collective\Html\HtmlServiceProvider',
+		'Laracasts\Flash\FlashServiceProvider'
 	],
 
 	/*
@@ -201,6 +202,7 @@ return [
 
 		'Form' 		=> 'Collective\Html\FormFacade',
 		'Html' 		=> 'Collective\Html\HtmlFacade',
+		'Flash' 	=> 'Laracasts\Flash\Flash',
 
 	],
 

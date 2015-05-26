@@ -16,5 +16,3 @@
         </section>
     </nav>
 </div>
-
-@include('flash::message')

@@ -1,11 +1,8 @@
 @include('partials/_header')
 @include('navigation/header')
+@include('flash::message')
 
     <div class="row">
-
-        @if (Session::has('message'))
-            {!! Session::get('message') !!}
-        @endif
 
         @yield('content')
 

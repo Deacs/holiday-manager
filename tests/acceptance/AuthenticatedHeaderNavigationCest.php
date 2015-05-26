@@ -45,15 +45,8 @@ class AuthenticatedHeaderNavigationCest
         $I->see('Logout');
         $I->click('Logout');
         $I->seeCurrentUrlEquals('/');
-        $I->see('Successfully logged out');
+        $I->see('Successfully logged out', '.success');
     }
-// DEPRECATED
-//    public function seeLogoutOption(AcceptanceTester $I)
-//    {
-//        $I->amOnPage('/');
-//        $I->see('Logout');
-//        $I->dontSee('Login');
-//    }
 
     public function seeTeamsOptions(AcceptanceTester $I)
     {
@@ -64,15 +57,6 @@ class AuthenticatedHeaderNavigationCest
         $I->see('London');
         $I->see('Edinburgh');
     }
-
-//    public function seeProfileOption(AcceptanceTester $I)
-//    {
-//        $I->amOnPage('/');
-//        $I->see('Profile');
-//        $I->click('Profile');
-//        $I->seeCurrentUrlEquals('/member/tom-leigh');
-//        $I->see('Tom Leigh');
-//    }
 
     public function cantSeeTheMyTeamOption(AcceptanceTester $I)
     {

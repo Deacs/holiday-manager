@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
+use Laracasts\Flash\Flash;
 
 class LoginController extends Controller {
 
@@ -33,11 +34,13 @@ class LoginController extends Controller {
 			return redirect()->intended('member/'.Auth::user()->slug);
 		}
 
-		return redirect()->back()->withErrors('Entered email or password incorrect. Please try again');
+		Flash::error('Entered email or password incorrect. Please try again');
+
+		return redirect()->back();
 	}
 
 	/**
-	 * Log a user out and return to the home page
+	 * Log a user out, display notification and return to the home page
 	 *
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
@@ -45,7 +48,9 @@ class LoginController extends Controller {
 	{
 		Auth::logout();
 
-		return redirect()->route('home')->with('message', 'Successfully logged out');
+		Flash::success('Successfully logged out');
+
+		return redirect()->route('home');
 	}
 
 	/**

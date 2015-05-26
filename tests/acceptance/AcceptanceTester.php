@@ -1973,7 +1973,7 @@ class AcceptanceTester extends \Codeception\Actor
      * [!] Method is generated. Documentation taken from corresponding module.
      *
      * Login the user with the required details
-     * 
+     *
      * @param AcceptanceTester $I
      * @param $email
      * @param $password

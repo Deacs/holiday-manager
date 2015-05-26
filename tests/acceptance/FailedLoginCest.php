@@ -15,6 +15,6 @@ class FailedLoginCest
     public function seeLogoutOption(AcceptanceTester $I)
     {
         $I->seeCurrentUrlEquals('/login');
-        $I->see('Entered email or password incorrect. Please try again');
+        $I->see('Entered email or password incorrect. Please try again', '.alert');
     }
 }

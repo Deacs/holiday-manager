@@ -46,6 +46,9 @@ class AuthenticatedHeaderNavigationCest
         $I->click('Logout');
         $I->seeCurrentUrlEquals('/');
         $I->see('Successfully logged out', '.success');
+        $I->seeElement('.close');
+        $I->click(['class' => 'close']);
+        $I->dontSee('Successfully logged out', '.success');
     }
 
     public function seeTeamsOptions(AcceptanceTester $I)

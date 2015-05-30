@@ -10,6 +10,19 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller {
 
+	public function gravatar($slug)
+	{
+		$user = User::where('slug', $slug)->firstOrFail();
+
+		$str = md5(trim(strtolower($user->email)));
+
+		print '<img src="http://www.gravatar.com/avatar/'.$str.'" />';
+		$profile = 'http://www.gravatar.com/'.$str.'.php';
+		var_dump(file_get_contents($profile));
+		//return true;
+		//return view('member.home')->with('member',$user);
+	}
+
 	/**
 	 * Display a listing of the resource.
 	 *

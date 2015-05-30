@@ -3,7 +3,7 @@
 @section('content')
 
     <div class="large-12 columns">
-        <h2>{{ $member->fullName() }}</h2>
+        <h1><img src="{{ $member->getAvatarPath() }}" /> {{ $member->fullName() }}</h1>
     </div>
 
     <div class="large-12 columns">

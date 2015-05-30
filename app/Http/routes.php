@@ -36,6 +36,8 @@ Route::get('member/{slug}',
 	]
 );
 
+Route::get('member/gravatar/{slug}', 'UserController@gravatar');
+
 Route::get('calendar', 'CalendarController@index');
 
 Route::get('login',

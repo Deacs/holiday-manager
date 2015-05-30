@@ -73,4 +73,16 @@ class AcceptanceHelper extends Module
         $I->seeCurrentUrlEquals('/login');
         $I->see('You have been logged out');
     }
+
+    /**
+     * Check an image is available with the specified source
+     *
+     * @throws \Codeception\Exception\Module
+     * @param $image_url
+     */
+    public function seeImageWithSource($image_url)
+    {
+        $phpBrowser = $this->getModule('PhpBrowser');
+        $phpBrowser->seeElement('//img[@src="'.$image_url.'"]');
+    }
 }

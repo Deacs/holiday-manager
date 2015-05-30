@@ -109,6 +109,21 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	}
 
 	/**
+	 * Return path to the users's gravatar image
+	 * If none has been set, the default image path will be returned
+	 * A size can be specified if it is required to overwrite the default 200
+	 *
+	 * @return string
+	 * @param int $size
+	 */
+	public function getAvatarPath($size = 150)
+	{
+		$str = md5(trim(strtolower($this->email)));
+
+		return 'http://www.gravatar.com/avatar/'.$str.'?s='.$size.'&d=mm';
+	}
+
+	/**
 	 * Place the holiday Request
 	 *
 	 * @return bool

@@ -115,12 +115,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 *
 	 * @return string
 	 * @param int $size
+	 * @param string $default
 	 */
-	public function getAvatarPath($size = 150)
+	public function getAvatarPath($size = 150, $default = 'mm')
 	{
 		$str = md5(trim(strtolower($this->email)));
 
-		return 'http://www.gravatar.com/avatar/'.$str.'?s='.$size.'&d=mm';
+		return 'http://www.gravatar.com/avatar/'.$str.'?s='.$size.'&d='.$default;
 	}
 
 	/**

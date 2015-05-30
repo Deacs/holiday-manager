@@ -76,6 +76,8 @@ class AcceptanceHelper extends Module
 
     /**
      * Check an image is available with the specified source
+     * This is simply a utility to wrap the seeElement
+     * method to be more readable for checking image paths
      *
      * @throws \Codeception\Exception\Module
      * @param $image_url

@@ -65,4 +65,11 @@ class AuthenticatedHeaderNavigationCest
     {
         $I->dontSeeElement('My Team');
     }
+
+    public function canSeeCorrectUserGravatarNextToFullName(AcceptanceTester $I)
+    {
+        $I->amOnPage('/');
+        $I->see('Tom Leigh', 'li.has-dropdown a');
+        $I->seeImageWithSource('http://www.gravatar.com/avatar/'.md5(strtolower('tom.leigh@crowdcube.com')).'?s=45&d=mm');
+    }
 }

@@ -19,7 +19,7 @@ class DepartmentHomeDisplayCest
         $I->canSeeCurrentUrlEquals('/member/rob-crowe');
     }
 
-    public function seeCorrectMessageForTeamWithNoMembers(AcceptanceTester $I)
+    public function seeCorrectMessageForTeamWithMembers(AcceptanceTester $I)
     {
         $I->amOnPage('/department/product');
         $I->see('Product');

@@ -15,6 +15,15 @@ Route::get('test', ['middleware' => 'lead', function () {
 
 Route::get('/', ['as' => 'home', 'uses' => 'ManagerController@index']);
 
+Route::get('calendar', 'CalendarController@index');
+
+Route::get('directory',
+	[
+		'as' 	=> 'directory.home',
+		'uses' 	=> 'StaffDirectoryController@index'
+	]
+);
+
 Route::get('location/{slug}',
 	[
 		'as' 	=> 'location.home',
@@ -35,10 +44,6 @@ Route::get('member/{slug}',
 		'uses' 	=> 'UserController@show'
 	]
 );
-
-Route::get('member/gravatar/{slug}', 'UserController@gravatar');
-
-Route::get('calendar', 'CalendarController@index');
 
 Route::get('login',
 	[

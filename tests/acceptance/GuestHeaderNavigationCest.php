@@ -29,4 +29,10 @@ class GuestHeaderNavigationCest
         $I->amOnPage('/');
         $I->dontSee('Teams');
     }
+
+    public function cantSeeStaffDirectoryOption(AcceptanceTester $I)
+    {
+        $I->amOnPage('/');
+        $I->dontSee('Directory');
+    }
 }

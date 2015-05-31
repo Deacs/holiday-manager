@@ -45,6 +45,6 @@ class DepartmentSuperUserTeamAdminCest
     public function seeCorrectGravatarForUser(AcceptanceTester $I)
     {
         $I->amOnPage('/department/engineering');
-        $I->seeImageWithSource('http://www.gravatar.com/avatar/9bc35322b984e0ad051fc09749cf3fa8?s=20&d=mm', ['alt' => 'Rob Crowe']);
+        $I->seeImageWithSource('http://www.gravatar.com/avatar/'.md5(strtolower('rob.crowe@crowdcube.com')).'?s=20&d=mm', ['alt' => 'Rob Crowe']);
     }
 }

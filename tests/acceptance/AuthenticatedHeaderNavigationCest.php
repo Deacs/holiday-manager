@@ -72,4 +72,14 @@ class AuthenticatedHeaderNavigationCest
         $I->see('Tom Leigh', 'li.has-dropdown a');
         $I->seeImageWithSource('http://www.gravatar.com/avatar/'.md5(strtolower('tom.leigh@crowdcube.com')).'?s=45&d=mm');
     }
+
+    public function canOpenStaffDirectoryFromOption(AcceptanceTester $I)
+    {
+        $I->amOnPage('/');
+        $I->see('Directory');
+        $I->click('Directory');
+        $I->seeCurrentUrlEquals('/directory');
+        $I->see('Ben Christine');
+        $I->seeImageWithSource('http://www.gravatar.com/avatar/'.md5(strtolower('ben@crowdcube.com')).'?s=30&d=mm');
+    }
 }

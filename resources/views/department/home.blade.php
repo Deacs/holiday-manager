@@ -7,7 +7,7 @@
     </div>
 
     <div class="large-12 columns" role="content">
-        <h4>Department Lead: {{ $lead->fullName() }}</h4>
+        <h4>{!! HTML::image($lead->getAvatarPath(30), $lead->fullName()) !!} Department Lead: {{ $lead->fullName() }}</h4>
 
         <h5>Team Members</h5>
 

@@ -201,7 +201,7 @@ return [
 		'View'      => 'Illuminate\Support\Facades\View',
 
 		'Form' 		=> 'Collective\Html\FormFacade',
-		'Html' 		=> 'Collective\Html\HtmlFacade',
+		'HTML' 		=> 'Collective\Html\HtmlFacade',
 		'Flash' 	=> 'Laracasts\Flash\Flash',
 
 	],

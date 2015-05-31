@@ -41,4 +41,10 @@ class DepartmentSuperUserTeamAdminCest
         $I->amOnPage('/member/rob-crowe');
         $I->see('No approved holiday requests');
     }
+
+    public function seeCorrectGravatarForUser(AcceptanceTester $I)
+    {
+        $I->amOnPage('/department/engineering');
+        //$I->seeImageWithSource();
+    }
 }

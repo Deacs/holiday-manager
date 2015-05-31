@@ -11,7 +11,7 @@
     </tr>
     @foreach($team as $member)
         <tr>
-            <td>{!! HTML::image($member->getAvatarPath(), $member->fullName(20)) !!} <strong>{!! link_to_route('member.home', $member->fullName(), [$member->slug], ['class' => 'member-link']) !!}</strong></td>
+            <td>{!! HTML::image($member->getAvatarPath(20), $member->fullName()) !!} <strong>{!! link_to_route('member.home', $member->fullName(), [$member->slug], ['class' => 'member-link']) !!}</strong></td>
             <td>{!! $member->email !!}</td>
             <td>{!! $member->telephone !!}</td>
             <td>{!! $member->getAnnualHolidayAllowance() !!}</td>

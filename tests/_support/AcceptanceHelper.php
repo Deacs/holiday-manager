@@ -79,12 +79,14 @@ class AcceptanceHelper extends Module
      * This is simply a utility to wrap the seeElement
      * method to be more readable for checking image paths
      *
+     *
      * @throws \Codeception\Exception\Module
      * @param $image_url
+     * @param array $data
      */
-    public function seeImageWithSource($image_url)
+    public function seeImageWithSource($image_url, array $data = null)
     {
         $phpBrowser = $this->getModule('PhpBrowser');
-        $phpBrowser->seeElement('//img[@src="'.$image_url.'"]');
+        $phpBrowser->seeElement('//img[@src="'.$image_url.'"]', $data);
     }
 }

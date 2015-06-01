@@ -15,7 +15,7 @@ class StaffDirectoryController extends Controller {
 	 */
 	public function index()
 	{
-		$members = User::orderBy('last_name')->get();
+		$members = User::with('department.location')->orderBy('last_name')->get();
 		return view('directory.index')->with('members', $members);
 	}
 

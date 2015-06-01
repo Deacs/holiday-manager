@@ -1,6 +1,7 @@
 <?php namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Location as Location;
 
 class Department extends Model {
 
@@ -24,7 +25,7 @@ class Department extends Model {
 
 	public function location()
 	{
-		return $this->belongsTo('location');
+		return $this->belongsTo('App\Location');
 	}
 
 	public function team()

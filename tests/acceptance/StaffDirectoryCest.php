@@ -19,13 +19,17 @@ class StaffDirectoryCest
         $I->seeElement('table', ['id' => 'staff-directory']);
     }
 
-    /**
-     * @group new
-     */
-    public function seeUserListing(AcceptanceTester $I)
+   public function seeUserHomeFromListingLink(AcceptanceTester $I)
     {
         $I->see('Rebecca Hand', 'a');
         $I->click('Rebecca Hand');
         $I->seeCurrentUrlEquals('/member/rebecca-hand');
+    }
+
+    public function seeDepartmentHomeFromListingLink(AcceptanceTester $I)
+    {
+        $I->see('Business Development', 'a');
+        $I->click('Business Development');
+        $I->seeCurrentUrlEquals('/department/business-development');
     }
 }

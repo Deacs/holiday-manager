@@ -20,11 +20,11 @@
                 @foreach ($members as $member)
                     <tr>
                         <td>{!! HTML::image($member->getAvatarPath(30), $member->fullName()) !!} {!! link_to_route('member.home', $member->fullName(), ['slug' => $member->slug]) !!}</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>{!! link_to_route('department.home', $member->department->name, ['slug' => $member->department->slug]) !!}</td>
+                        <td>{!! link_to_route('location.home', $member->department->location->name, ['slug' => $member->department->location->slug]) !!}</td>
+                        <td>{!! $member->role !!}</td>
+                        <td>{!! HTML::mailto($member->email, $member->email) !!}</td>
+                        <td>{!! $member->telephone !!}</td>
                     </tr>
                 @endforeach
             </table>

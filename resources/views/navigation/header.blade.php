@@ -2,10 +2,10 @@
     <nav class="top-bar" data-topbar="" role="navigation" data-options="sticky_on: large">
         <!-- Title -->
         <ul class="title-area">
-            <li class="name"><h1>{!! link_to_route('home', 'Holiday Manager') !!}</h1></li>
-
+            <li class="name"><h1 class="header-link">{!! link_to_route('home', 'Holiday Manager') !!}</h1></li>
             <!-- Mobile Menu Toggle -->
             <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+
         </ul>
 
         <!-- Top Bar Section -->

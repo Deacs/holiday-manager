@@ -8,6 +8,7 @@
 
         <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
         <link href="{{ asset('/css/foundation.css') }}" rel="stylesheet" />
+        <link href="{{ asset('/css/crowdcube.css') }}" rel="stylesheet" />
         <script src="/js/vendor/modernizr.js"></script>
 
         <!-- Fonts -->

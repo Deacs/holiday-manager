@@ -8,11 +8,26 @@
 
     <div class="large-12 columns" role="content">
         @if (count($members))
-            <ul class="no-bullet">
-            @foreach ($members as $member)
-                <li>{!! HTML::image($member->getAvatarPath(30), $member->fullName()) !!} {!! $member->fullName() !!}</li>
-            @endforeach
-            </ul>
+            <table id="staff-directory">
+                <tr>
+                    <th>Name</th>
+                    <th>Department</th>
+                    <th>Location</th>
+                    <th>Role</th>
+                    <th>email</th>
+                    <th>Telephone</th>
+                </tr>
+                @foreach ($members as $member)
+                    <tr>
+                        <td>{!! HTML::image($member->getAvatarPath(30), $member->fullName()) !!} {!! link_to_route('member.home', $member->fullName(), ['slug' => $member->slug]) !!}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                @endforeach
+            </table>
         @else
             <div data-alert="" class="alert-box info radius">
                 No Team Members associated with {!! $department->name !!}

@@ -18,6 +18,18 @@ class MemberProfileCest
         $I->see('David Ives', 'h1');
     }
 
+    public function seeTheCorrectEmailAddressAsLink(AcceptanceTester $I)
+    {
+        $I->amOnPage('/member/david-ives');
+        $I->see('david@crowdcube.com', 'a');
+    }
+
+    public function seeTheCorrectRole(AcceptanceTester $I)
+    {
+        $I->amOnPage('/member/david-ives');
+        $I->see('Head of Technology');
+    }
+
     public function seeTheCorrectGravatar(AcceptanceTester $I)
     {
         $I->amOnPage('/member/david-ives');

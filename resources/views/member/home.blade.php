@@ -2,9 +2,17 @@
 
 @section('content')
 
-    <div class="large-12 columns">
-        <h1>{!! HTML::image($member->getAvatarPath(), $member->fullName()) !!} {{ $member->fullName() }}</h1>
-    </div>
+        <div class="large-2 columns">
+            {!! HTML::image($member->getAvatarPath(), $member->fullName()) !!}
+        </div>
+        <div class="large-7 columns">
+            <h1>{!! $member->fullName() !!}</h1>
+            <h3>{!! $member->role !!}</h3>
+            <h6>{!! HTML::mailto($member->email, $member->email) !!}</h6>
+        </div>
+        <div class="large-3 columns">
+
+        </div>
 
     <div class="large-12 columns">
         <h5>Holiday Status :

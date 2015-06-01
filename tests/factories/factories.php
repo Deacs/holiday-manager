@@ -7,6 +7,7 @@ $factory('App\Status', [
 $factory('App\User', [
     'first_name'                => $faker->firstNameMale,
     'last_name'                 => $faker->lastName,
+    'role'                      => $faker->word,
     'password'                  => $faker->word,
     'email'                     => $faker->email,
     'telephone'                 => $faker->phoneNumber,
@@ -19,6 +20,7 @@ $factory('App\User', [
 $factory('App\User', 'super_user', [
     'first_name'                => $faker->firstNameMale,
     'last_name'                 => $faker->lastName,
+    'role'                      => $faker->word,
     'password'                  => $faker->word,
     'email'                     => $faker->email,
     'telephone'                 => $faker->phoneNumber,

@@ -12,7 +12,7 @@
     @foreach($team as $member)
         <tr>
             <td>{!! HTML::image($member->getAvatarPath(20), $member->fullName()) !!} <strong>{!! link_to_route('member.home', $member->fullName(), [$member->slug], ['class' => 'member-link']) !!}</strong></td>
-            <td>{!! $member->email !!}</td>
+            <td>{!! HTML::mailto($member->email, $member->email) !!}</td>
             <td>{!! $member->telephone !!}</td>
             <td>{!! $member->getAnnualHolidayAllowance() !!}</td>
             <td>{!! link_to('/foo', $member->pendingHolidayBalance(), ['class' => 'button tiny success', 'data-balance-type' => 'pending']) !!}</td>

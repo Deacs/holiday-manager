@@ -29,11 +29,17 @@ class DepartmentLeadTeamAdminCest
         $I->seeElement('a', ['data-balance-type' => 'available']);
     }
 
-    Public function canViewMemberProfileFromDepartmentListing(AcceptanceTester $I)
+    public function canViewMemberProfileFromDepartmentListing(AcceptanceTester $I)
     {
         $I->amOnPage('/department/engineering');
         $I->click('Rob Crowe');
         $I->seeCurrentUrlEquals('/member/rob-crowe');
+    }
+
+    public function canEmailMemberFromDepartmentListing(AcceptanceTester $I)
+    {
+        $I->amOnPage('/department/engineering');
+        $I->see('rob@crowdcube.com', 'a');
     }
 
     public function seeHolidayAdministrationOptionsForMembers(AcceptanceTester $I)

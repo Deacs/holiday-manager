@@ -26,4 +26,10 @@ class DepartmentHomeDisplayCest
         $I->see('Department Lead: Thor Mitchell');
         $I->dontSee('No team members associated with Product');
     }
+
+    public function cantSeeAddDepartmentMemberForm(AcceptanceTester $I)
+    {
+        $I->amOnPage('/department/engineering');
+        $I->dontSee('Add New Department Member');
+    }
 }

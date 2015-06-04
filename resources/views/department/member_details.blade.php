@@ -1,3 +1,4 @@
+
 <table id="team-holiday-status">
     <tr>
         <th>Name</th>

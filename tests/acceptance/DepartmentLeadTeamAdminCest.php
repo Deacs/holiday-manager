@@ -53,4 +53,25 @@ class DepartmentLeadTeamAdminCest
         $I->amOnPage('/department/marketing');
         $I->dontSee('#team-holiday-status');
     }
+
+    public function canSeeAddNewDepartmentMemberForm(AcceptanceTester $I)
+    {
+        $I->amOnPage('/department/engineering');
+        $I->see('Add New Department Member', 'legend');
+    }
+
+    /**
+     * @group new
+     */
+    public function canSeeCorrectAddNewDepartmentMemberFormFields(AcceptanceTester $I)
+    {
+        $I->amOnPage('/department/engineering');
+        // Can be written as $I->seeElement('input[name=first_name]');
+        $I->seeElement('input', ['name' => 'first_name']);
+        $I->seeElement('input', ['name' => 'last_name']);
+        $I->seeElement('input', ['name' => 'role']);
+        $I->seeElement('input', ['name' => 'email']);
+        $I->seeElement('input', ['name' => 'telephone']);
+        // Location needs to be a drop down
+    }
 }

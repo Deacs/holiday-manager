@@ -11,7 +11,7 @@
 
         @if (Auth::user()->isDepartmentLead($department))
 
-            @include('member.add')
+            @include('member.add', ['department_id' => $department->id])
 
         @endif
 

@@ -26,12 +26,12 @@
         </div>
         <div class="large-3 columns">
             <label>Location</label>
-            {!! Form::select('location_id', $locations) !!}
+            {!! Form::select('location_id', $locations, $location_id = 1) !!}
 
         </div>
         <div class="large-3 columns">
             <label>Department</label>
-            {!! Form::select('department_id', $locations) !!}
+            {!! Form::select('department_id', $departments, $department_id) !!}
         </div>
     </div>
 

@@ -1,7 +1,7 @@
 <?php namespace App\Http\ViewComposers;
 
+use App\Department;
 use Illuminate\Contracts\View\View;
-use App\Location as Location;
 
 class DepartmentsSelect {
 
@@ -13,8 +13,8 @@ class DepartmentsSelect {
      */
     public function compose(View $view)
     {
-        $locations = Location::all()->lists('name', 'id');
-        $view->with('locations', $locations);
+        $departments = Department::all()->lists('name', 'id');
+        $view->with('departments', $departments);
     }
 
 }

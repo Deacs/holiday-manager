@@ -7,21 +7,20 @@ use Illuminate\Http\Request;
 
 use App\User as User;
 use Illuminate\Support\Facades\Auth;
+use Laracasts\Flash\Flash;
 
 class UserController extends Controller {
 
-	public function gravatar($slug)
-	{
-		$user = User::where('slug', $slug)->firstOrFail();
-
-		$str = md5(trim(strtolower($user->email)));
-
-		print '<img src="http://www.gravatar.com/avatar/'.$str.'" />';
-		$profile = 'http://www.gravatar.com/'.$str.'.php';
-		var_dump(file_get_contents($profile));
-		//return true;
-		//return view('member.home')->with('member',$user);
-	}
+//	public function gravatar($slug)
+//	{
+//		$user = User::where('slug', $slug)->firstOrFail();
+//
+//		$str = md5(trim(strtolower($user->email)));
+//
+//		print '<img src="http://www.gravatar.com/avatar/'.$str.'" />';
+//		$profile = 'http://www.gravatar.com/'.$str.'.php';
+//		var_dump(file_get_contents($profile));
+//	}
 
 	/**
 	 * Display a listing of the resource.
@@ -47,10 +46,13 @@ class UserController extends Controller {
 	 * Store a newly created resource in storage.
 	 *
 	 * @return Response
+	 * @param Request $request
 	 */
-	public function store()
+	public function store(Request $request)
 	{
-		//
+		Flash::success('Member Successfully Added');
+
+		return redirect()->back();
 	}
 
 	/**

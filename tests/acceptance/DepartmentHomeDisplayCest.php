@@ -27,9 +27,6 @@ class DepartmentHomeDisplayCest
         $I->dontSee('No team members associated with Product');
     }
 
-    /**
-     * @group new
-     */
     public function cantSeeAddNewMemberForm(AcceptanceTester $I)
     {
         $I->amOnPage('/department/engineering');

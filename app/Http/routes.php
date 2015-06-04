@@ -48,7 +48,7 @@ Route::get('member/{slug}',
 Route::post('member/add',
 	[
 		'as' 	=> 'member.add',
-		'uses' 	=> 'UserController@show'
+		'uses' 	=> 'UserController@store'
 	]
 );
 

@@ -1,4 +1,4 @@
-{!! Form::open() !!}
+{!! Form::open(['route' => 'member.add']) !!}
 <fieldset>
     <legend>Add New Team Member</legend>
 

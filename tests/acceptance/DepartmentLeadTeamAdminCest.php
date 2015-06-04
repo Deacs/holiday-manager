@@ -6,6 +6,7 @@ class DepartmentLeadTeamAdminCest
     public function _before(AcceptanceTester $I)
     {
         $I->loginEngineeringLeadUser($I);
+        $I->am('Engineering Lead');
     }
 
     public function _after(AcceptanceTester $I)
@@ -60,9 +61,6 @@ class DepartmentLeadTeamAdminCest
         $I->see('Add New Team Member', 'legend');
     }
 
-    /**
-     * @group new
-     */
     public function canSeeCorrectAddNewTeamMemberFormFields(AcceptanceTester $I)
     {
         $I->amOnPage('/department/engineering');
@@ -74,5 +72,22 @@ class DepartmentLeadTeamAdminCest
         $I->seeElement('input', ['name' => 'telephone']);
         $I->seeElement('select', ['name' => 'location_id']);
         $I->seeElement('select', ['name' => 'department_id']);
+    }
+
+    /**
+     * @group new
+     */
+    public function canCreateNewMemberForEngineeringDepartment(AcceptanceTester $I)
+    {
+        $I->amOnPage('/department/engineering');
+        $I->fillField('first_name', 'Jack');
+        $I->fillField('last_name', 'Way');
+        $I->fillField('role', 'Front End Engineer');
+        $I->fillField('email', 'jack.way@crowdcube.com');
+        $I->selectOption('location_id', '1');
+        $I->selectOption('department_id', '1');
+        $I->click('Add');
+        $I->seeCurrentUrlEquals('/department/engineering');
+        $I->see('Member Successfully Added', '.success');
     }
 }

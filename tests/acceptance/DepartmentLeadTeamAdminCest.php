@@ -13,9 +13,6 @@ class DepartmentLeadTeamAdminCest
     {
     }
 
-    /**
-     * @group new
-     */
     public function seeTeamMembers(AcceptanceTester $I)
     {
         $I->amOnPage('/department/engineering');
@@ -80,6 +77,9 @@ class DepartmentLeadTeamAdminCest
         $I->seeElement('select', ['name' => 'department_id']);
     }
 
+    /**
+     * @group new
+     */
     public function canCreateNewMemberForEngineeringDepartment(AcceptanceTester $I)
     {
         $I->amOnPage('/department/engineering');
@@ -92,7 +92,11 @@ class DepartmentLeadTeamAdminCest
         $I->click('Add');
         $I->seeCurrentUrlEquals('/department/engineering');
         $I->see('Member Successfully Added', '.success');
-
-//        $I->data
+        // New user should now be visible within listing
+        $I->see('Jack Way', '.member-link');
+        $I->see('Front End Engineer');
+        $I->see('jack.way@crowdcube.com');
+        $I->click('Jack Way');
+        $I->seeCurrentUrlEquals('/member/jack-way');
     }
 }

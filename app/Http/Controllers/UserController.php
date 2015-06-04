@@ -50,6 +50,11 @@ class UserController extends Controller {
 	 */
 	public function store(Request $request)
 	{
+		// Slug needs to be generated from the provided first and last name
+		// @TODO This is due for refactor
+		$request['slug'] = $this->makeSlugFromRequest($request);
+		User::create($request->all());
+
 		Flash::success('Member Successfully Added');
 
 		return redirect()->back();
@@ -99,6 +104,19 @@ class UserController extends Controller {
 	public function destroy($id)
 	{
 		//
+	}
+
+	/**
+	 * No slug is provided when a user is created
+	 * We need to generate this value on their behalf
+	 * @TODO This is a first pass and needs a refactor
+	 *
+	 * @return string
+	 * @param Request $request
+	 */
+	private function makeSlugFromRequest(Request $request)
+	{
+		return join('-', [strtolower($request['first_name']), strtolower($request['last_name'])]);
 	}
 
 }

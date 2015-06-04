@@ -13,12 +13,18 @@ class DepartmentLeadTeamAdminCest
     {
     }
 
+    /**
+     * @group new
+     */
     public function seeTeamMembers(AcceptanceTester $I)
     {
         $I->amOnPage('/department/engineering');
         $I->see('David Ives', '.member-link');
+        $I->see('Head of Technology');
         $I->see('Rob Crowe', '.member-link');
+        $I->see('Lead Engineer');
         $I->see('Ben Christine', '.member-link');
+        $I->see('Design Lead');
     }
 
     public function seeHolidayRequestManagementOptions(AcceptanceTester $I)
@@ -74,9 +80,6 @@ class DepartmentLeadTeamAdminCest
         $I->seeElement('select', ['name' => 'department_id']);
     }
 
-    /**
-     * @group new
-     */
     public function canCreateNewMemberForEngineeringDepartment(AcceptanceTester $I)
     {
         $I->amOnPage('/department/engineering');
@@ -89,5 +92,7 @@ class DepartmentLeadTeamAdminCest
         $I->click('Add');
         $I->seeCurrentUrlEquals('/department/engineering');
         $I->see('Member Successfully Added', '.success');
+
+//        $I->data
     }
 }

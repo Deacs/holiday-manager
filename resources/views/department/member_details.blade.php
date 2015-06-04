@@ -3,6 +3,7 @@
     <tr>
         <th>Name</th>
         <th>email</th>
+        <th>Role</th>
         <th>Telephone</th>
         <th>Allowance</th>
         <th>Requested</th>
@@ -15,6 +16,7 @@
             <td>{!! HTML::image($member->getAvatarPath(20), $member->fullName()) !!} <strong>{!! link_to_route('member.home', $member->fullName(), [$member->slug], ['class' => 'member-link']) !!}</strong></td>
             <td>{!! HTML::mailto($member->email, $member->email) !!}</td>
             <td>{!! $member->telephone !!}</td>
+            <th>{!! $member->role !!}</th>
             <td>{!! $member->getAnnualHolidayAllowance() !!}</td>
             <td>{!! link_to('/foo', $member->pendingHolidayBalance(), ['class' => 'button tiny success', 'data-balance-type' => 'pending']) !!}</td>
             <td>{!! link_to('/foo', $member->approvedHolidayBalance(), ['class' => 'button tiny success', 'data-balance-type' => 'approved']) !!}</td>

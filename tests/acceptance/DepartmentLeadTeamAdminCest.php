@@ -57,13 +57,13 @@ class DepartmentLeadTeamAdminCest
     public function canSeeAddNewDepartmentMemberForm(AcceptanceTester $I)
     {
         $I->amOnPage('/department/engineering');
-        $I->see('Add New Department Member', 'legend');
+        $I->see('Add New Team Member', 'legend');
     }
 
     /**
      * @group new
      */
-    public function canSeeCorrectAddNewDepartmentMemberFormFields(AcceptanceTester $I)
+    public function canSeeCorrectAddNewTeamMemberFormFields(AcceptanceTester $I)
     {
         $I->amOnPage('/department/engineering');
         // Can be written as $I->seeElement('input[name=first_name]');
@@ -72,6 +72,7 @@ class DepartmentLeadTeamAdminCest
         $I->seeElement('input', ['name' => 'role']);
         $I->seeElement('input', ['name' => 'email']);
         $I->seeElement('input', ['name' => 'telephone']);
-        // Location needs to be a drop down
+        $I->seeElement('select', ['name' => 'location_id']);
+        $I->seeElement('select', ['name' => 'department_id']);
     }
 }

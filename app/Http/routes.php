@@ -45,6 +45,13 @@ Route::get('member/{slug}',
 	]
 );
 
+Route::post('member/add',
+	[
+		'as' 	=> 'member.add',
+		'uses' 	=> 'UserController@show'
+	]
+);
+
 Route::get('login',
 	[
 		'as' 	=> 'login.home',

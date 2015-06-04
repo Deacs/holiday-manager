@@ -22,6 +22,8 @@ class ComposerServiceProvider extends ServiceProvider {
 	public function register()
 	{
 		$this->app->make('view')->composer('navigation.header', 'App\Http\ViewComposers\Navigation');
+		$this->app->make('view')->composer('member.add', 'App\Http\ViewComposers\LocationsSelect');
+		$this->app->make('view')->composer('member.add', 'App\Http\ViewComposers\DepartmentsSelect');
 	}
 
 }

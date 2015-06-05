@@ -13,9 +13,6 @@ class UserObserver {
         $model->slug = strtolower(join('-', [$model->first_name, $model->last_name]));
         $model->password = bcrypt($model->slug.microtime());
         $model->confirmation_token = str_random(32);
-
-        // Send a notification email containing the link to the confirmation page
-        $model->sendConfirmationRequestEmail();
     }
 
     public function saved($model)

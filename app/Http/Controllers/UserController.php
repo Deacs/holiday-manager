@@ -1,13 +1,12 @@
 <?php namespace App\Http\Controllers;
 
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
-
-use Illuminate\Http\Request;
-
 use App\User as User;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Requests;
+use App\Mailers\AppMailer;
+use Illuminate\Support\Facades\App;
 use Laracasts\Flash\Flash;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class UserController extends Controller {
 
@@ -47,11 +46,24 @@ class UserController extends Controller {
 	 *
 	 * @return Response
 	 * @param Request $request
+	 * @param AppMailer $mailer
 	 */
-	public function store(Request $request)
+	public function store(Request $request, AppMailer $mailer)
 	{
+		$this->validate($request, [
+			'first_name' 	=> 'required',
+			'last_name' 	=> 'required',
+			'email' 		=> 'required|email|unique:users',
+			'role' 			=> 'required',
+			'department_id' => 'required|integer',
+			'location_id' 	=> 'required|integer',
+		]);
+
 		// Slug, initial password and confirmation token are generated within the UserObserver
-		User::create($request->all());
+		$user = User::create($request->all());
+
+		// Email a confirmation link to the newly created user
+		$mailer->sendConfirmationRequestEmail($user);
 
 		Flash::success('Member Successfully Added');
 
@@ -69,6 +81,11 @@ class UserController extends Controller {
 	{
 		$user = User::where('slug', $slug)->firstOrFail();
 		return view('member.home')->with('member',$user);
+	}
+
+	public function confirm($token)
+	{
+		return view('member.confirm')->with('token', $token);
 	}
 
 	/**

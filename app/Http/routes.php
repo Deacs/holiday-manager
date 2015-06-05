@@ -1,10 +1,8 @@
 <?php
 
-//Auth::loginUsingId(1);
+get('test', 'ManagerController@test');
 
-//Route::get('test', 'ManagerController@test');
-
-Route::get('test', ['middleware' => 'lead', function () {
+get('test', ['middleware' => 'lead', function () {
 
 	dd('Middleware Passed Test');
 //	dd('Passed Middleware');
@@ -13,60 +11,67 @@ Route::get('test', ['middleware' => 'lead', function () {
 //	dd($user);
 }]);
 
-Route::get('/', ['as' => 'home', 'uses' => 'ManagerController@index']);
+get('/', ['as' => 'home', 'uses' => 'ManagerController@index']);
 
-Route::get('calendar', 'CalendarController@index');
+get('calendar', 'CalendarController@index');
 
-Route::get('directory',
+get('directory',
 	[
 		'as' 	=> 'directory.home',
 		'uses' 	=> 'StaffDirectoryController@index'
 	]
 );
 
-Route::get('location/{slug}',
+get('location/{slug}',
 	[
 		'as' 	=> 'location.home',
 		'uses' 	=> 'LocationController@show'
 	]
 );
 
-Route::get('department/{slug}',
+get('department/{slug}',
 	[
 		'as' 	=> 'department.home',
 		'uses' 	=> 'DepartmentController@show'
 	]
 );
 
-Route::get('member/{slug}',
+get('member/{slug}',
 	[
 		'as' 	=> 'member.home',
 		'uses' 	=> 'UserController@show'
 	]
 );
 
-Route::post('member/add',
+post('member/add',
 	[
 		'as' 	=> 'member.add',
 		'uses' 	=> 'UserController@store'
 	]
 );
 
-Route::get('login',
+get('member/confirm/{token}',
+	[
+		'as' 	=> 'member.confirm',
+		'uses' 	=> 'UserController@confirm'
+	]
+);
+
+get('login',
 	[
 		'as' 	=> 'login.home',
 		'uses' 	=> 'LoginController@index'
 	]
 );
 
-Route::post('login',
+post('login',
 	[
 		'as' 	=> 'login.attempt',
 		'uses' 	=> 'LoginController@authenticate'
 	]
 );
 
-Route::get('logout',
+get('logout',
 	[
 		'as' 	=> 'logout',
 		'uses' 	=> 'LoginController@logout'

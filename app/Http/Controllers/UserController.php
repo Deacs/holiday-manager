@@ -50,7 +50,7 @@ class UserController extends Controller {
 	 */
 	public function store(Request $request)
 	{
-		// Slug and initial password are generated within the UserObserver
+		// Slug, initial password and confirmation token are generated within the UserObserver
 		User::create($request->all());
 
 		Flash::success('Member Successfully Added');

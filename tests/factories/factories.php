@@ -14,7 +14,8 @@ $factory('App\User', [
     'department_id'             => 'factory:App\Department',
     'location_id'               => 'factory:App\Location',
     'super_user'                => 0,
-    'annual_holiday_allowance'  => 25
+    'annual_holiday_allowance'  => 25,
+    'confirmed'                 => 1
 ]);
 
 $factory('App\User', 'super_user', [
@@ -27,7 +28,23 @@ $factory('App\User', 'super_user', [
     'department_id'             => 'factory:App\Department',
     'location_id'               => 'factory:App\Location',
     'super_user'                => 1,
-    'annual_holiday_allowance'  => 25
+    'annual_holiday_allowance'  => 25,
+    'confirmed'                 => 1
+]);
+
+$factory('App\User', 'new_user', [
+    'first_name'                => $faker->firstNameMale,
+    'last_name'                 => $faker->lastName,
+    'role'                      => $faker->word,
+    'password'                  => $faker->word,
+    'email'                     => $faker->email,
+    'telephone'                 => $faker->phoneNumber,
+    'department_id'             => 'factory:App\Department',
+    'location_id'               => 'factory:App\Location',
+    'super_user'                => 1,
+    'annual_holiday_allowance'  => 25,
+    'confirmed'                 => 0,
+    'confirmation_token'        => $faker->randomElement(32)
 ]);
 
 $factory('App\Department', [

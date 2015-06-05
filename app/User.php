@@ -125,6 +125,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		return 'http://www.gravatar.com/avatar/'.$str.'?s='.$size.'&d='.$default;
 	}
 
+	public function sendConfirmationRequestEmail()
+	{
+		var_dump('Send a mail containing the token : '.$this->confirmation_token);
+	}
+
 	/**
 	 * Place the holiday Request
 	 *

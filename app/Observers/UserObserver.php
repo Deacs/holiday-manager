@@ -7,6 +7,8 @@ class UserObserver {
      * - slug
      * - password
      * - confirmation_token
+     *
+     * @param $model
      */
     public function creating($model)
     {

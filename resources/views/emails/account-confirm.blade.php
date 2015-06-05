@@ -7,9 +7,9 @@
     <body>
         <h1>Please Confirm Your Account</h1>
 
-        <p>An account has been created for you.</p>
+        <p>Hi {{ $user->first_name }}, an account has been created for you.</p>
 
-        <p>Once you have <a hef="{!! URL('member/confirm/{$user->confirmation_token}') !!}">confirmed your email address</a>, you can access all of the features of the application.</p>
+        <p>Once you have <a href="{{ URL("member/confirm/{$user->confirmation_token}") }}">confirmed your email address</a>, you can access all of the features of the application.</p>
 
         <p>Thank you!</p>
     </body>

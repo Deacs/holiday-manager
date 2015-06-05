@@ -83,9 +83,23 @@ class UserController extends Controller {
 		return view('member.home')->with('member',$user);
 	}
 
+	/**
+	 *
+     */
 	public function confirm($token)
 	{
-		return view('member.confirm')->with('token', $token);
+		$user = User::where('confirmed', false)
+					->whereNotNull('confirmation_token')
+					->where('confirmation_token', $token)
+					->first();
+
+		if ($user) {
+			Flash::success('Account successfully confirmed');
+			return $user->confirmAccount();
+		}
+
+		Flash::error('Your account could not be confirmed');
+		return view('member.confirm');
 	}
 
 	/**

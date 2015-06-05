@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
 use \Exception as Exception;
+use Laracasts\Flash\Flash;
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract {
 
@@ -128,6 +129,21 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	public function sendConfirmationRequestEmail()
 	{
 		var_dump('Send a mail containing the token : '.$this->confirmation_token);
+	}
+
+	/**
+	 * The user has successfully confirmed their account
+	 * The confirmed flag is set to true
+	 * The confirmation_flag is no longer needed so set to null
+     */
+	public function confirmAccount()
+	{
+		$this->confirmed 			= true;
+		$this->confirmation_token 	= null;
+
+		$this->save();
+
+		return redirect()->route('login.home');
 	}
 
 	/**

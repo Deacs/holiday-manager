@@ -14,7 +14,7 @@ class AddNewDepartmentMemberCest
     {
     }
 
-    public function canCreateNewMemberForEngineeringDepartment(AcceptanceTester $I)
+    public function can_create_new_member_for_engineering_department(AcceptanceTester $I)
     {
         $I->registerNewUser($I);
 
@@ -39,7 +39,7 @@ class AddNewDepartmentMemberCest
     /**
      * @group new
      */
-    public function canConfirmAccountFromTokenLinkUpdatePasswordAndLogin(AcceptanceTester $I)
+    public function can_confirm_account_from_token_link_then_update_password_and_login(AcceptanceTester $I)
     {
         $I->registerNewUser($I);
         $I->logoutUser($I);
@@ -49,10 +49,30 @@ class AddNewDepartmentMemberCest
         // If the User can be found in the correct state, they can create a password
         $I->see('Confirm Your Account', 'h1');
         $I->see('Please create a password to complete the confirmation of your account.', 'p');
-        $I->fillField('password', 'jack');
-        $I->fillField('password_confirmation', 'jack');
-        $I->click('Confirm');
+        $I->fillField('password', 'jackway');
+        $I->fillField('password_confirmation', 'jackway');
+        $I->click('Confirm', '.button');
         $I->seeCurrentUrlEquals('/member/jack-way');
         $I->see('Account Successfully Confirmed');
+        $I->click('Jack Way');
+        $I->see('Profile');
+        $I->see('Logout');
+    }
+
+    /**
+     * @group pending
+     */
+    public function mismatched_password_and_confirmation_will_prevent_account_confirmation_and_display_errors(AcceptanceTester $I)
+    {
+        $I->amOnPage('/');
+    }
+
+    /**
+     * @group pending
+     * @TODO Move to correct suite
+     */
+    public function unconfirmed_accounts_cannot_login(AcceptanceTester $I)
+    {
+        $I->amOnPage('/');
     }
 }

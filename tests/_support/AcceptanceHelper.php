@@ -74,6 +74,11 @@ class AcceptanceHelper extends Module
         $I->see('Successfully logged out');
     }
 
+    /**
+     * Register a new Department Member
+     *
+     * @param AcceptanceTester $I
+     */
     public function registerNewUser(AcceptanceTester $I)
     {
         $I->amOnPage('/department/engineering');

@@ -4,6 +4,7 @@ use App\User as User;
 use App\Http\Requests;
 use App\Mailers\AppMailer;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use Laracasts\Flash\Flash;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -74,10 +75,19 @@ class UserController extends Controller {
 		return view('member.confirm');
 	}
 
+	/**
+	 * A valid confirmation request has been received
+	 * Validate the request then update the temporary password
+	 * Confirm the account - set the confirmed flag, remove the token
+	 * Log the user in and redirect to their profile
+	 *
+	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+	 * @param Request $request
+	 */
 	public function completeConfirmation(Request $request)
 	{
 		$this->validate($request, [
-			'password' => 'required|confirmed'
+			'password' => 'required|confirmed|min:6'
 		]);
 
 		$user = User::findOrFail($request->get('user_id'));
@@ -85,6 +95,7 @@ class UserController extends Controller {
 		$user->confirmAccount();
 
 		Flash::success('Account Successfully Confirmed');
+		Auth::login($user);
 
 		return redirect('member/'.$user->slug);
 	}

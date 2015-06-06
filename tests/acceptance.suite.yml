@@ -10,6 +10,7 @@ modules:
         - PhpBrowser
         #- WebDriver
         - AcceptanceHelper
+        - Db
     config:
         PhpBrowser:
         #WebDriver:

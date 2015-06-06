@@ -76,27 +76,4 @@ class DepartmentLeadTeamAdminCest
         $I->seeElement('select', ['name' => 'location_id']);
         $I->seeElement('select', ['name' => 'department_id']);
     }
-
-    /**
-     * @group new
-     */
-    public function canCreateNewMemberForEngineeringDepartment(AcceptanceTester $I)
-    {
-        $I->amOnPage('/department/engineering');
-        $I->fillField('first_name', 'Jack');
-        $I->fillField('last_name', 'Way');
-        $I->fillField('role', 'Front End Engineer');
-        $I->fillField('email', 'jack.way@crowdcube.com');
-        $I->selectOption('location_id', '1');
-        $I->selectOption('department_id', '1');
-        $I->click('Add');
-        $I->seeCurrentUrlEquals('/department/engineering');
-        $I->see('Member Successfully Added', '.success');
-        // New user should now be visible within listing
-        $I->see('Jack Way', '.member-link');
-        $I->see('Front End Engineer');
-        $I->see('jack.way@crowdcube.com');
-        $I->click('Jack Way');
-        $I->seeCurrentUrlEquals('/member/jack-way');
-    }
 }

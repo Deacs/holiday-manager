@@ -2,11 +2,11 @@
 namespace Codeception\Module;
 
 use AcceptanceTester;
-use App\User;
 use Codeception\Module;
 
 class AcceptanceHelper extends Module
 {
+
     /**
      * Login a regular member
      *
@@ -72,6 +72,18 @@ class AcceptanceHelper extends Module
         $I->amOnPage('/logout');
         $I->seeCurrentUrlEquals('/login');
         $I->see('You have been logged out');
+    }
+
+    public function registerNewUser(AcceptanceTester $I)
+    {
+        $I->amOnPage('/department/engineering');
+        $I->fillField('first_name', 'Jack');
+        $I->fillField('last_name', 'Way');
+        $I->fillField('role', 'Front End Engineer');
+        $I->fillField('email', 'jack.way@crowdcube.com');
+        $I->selectOption('location_id', '1');
+        $I->selectOption('department_id', '1');
+        $I->click('Add');
     }
 
     /**

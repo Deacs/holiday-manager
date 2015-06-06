@@ -144,10 +144,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		$this->confirmation_token 	= null;
 
 		$this->save();
-
-		Flash::success('Account successfully confirmed');
-
-		return redirect()->route('login.home');
 	}
 
 	/**

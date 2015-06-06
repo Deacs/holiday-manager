@@ -71,7 +71,7 @@ class AcceptanceHelper extends Module
     {
         $I->amOnPage('/logout');
         $I->seeCurrentUrlEquals('/login');
-        $I->see('You have been logged out');
+        $I->see('Successfully logged out');
     }
 
     public function registerNewUser(AcceptanceTester $I)

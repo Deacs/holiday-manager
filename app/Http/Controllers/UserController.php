@@ -10,37 +10,6 @@ use App\Http\Controllers\Controller;
 
 class UserController extends Controller {
 
-//	public function gravatar($slug)
-//	{
-//		$user = User::where('slug', $slug)->firstOrFail();
-//
-//		$str = md5(trim(strtolower($user->email)));
-//
-//		print '<img src="http://www.gravatar.com/avatar/'.$str.'" />';
-//		$profile = 'http://www.gravatar.com/'.$str.'.php';
-//		var_dump(file_get_contents($profile));
-//	}
-
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-		//
-	}
-
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		//
-	}
-
 	/**
 	 * Store a newly created resource in storage.
 	 *
@@ -98,45 +67,26 @@ class UserController extends Controller {
 					->first();
 
 		if ($user) {
-			Flash::success('Account successfully confirmed');
-			return $user->confirmAccount();
+			return view('member.complete-confirmation')->with('user_id', $user->id);
 		}
 
 		Flash::error('Your account could not be confirmed');
 		return view('member.confirm');
 	}
 
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
+	public function completeConfirmation(Request $request)
 	{
-		//
-	}
+		$this->validate($request, [
+			'password' => 'required|confirmed'
+		]);
 
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		//
-	}
+		$user = User::findOrFail($request->get('user_id'));
+		$user->password = bcrypt($request->get('password'));
+		$user->confirmAccount();
 
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		//
+		Flash::success('Account Successfully Confirmed');
+
+		return redirect('member/'.$user->slug);
 	}
 
 }

@@ -1,5 +1,6 @@
 <?php
 use \AcceptanceTester;
+use App\User;
 
 class AddNewDepartmentMemberCest
 {
@@ -13,9 +14,6 @@ class AddNewDepartmentMemberCest
     {
     }
 
-    /**
-     * @group new
-     */
     public function canCreateNewMemberForEngineeringDepartment(AcceptanceTester $I)
     {
         $I->registerNewUser($I);
@@ -36,5 +34,25 @@ class AddNewDepartmentMemberCest
                 'confirmed'     => 0
             ]
         );
+    }
+
+    /**
+     * @group new
+     */
+    public function canConfirmAccountFromTokenLinkUpdatePasswordAndLogin(AcceptanceTester $I)
+    {
+        $I->registerNewUser($I);
+        $I->logoutUser($I);
+        $confirmation_token = $I->grabFromDatabase('users', 'confirmation_token', ['email' => 'jack.way@crowdcube.com']);
+        $I->amOnPage('member/confirm/'.$confirmation_token);
+
+        // If the User can be found in the correct state, they can create a password
+        $I->see('Confirm Your Account', 'h1');
+        $I->see('Please create a password to complete the confirmation of your account.', 'p');
+        $I->fillField('password', 'jack');
+        $I->fillField('password_confirmation', 'jack');
+        $I->click('Confirm');
+        $I->seeCurrentUrlEquals('/member/jack-way');
+        $I->see('Account Successfully Confirmed');
     }
 }

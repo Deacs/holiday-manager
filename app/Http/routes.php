@@ -57,6 +57,13 @@ get('member/confirm/{token}',
 	]
 );
 
+post('member/confirm',
+	[
+		'as' 	=> 'member.complete-confirmation',
+		'uses' 	=> 'UserController@completeConfirmation'
+	]
+);
+
 get('login',
 	[
 		'as' 	=> 'login.home',

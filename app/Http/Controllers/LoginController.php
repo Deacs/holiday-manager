@@ -24,12 +24,13 @@ class LoginController extends Controller {
 	 * Handle an authentication attempt.
 	 *
 	 * @return Response
+	 * @param Request $request
 	 * @internal param $email
 	 * @internal param $password
 	 */
-	public function authenticate()
+	public function authenticate(Request $request)
 	{
-		if (Auth::attempt(['email' => Input::get('email'), 'password' => Input::get('password')]))
+		if (Auth::attempt($this->getCredentials($request)))
 		{
 			return redirect()->intended('member/'.Auth::user()->slug);
 		}
@@ -50,7 +51,7 @@ class LoginController extends Controller {
 
 		Flash::success('Successfully logged out');
 
-		return redirect()->route('home');
+		return redirect()->route('login.home');
 	}
 
 	/**
@@ -115,6 +116,22 @@ class LoginController extends Controller {
 	public function destroy($id)
 	{
 		//
+	}
+
+	/**
+	 * Extract the values from the request that are needed for login
+	 * Also include the confirmed check that is only present after confirmation
+	 *
+	 * @return array
+	 * @param Request $request
+	 */
+	public function getCredentials(Request $request)
+	{
+		return [
+			'email' 	=> $request->input('email'),
+			'password' 	=> $request->input('password'),
+			'confirmed' => 1
+		];
 	}
 
 }

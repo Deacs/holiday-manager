@@ -44,7 +44,7 @@ class AuthenticatedHeaderNavigationCest
         $I->click('Tom Leigh');
         $I->see('Logout');
         $I->click('Logout');
-        $I->seeCurrentUrlEquals('/');
+        $I->seeCurrentUrlEquals('/login');
         $I->see('Successfully logged out', '.success');
         $I->seeElement('.close');
         $I->click(['class' => 'close']);

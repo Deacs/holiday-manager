@@ -135,13 +135,17 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 * The user has successfully confirmed their account
 	 * The confirmed flag is set to true
 	 * The confirmation_flag is no longer needed so set to null
-     */
+	 *
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
 	public function confirmAccount()
 	{
 		$this->confirmed 			= true;
 		$this->confirmation_token 	= null;
 
 		$this->save();
+
+		Flash::success('Account successfully confirmed');
 
 		return redirect()->route('login.home');
 	}

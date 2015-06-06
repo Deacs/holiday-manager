@@ -84,8 +84,12 @@ class UserController extends Controller {
 	}
 
 	/**
+	 * Search for the user with the unconfirmed account that
+	 * has the token matching the received version
 	 *
-     */
+	 * @return \Illuminate\View\View
+	 * @param $token
+	 */
 	public function confirm($token)
 	{
 		$user = User::where('confirmed', false)

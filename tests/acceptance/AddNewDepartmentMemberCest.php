@@ -36,9 +36,6 @@ class AddNewDepartmentMemberCest
         );
     }
 
-    /**
-     * @group new
-     */
     public function can_confirm_account_from_token_link_then_update_password_and_login(AcceptanceTester $I)
     {
         $I->registerNewUser($I);
@@ -59,20 +56,19 @@ class AddNewDepartmentMemberCest
         $I->see('Logout');
     }
 
-    /**
-     * @group pending
-     */
     public function mismatched_password_and_confirmation_will_prevent_account_confirmation_and_display_errors(AcceptanceTester $I)
     {
-        $I->amOnPage('/');
+        $I->registerNewUser($I);
+        $I->logoutUser($I);
+        $confirmation_token = $I->grabFromDatabase('users', 'confirmation_token', ['email' => 'jack.way@crowdcube.com']);
+        $I->amOnPage('member/confirm/'.$confirmation_token);
+        $I->see('Confirm Your Account', 'h1');
+        $I->see('Please create a password to complete the confirmation of your account.', 'p');
+        $I->fillField('password', 'jackway');
+        $I->fillField('password_confirmation', 'notjackway');
+        $I->click('Confirm', '.button');
+        $I->see('The password confirmation does not match.');
+        $I->seeCurrentUrlEquals('/member/confirm/'.$confirmation_token);
     }
 
-    /**
-     * @group pending
-     * @TODO Move to correct suite
-     */
-    public function unconfirmed_accounts_cannot_login(AcceptanceTester $I)
-    {
-        $I->amOnPage('/');
-    }
 }

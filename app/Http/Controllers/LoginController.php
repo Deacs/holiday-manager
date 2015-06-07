@@ -30,8 +30,7 @@ class LoginController extends Controller {
 	 */
 	public function authenticate(Request $request)
 	{
-		if (Auth::attempt($this->getCredentials($request)))
-		{
+		if (Auth::attempt($this->getCredentials($request))) {
 			return redirect()->intended('member/'.Auth::user()->slug);
 		}
 

@@ -7,7 +7,6 @@ get('test', ['middleware' => 'lead', function () {
 	dd('Middleware Passed Test');
 //	dd('Passed Middleware');
 //	$user = Auth::loginUsingId(2);
-//
 //	dd($user);
 }]);
 
@@ -73,8 +72,9 @@ get('login',
 
 post('login',
 	[
-		'as' 	=> 'login.attempt',
-		'uses' 	=> 'LoginController@authenticate'
+		'middleware' 	=> 'confirmed',
+		'as' 			=> 'login.attempt',
+		'uses' 			=> 'LoginController@authenticate'
 	]
 );
 

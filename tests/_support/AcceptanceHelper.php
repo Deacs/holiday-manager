@@ -44,7 +44,7 @@ class AcceptanceHelper extends Module
      */
     public function loginWithIncorrectDetails(AcceptanceTester $I)
     {
-        $this->login($I, 'not.real@crowdcube.com', 'fail');
+        $this->login($I, 'david@crowdcube.com', 'fail');
     }
 
     /**

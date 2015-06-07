@@ -3,6 +3,7 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
@@ -30,10 +31,19 @@ class LoginController extends Controller {
 	 */
 	public function authenticate(Request $request)
 	{
+		// Confirmed account which matches passed credentials
 		if (Auth::attempt($this->getCredentials($request))) {
 			return redirect()->intended('member/'.Auth::user()->slug);
 		}
 
+		// Check for a user with the received email address but not confirmed
+		$confirmed_user = User::where('email', $request->input('email'))->where('confirmed', 1)->first();
+		if ( ! $confirmed_user) {
+			Flash::error('Account has not been confirmed. Please check your email for confirmation details.');
+			return redirect()->back();
+		}
+
+		// Mismatch on email and/or password
 		Flash::error('Entered email or password incorrect. Please try again');
 
 		return redirect()->back();

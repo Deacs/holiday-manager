@@ -72,9 +72,8 @@ get('login',
 
 post('login',
 	[
-		'middleware' 	=> 'confirmed',
-		'as' 			=> 'login.attempt',
-		'uses' 			=> 'LoginController@authenticate'
+		'as' 	=> 'login.attempt',
+		'uses' 	=> 'LoginController@authenticate'
 	]
 );
 

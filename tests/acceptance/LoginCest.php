@@ -22,12 +22,6 @@ class LoginCest
         $I->seeCurrentUrlEquals('/member/ben-christine');
     }
 
-    /**
-     * @group pending
-     * Only users with confirmed account can login
-     *
-     * @TODO Move to correct suite
-     */
     public function unconfirmed_accounts_cannot_login(AcceptanceTester $I)
     {
         $I->loginEngineeringLeadUser($I);

@@ -1,5 +1,8 @@
 <?php
 
+use App\User;
+use Illuminate\Http\Request;
+
 get('test', 'ManagerController@test');
 
 get('test', ['middleware' => 'lead', function () {
@@ -83,6 +86,19 @@ get('logout',
 		'uses' 	=> 'LoginController@logout'
 	]
 );
+
+/**
+ * API : Powered by VueJS
+ */
+get('beta', function () {
+	return view('beta');
+});
+
+get('api/members/', function () {
+	return User::all();
+});
+
+post('api/members', 'UserController@store');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',

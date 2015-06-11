@@ -22,7 +22,7 @@ class RequestHolidayCest
         // Check for "hero" panel or similar that will hold the form
         $I->see('Request Holiday', 'h4');
         $I->see('Start Date:', 'label');
-//        $I->seeElement('');
+        $I->seeElement('input', ['type' => 'date', 'name' => 'start_date']);
         $I->see('End Date:', 'label');
         $I->see('Place Request', '.button');
         $I->click('Place Request');

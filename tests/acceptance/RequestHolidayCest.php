@@ -24,7 +24,7 @@ class RequestHolidayCest
         $I->see('Start Date:', 'label');
         $I->seeElement('input', ['type' => 'date', 'name' => 'start_date']);
         $I->see('End Date:', 'label');
+        $I->seeElement('input', ['type' => 'date', 'name' => 'end_date']);
         $I->see('Place Request', '.button');
-        $I->click('Place Request');
     }
 }

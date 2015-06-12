@@ -15,7 +15,6 @@ class DepartmentLeadHeaderOptionsCest
     public function seeMyTeamOption(AcceptanceTester $I)
     {
         $I->see('My Team');
-        $I->see('0');
         $I->click('My Team');
         $I->seeCurrentUrlEquals('/department/engineering');
     }

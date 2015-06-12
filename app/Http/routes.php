@@ -31,40 +31,55 @@ get('location/{slug}',
 	]
 );
 
-get('department/{slug}',
-	[
-		'as' 	=> 'department.home',
-		'uses' 	=> 'DepartmentController@show'
-	]
-);
+Route::group(['prefix' => 'department', 'as' => 'department.'], function () {
 
-get('member/{slug}',
-	[
-		'as' 	=> 'member.home',
-		'uses' 	=> 'UserController@show'
-	]
-);
+	get('{slug}',
+		[
+			'as' => 'home',
+			'uses' => 'DepartmentController@show'
+		]
+	);
 
-post('member/add',
-	[
-		'as' 	=> 'member.add',
-		'uses' 	=> 'UserController@store'
-	]
-);
+	get('{slug}/manage',
+		[
+			'middleware' 	=> 'lead',
+			'as' 			=> 'manage',
+			'uses' 			=> 'DepartmentController@manage'
+		]
+	);
+});
 
-get('member/confirm/{token}',
-	[
-		'as' 	=> 'member.confirm',
-		'uses' 	=> 'UserController@confirm'
-	]
-);
+Route::group(['prefix' => 'member', 'as' => 'member.'], function () {
 
-post('member/confirm',
-	[
-		'as' 	=> 'member.complete-confirmation',
-		'uses' 	=> 'UserController@completeConfirmation'
-	]
-);
+	get('{slug}',
+		[
+			'as' => 'home',
+			'uses' => 'UserController@show'
+		]
+	);
+
+	post('add',
+		[
+			'as' => 'add',
+			'uses' => 'UserController@store'
+		]
+	);
+
+	get('confirm/{token}',
+		[
+			'as' => 'confirm',
+			'uses' => 'UserController@confirm'
+		]
+	);
+
+	post('confirm',
+		[
+			'as' => 'complete-confirmation',
+			'uses' => 'UserController@completeConfirmation'
+		]
+	);
+
+});
 
 get('login',
 	[
@@ -94,11 +109,13 @@ get('beta', function () {
 	return view('beta');
 });
 
-get('api/members/', function () {
-	return User::all();
-});
+Route::group(['prefix' => 'api', 'as' => 'api.'], function () {
+	get('members/', function () {
+		return User::all();
+	});
 
-post('api/members', 'UserController@store');
+	post('members', 'UserController@store');
+});
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',

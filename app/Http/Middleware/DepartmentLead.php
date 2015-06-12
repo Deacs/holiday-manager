@@ -34,32 +34,16 @@ class DepartmentLead {
 	 * @return mixed
 	 * @param  \Illuminate\Http\Request $request
 	 * @param  \Closure $next
-	 * @param $department_id
 	 */
-	public function handle($request, Closure $next, $department_id = 2)
+	public function handle($request, Closure $next)
 	{
-//		if ($this->auth->guest())
-//		{
-//			if ($request->ajax())
-//			{
-//				return response('Unauthorized.', 401);
-//			}
-//			else
-//			{
-//				return redirect()->guest('login');
-//			}
-//		}
-
 
 		$user 		= Auth::user();
-		$department = Department::findOrFail($department_id);
-
-		//dd($department);
+		$department = Department::where('slug', $request->slug)->first();
 
 		if ( ! $user->isDepartmentLead($department)) {
 			return redirect()->guest('login');
 		}
-		//dd($this->department);
 
 		return $next($request);
 	}

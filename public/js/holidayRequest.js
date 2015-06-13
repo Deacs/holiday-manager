@@ -5,7 +5,7 @@ new Vue({
     el: '#app',
 
     data: {
-        submitted: false,
+        holidayRequestSubmitted: false,
 
         defaultDate: ''
     },
@@ -25,7 +25,7 @@ new Vue({
 
             this.$http.post('/api/holiday/request', holidayRequest);
 
-            this.submitted = true;
+            this.holidayRequestSubmitted = true;
         }
     }
 });

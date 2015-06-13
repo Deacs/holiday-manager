@@ -110,15 +110,16 @@ get('beta', function () {
 });
 
 Route::group(['prefix' => 'api', 'as' => 'api.'], function () {
+
 	get('members/', function () {
 		return User::all();
 	});
 
 	post('members', 'UserController@store');
 
-	post('holiday/request', function () {
-		dd('requested');
-	});
+//	post('holiday/request', function () {
+//		dd('requested');
+//	});
 
 	post('holiday/request',
 		[

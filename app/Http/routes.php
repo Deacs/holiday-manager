@@ -123,7 +123,7 @@ Route::group(['prefix' => 'api', 'as' => 'api.'], function () {
 	post('holiday/request',
 		[
 			'as' 	=> 'holiday.request',
-			'uses' 	=> 'HolidayRequest@store'
+			'uses' 	=> 'HolidayRequestController@store'
 		]
 	);
 });

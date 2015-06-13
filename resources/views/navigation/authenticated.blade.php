@@ -1,5 +1,5 @@
 @if (Auth::user()->leadDepartment())
-    @include('navigation.my_team');
+    @include('navigation.my_team')
 @endif
 <li class="divider hide-for-small"></li>
 <li class="has-dropdown hover"><a>Teams</a>

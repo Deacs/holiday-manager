@@ -3,7 +3,7 @@
 @include('flash::message')
 @include('partials.errors._form-errors')
 
-    <div class="row">
+    <div class="row" id="app">
 
         @yield('content')
 

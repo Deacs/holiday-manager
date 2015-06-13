@@ -3,9 +3,11 @@
 @endsection
 
 <div class="large-12 columns" id="requestHolidayForm">
-    <div class="large-12 columns">
-        <div class="alert alert-success" v-if="submitted">
-            Holiday Request Successfully Received
+    <div class="row">
+        <div class="large-12 columns">
+            <div class="alert alert-success" v-if="submitted">
+                Holiday Request Successfully Received
+            </div>
         </div>
     </div>
     <div class="row panel radius">

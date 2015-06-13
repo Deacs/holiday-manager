@@ -2,7 +2,7 @@ Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAt
 
 new Vue({
 
-    el: '#requestHolidayForm',
+    el: '#app',
 
     data: {
         submitted: false,

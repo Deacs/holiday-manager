@@ -15,7 +15,7 @@ class MemberProfileCest
     public function seeTheCorrectUsersFullName(AcceptanceTester $I)
     {
         $I->amOnPage('/member/david-ives');
-        $I->see('David Ives', 'h1');
+        $I->see('David Ives', 'h2');
     }
 
     public function seeTheCorrectEmailAddressAsLink(AcceptanceTester $I)

@@ -65,7 +65,8 @@ DROP TABLE IF EXISTS `holiday_requests`;
 CREATE TABLE `holiday_requests` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `request_date` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `start_date` date COLLATE utf8_unicode_ci NOT NULL,
+  `end_date` date COLLATE utf8_unicode_ci NOT NULL,
   `status_id` int(11) NOT NULL DEFAULT '1',
   `approved_by` int(11) DEFAULT NULL,
   `declined_by` int(11) DEFAULT NULL,

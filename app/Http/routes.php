@@ -115,6 +115,17 @@ Route::group(['prefix' => 'api', 'as' => 'api.'], function () {
 	});
 
 	post('members', 'UserController@store');
+
+	post('holiday/request', function () {
+		dd('requested');
+	});
+
+	post('holiday/request',
+		[
+			'as' 	=> 'holiday.request',
+			'uses' 	=> 'HolidayRequest@store'
+		]
+	);
 });
 
 Route::controllers([

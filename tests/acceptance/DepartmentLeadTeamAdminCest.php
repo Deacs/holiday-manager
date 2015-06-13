@@ -61,7 +61,7 @@ class DepartmentLeadTeamAdminCest
     public function canSeeAddNewDepartmentMemberForm(AcceptanceTester $I)
     {
         $I->amOnPage('/department/engineering');
-        $I->see('Add New Team Member', 'legend');
+        $I->see('Add New Team Member', 'h4');
     }
 
     public function canSeeCorrectAddNewTeamMemberFormFields(AcceptanceTester $I)

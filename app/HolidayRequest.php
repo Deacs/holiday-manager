@@ -22,7 +22,8 @@ class HolidayRequest extends Model
 
     protected $fillable = [
         'user_id',
-        'request_date',
+        'start_date',
+        'end_date',
         'status_id',
         'approved_by',
         'declined_by'
@@ -44,18 +45,43 @@ class HolidayRequest extends Model
     public $status_id = Status::PENDING_ID;
 
     /**
-     * Specify the date for the request
+     * Specify the start date for the request
      *
-     * @param $request_date
+     * @param $start_date
      */
-    public function setRequestDate($request_date)
+    public function setStartDate($start_date)
     {
-        $this->request_date = $request_date;
+        $this->start_date = Carbon::createFromFormat('Y-m-d', $start_date);
     }
 
-    public function getRequestDate()
+    /**
+     * Specify the end date for the request
+     *
+     * @param $end_date
+     */
+    public function setEndDate($end_date)
     {
-        return $this->request_date;
+        $this->end_date = Carbon::createFromFormat('Y-m-d', $end_date);
+    }
+
+    /**
+     * Return the starting date - this will be a formatted Carbon instance
+     *
+     * @return mixed
+     */
+    public function getStartDate()
+    {
+        return $this->start_date;
+    }
+
+    /**
+     * Return the ending date - this will be a formatted Carbon instance
+     *
+     * @return mixed
+     */
+    public function getEndDate()
+    {
+        return $this->end_date;
     }
 
     // -- Relationships
@@ -241,6 +267,8 @@ class HolidayRequest extends Model
      */
     public function place()
     {
+        return $this->save();
+
         if ($this->validateDate()) {
             return $this->save();
         }
@@ -251,20 +279,21 @@ class HolidayRequest extends Model
      *
      * @throws Exception
      * @return bool
+     * @param $request_date
      */
-    public function validateDate()
+    public function validateDate($request_date)
     {
         switch (true) {
             // The requested date cannot be in the past
-            case $this->request_date->isPast():
+            case $request_date->isPast():
                 throw new Exception('You cannot make a Holiday Request for a date in the past');
                 break;
             // The requested date must be within the current year
-            case (new Carbon())->year != $this->request_date->year:
+            case (new Carbon())->year != $request_date->year:
                 throw new Exception('Holiday Requests can only be made for the current year');
                 break;
             // The requested date ia a weekend
-            case $this->request_date->isWeekend():
+            case $request_date->isWeekend():
                 throw new Exception('Requested date is a weekend');
                 break;
             default:

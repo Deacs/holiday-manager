@@ -1,8 +1,8 @@
 {!! Form::open(['route' => 'member.add']) !!}
-<fieldset>
-    <legend>Add New Team Member</legend>
 
-    <div class="row">
+    <h4>Add New Team Member</h4>
+
+    <div class="row panel radius">
         <div class="large-4 columns">
             <label>First Name</label>
             <input type="text" placeholder="Jamie" name="first_name">
@@ -33,13 +33,10 @@
             <label>Department</label>
             {!! Form::select('department_id', $departments, $department_id) !!}
         </div>
-    </div>
 
-    <div class="row">
         <div class="large-12 columns">
             <button class="small button" title="Add">Add</button>
         </div>
     </div>
 
-</fieldset>
 {!! Form::close() !!}

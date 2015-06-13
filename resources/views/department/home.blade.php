@@ -11,6 +11,8 @@
 
         @if (Auth::user()->isDepartmentLead($department))
 
+            <hr />
+
             @include('member.add', ['department_id' => $department->id])
 
         @endif

@@ -5,13 +5,9 @@ new Vue({
     el: '#requestHolidayForm',
 
     data: {
-        //newHolidayRequest: {
-        //    start_date: '',
-        //    end_date: '',
-        //    user_id: ''
-        //},
+        submitted: false,
 
-        submitted: false
+        defaultDate: ''
     },
 
     methods: {
@@ -22,12 +18,10 @@ new Vue({
 
             var holidayRequest = this.newHolidayRequest;
 
-            //this.newHolidayRequest = {
-            //    start_date: '',
-            //    end_date: ''
-            //};
-
-            console.log('Loaded the object');
+            this.newHolidayRequest = {
+                start_date: this.defaultDate,
+                end_date: this.defaultDate
+            };
 
             this.$http.post('/api/holiday/request', holidayRequest);
 

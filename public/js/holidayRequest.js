@@ -7,7 +7,12 @@ new Vue({
     data: {
         holidayRequestSubmitted: false,
 
-        defaultDate: ''
+        defaultDate: '',
+
+        result: {
+            'level': '',
+            'message': ''
+        }
     },
 
     methods: {
@@ -24,6 +29,11 @@ new Vue({
             };
 
             this.$http.post('/api/holiday/request', holidayRequest);
+
+            this.result = {
+                'level': 'success',
+                'message': 'Holiday Request Successfully Placed'
+            };
 
             this.holidayRequestSubmitted = true;
         }

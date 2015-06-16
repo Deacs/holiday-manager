@@ -36,11 +36,15 @@ class MemberProfileCest
         $I->seeImageWithSource('http://www.gravatar.com/avatar/2c5d2309bda85321f921c8b4e34aacaf?s=150&d=mm');
     }
 
-    public function seeCorrectHolidayStatus(AcceptanceTester $I)
+    public function canSeeRequestHolidayForm(AcceptanceTester $I)
     {
         $I->amOnPage('/member/david-ives');
-        $I->see('Holiday Status');
-        $I->see('Not currently on leave');
-        $I->see('No approved holiday requests');
+        $I->see('Request Holiday', 'h4');
+    }
+
+    public function canSeeHolidayHistory(AcceptanceTester $I)
+    {
+        $I->amOnPage('/member/david-ives');
+        $I->see('Holiday History', 'h4');
     }
 }

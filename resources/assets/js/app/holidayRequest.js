@@ -1,15 +1,13 @@
-Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('value');
-
 new Vue({
 
     el: '#app',
 
     data: {
-        holidayRequestSubmitted: false,
+        displayFlash: false,
 
         defaultDate: '',
 
-        result: {
+        flashData: {
             'level': '',
             'message': ''
         }
@@ -17,7 +15,7 @@ new Vue({
 
     methods: {
 
-        onSubmitForm: function(e) {
+        requestHoliday: function(e) {
 
             e.preventDefault();
 
@@ -28,14 +26,18 @@ new Vue({
                 end_date: this.defaultDate
             };
 
-            this.$http.post('/api/holiday/request', holidayRequest);
+            var res = this.$http.post('/api/holiday/request', holidayRequest);
 
-            this.result = {
+            console.log(res);
+
+            this.flashData = {
                 'level': 'success',
                 'message': 'Holiday Request Successfully Placed'
             };
 
-            this.holidayRequestSubmitted = true;
+            console.log('Update and show Flash');
+
+            this.displayFlash = true;
         }
     }
 });

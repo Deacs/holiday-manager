@@ -9,10 +9,3 @@ $I->amOnPage('/member/tom-leigh');
 $I->see('Tom Leigh');
 $I->see('Business Development Manager');
 $I->see('tom.leigh@crowdcube.com');
-
-$I->see('Holiday Status');
-$I->see('Not currently on leave');
-
-$I->see('No approved holiday requests');
-
-$I->see('Approve');

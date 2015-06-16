@@ -75,8 +75,7 @@ CREATE TABLE `holiday_requests` (
   PRIMARY KEY (`id`),
   KEY `holiday_requests_user_id_index` (`user_id`),
   KEY `holiday_requests_status_id_index` (`status_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
 # Dump of table locations

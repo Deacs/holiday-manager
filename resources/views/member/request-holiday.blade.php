@@ -1,11 +1,8 @@
-@section('meta-headers')
-    <meta id="token" name="token=" value="{!! csrf_token() !!}">
-@endsection
 
 <div class="large-12 columns" id="requestHolidayForm">
     <div class="row panel radius">
         <h4>Request Holiday</h4>
-        {!! Form::open(['route' => 'api.holiday.request', 'v-on' => 'submit: onSubmitForm']) !!}
+        {!! Form::open(['route' => 'api.holiday.request', 'v-on' => 'submit: requestHoliday']) !!}
             <input type="hidden" name="default_date" value="{!! $restrictions['start'] !!}" v-model="defaultDate">
             <div class="large-3 columns">
                 <label>Start Date:
@@ -23,9 +20,3 @@
         {!! Form::close() !!}
     </div>
 </div>
-
-@section('scripts')
-
-    <script src="/js/holidayRequest.js"></script>
-
-@endsection

@@ -38,6 +38,9 @@ class HolidayRequest extends Model
     public $holiday_end_date_year;
     public $holiday_start_date;
     public $holiday_end_date;
+
+    public $start_date;
+    public $end_date;
     public $approved_by;
     public $declined_by;
 

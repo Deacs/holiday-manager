@@ -1,9 +1,5 @@
 @extends('master')
 
-@section('meta-headers')
-<meta id="token" name="token=" value="{!! csrf_token() !!}">
-@endsection
-
 @section('content')
     <div class="container">
         <div class="row">
@@ -73,8 +69,3 @@
     </div>
 @endsection
 
-@section('scripts')
-
-    <script src="/js/app.js"></script>
-
-@endsection

@@ -2,13 +2,6 @@ Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAt
 
 new Vue({
 
-    data: {
-        displayFlash: false
-    }
-});
-
-new Vue({
-
     el: '#members',
 
     data: {
@@ -22,7 +15,7 @@ new Vue({
             department_id: ''
         },
 
-        displayFlash: false
+        submitted: false,
     },
 
     computed: {
@@ -64,27 +57,24 @@ new Vue({
 
             this.$http.post('api/members', member);
 
-            this.flashData = {
-                'level': 'success',
-                'message': 'Department Member Successfully Added'
-            };
-
-            this.displayFlash = true;
+            this.submitted = true;
         }
     }
 
 });
+
+Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('value');
 
 new Vue({
 
     el: '#app',
 
     data: {
-        displayFlash: false,
+        holidayRequestSubmitted: false,
 
         defaultDate: '',
 
-        flashData: {
+        result: {
             'level': '',
             'message': ''
         }
@@ -103,18 +93,14 @@ new Vue({
                 end_date: this.defaultDate
             };
 
-            var res = this.$http.post('/api/holiday/request', holidayRequest);
+            this.$http.post('/api/holiday/request', holidayRequest);
 
-            console.log(res);
-
-            this.flashData = {
+            this.result = {
                 'level': 'success',
                 'message': 'Holiday Request Successfully Placed'
             };
 
-            console.log('Update and show Flash');
-
-            this.displayFlash = true;
+            this.holidayRequestSubmitted = true;
         }
     }
 });

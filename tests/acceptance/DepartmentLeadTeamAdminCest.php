@@ -46,12 +46,6 @@ class DepartmentLeadTeamAdminCest
         $I->see('rob@crowdcube.com', 'a');
     }
 
-    public function seeHolidayAdministrationOptionsForMembers(AcceptanceTester $I)
-    {
-        $I->amOnPage('/member/rob-crowe');
-        $I->see('No approved holiday requests');
-    }
-
     public function cannotSeeAdministrationOptionsForOtherDepartments(AcceptanceTester $I)
     {
         $I->amOnPage('/department/marketing');

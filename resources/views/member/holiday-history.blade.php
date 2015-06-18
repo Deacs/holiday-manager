@@ -15,10 +15,10 @@
     <tbody>
         <tr v-repeat="holidayRequests | orderBy start_date">
             <td>@{{ status_id }} [@{{ id }}]</td>
-            <td>@{{ start_date }}</td>
-            <td>@{{ end_date }}</td>
+            <td>@{{ start_date | date}}</td>
+            <td>@{{ end_date | date }}</td>
             <td></td>
-            <td>@{{ created_at }}</td>
+            <td>@{{ created_at | date }}</td>
             <td></td>
             <td></td>
         </tr>

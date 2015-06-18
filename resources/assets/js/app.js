@@ -1,3 +1,7 @@
+var Vue = require('vue');
+
+Vue.use(require('vue-resource'));
+
 Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('value');
 
 new Vue({
@@ -7,73 +11,75 @@ new Vue({
     }
 });
 
-new Vue({
+//new Vue({
+//
+//    el: '#members',
+//
+//    data: {
+//        members: [],
+//        newMember: {
+//            first_name: '',
+//            last_name: '',
+//            email: '',
+//            role: '',
+//            location_id: '',
+//            department_id: ''
+//        },
+//
+//        displayFlash: false
+//    },
+//
+//    computed: {
+//        errors: function() {
+//            for (var key in this.newMember) {
+//                if ( ! this.newMember[key]) return true;
+//            }
+//
+//            return false;
+//        }
+//    },
+//
+//    ready: function() {
+//        this.fetchMembers();
+//    },
+//
+//    methods: {
+//        fetchMembers: function() {
+//            this.$http.get('/api/members', function(members) {
+//                this.members = members;
+//            });
+//        },
+//
+//        onSubmitForm: function(e) {
+//
+//            e.preventDefault();
+//
+//            var member = this.newMember;
+//
+//            this.members.push(member);
+//            this.newMember = {
+//                first_name: '',
+//                last_name: '',
+//                email: '',
+//                role: '',
+//                location_id: '',
+//                department_id: ''
+//            };
+//
+//            this.$http.post('api/members', member);
+//
+//            this.flashData = {
+//                'level': 'success',
+//                'message': 'Department Member Successfully Added'
+//            };
+//
+//            this.displayFlash = true;
+//        }
+//    }
+//
+//});
 
-    el: '#members',
-
-    data: {
-        members: [],
-        newMember: {
-            first_name: '',
-            last_name: '',
-            email: '',
-            role: '',
-            location_id: '',
-            department_id: ''
-        },
-
-        displayFlash: false
-    },
-
-    computed: {
-      errors: function() {
-          for (var key in this.newMember) {
-              if ( ! this.newMember[key]) return true;
-          }
-
-          return false;
-      }
-    },
-
-    ready: function() {
-        this.fetchMembers();
-    },
-
-    methods: {
-        fetchMembers: function() {
-            this.$http.get('/api/members', function(members) {
-                this.members = members;
-            });
-        },
-
-        onSubmitForm: function(e) {
-
-            e.preventDefault();
-
-            var member = this.newMember;
-
-            this.members.push(member);
-            this.newMember = {
-                first_name: '',
-                last_name: '',
-                email: '',
-                role: '',
-                location_id: '',
-                department_id: ''
-            };
-
-            this.$http.post('api/members', member);
-
-            this.flashData = {
-                'level': 'success',
-                'message': 'Department Member Successfully Added'
-            };
-
-            this.displayFlash = true;
-        }
-    }
-
-});
+// -------------------------------
 
 new Vue({
 
@@ -101,6 +107,14 @@ new Vue({
         flashData: {
             'level': '',
             'message': ''
+        }
+    },
+
+    filters : {
+
+        date : function (ymd) {
+            var d = new Date(ymd);
+            return ymd+' : '+d.getDate()+'/'+ d.getMonth()+'/'+ d.getYear();
         }
     },
 
@@ -160,4 +174,3 @@ new Vue({
     }
 });
 
-//# sourceMappingURL=app.js.map

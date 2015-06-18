@@ -7,7 +7,7 @@
     </div>
 
     <div class="large-12 columns">
-        Sorry, the page you requested could bnot be found.
+        Sorry, the page you requested could not be found.
     </div>
 
 @endsection

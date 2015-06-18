@@ -100,4 +100,13 @@ class UserController extends Controller {
 		return redirect('member/'.$user->slug);
 	}
 
+	/**
+	 * Called via the API
+	 * Returns the Holiday Request records to be consumed by the FE app
+	 */
+	public function holidayRequests()
+	{
+		return Auth::user()->holidayRequests;
+	}
+
 }

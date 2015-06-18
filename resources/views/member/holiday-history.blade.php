@@ -1,11 +1,30 @@
 <h4>Holiday History</h4>
 
-Allowance <span class="round regular label">{!! $member->getAnnualHolidayAllowance() !!}</span>
-Available <span class="round secondary label">{!! $member->availableHolidayAllowance() !!}</span>
-Active <span class="round success label">{!! $member->activeHolidayBalance() !!}</span>
-Pending <span class="round warning label">{!! $member->pendingHolidayBalance() !!}</span>
-Approved <span class="round info label">{!! $member->approvedHolidayBalance() !!}</span>
-Completed <span class="round alert label">{!! $member->completedHolidayBalance() !!}</span>
+<table width="100%" v-if="haveHistory">
+    <thead>
+    <tr>
+        <th>Status</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Day Count</th>
+        <th>Requested</th>
+        <th>Approved By</th>
+        <th>Declined By</th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr v-repeat="holidayRequests | orderBy start_date">
+            <td>@{{ status_id }} [@{{ id }}]</td>
+            <td>@{{ start_date }}</td>
+            <td>@{{ end_date }}</td>
+            <td></td>
+            <td>@{{ created_at }}</td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
 
-<hr />
-{!! $history !!}
+<div data-alert="" class="alert-box info radius" v-if="!haveHistory">
+    No holiday history
+</div>

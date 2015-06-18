@@ -1,5 +1,6 @@
 <?php namespace App;
 
+use App\HolidayRequest;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -67,6 +68,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	public function location()
 	{
 		return $this->belongsTo('App\Location', 'id', 'location_id');
+	}
+
+	public function holidayRequests()
+	{
+		return $this->hasMany(HolidayRequest::class);
 	}
 
 	/**

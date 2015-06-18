@@ -11,12 +11,22 @@ class HolidayRequestController extends Controller
 
     public function store(Request $request)
     {
-        HolidayRequest::create([
+        $holiday_request = HolidayRequest::create([
             'start_date'    => $request->start_date,
             'end_date'      => $request->end_date,
             'user_id'       => Auth::user()->id,
         ]);
 
-        return response()->json(['status' => 'placed']);
+        if ( ! $holiday_request) {
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'Holiday Request could not be placed'
+            ], 404);
+        }
+
+        return response()->json([
+            'status'    => 'success',
+            'message'   => 'Holiday Request successfully placed'
+        ]);
     }
 }

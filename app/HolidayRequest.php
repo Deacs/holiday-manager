@@ -39,13 +39,11 @@ class HolidayRequest extends Model
     public $holiday_start_date;
     public $holiday_end_date;
 
-    public $start_date;
-    public $end_date;
     public $approved_by;
     public $declined_by;
 
     // The default status for a request is Pending
-    public $status_id = Status::PENDING_ID;
+//    public $status_id = Status::PENDING_ID;
 
     /**
      * Specify the start date for the request
@@ -105,7 +103,7 @@ class HolidayRequest extends Model
 
     public function status()
     {
-        return $this->hasOne('App\Status');
+        return $this->belongsTo('App\Status');
     }
 
     public function requestingUser(User $requesting_user)

@@ -15,7 +15,6 @@ class HolidayHistory
         $data = $view->getData();
         $member = $data['member'];
 
-        $history = 'foozle : '.$member->first_name;
-        $view->with('history', $history);
+        $view->with('history', $member->holidayRequests);
     }
 }

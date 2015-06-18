@@ -17,8 +17,11 @@
         </div>
     </div>
 
-    @if (Auth::user() && Auth::user()->id == $member->id)
+    @if (Auth::check() && Auth::user()->id == $member->id)
         @include('member.request-holiday')
+    @endif
+
+    @if (Auth::check() && (Auth::user()->id == $member->id || Auth::user()->isDepartmentLead($member->department)))
         @include('member.holiday-history')
     @endif
 

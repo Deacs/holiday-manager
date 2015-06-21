@@ -1,6 +1,8 @@
 var Vue = require('vue');
+var Moment = require('moment');
 
 Vue.use(require('vue-resource'));
+//Vue.use(require('moment'));
 
 Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('value');
 
@@ -112,9 +114,13 @@ new Vue({
 
     filters : {
 
-        date : function (ymd) {
-            var d = new Date(ymd);
-            return ymd+' : '+d.getDate()+'/'+ d.getMonth()+'/'+ d.getYear();
+        dateFormat : function (ymd, type) {
+            console.log(type);
+            if (type == 'time') {
+                return Moment(ymd).format("DD/MM/YYYY H:mm");
+            }
+
+            return Moment(ymd).format("DD/MM/YYYY");
         }
     },
 
@@ -132,7 +138,7 @@ new Vue({
 
                 this.haveHistory = this.holidayRequests.length;
 
-                console.table(this.holidayRequests);
+                //console.table(this.holidayRequests);
 
             });
         },

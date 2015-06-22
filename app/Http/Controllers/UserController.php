@@ -12,6 +12,14 @@ use App\Http\Controllers\Controller;
 class UserController extends Controller {
 
 	/**
+	 * Return all users
+	 */
+	public function index()
+	{
+		return User::with('department')->orderBy('last_name')->get();
+	}
+
+	/**
 	 * Store a newly created resource in storage.
 	 *
 	 * @return Response
@@ -41,17 +49,21 @@ class UserController extends Controller {
 	}
 
 	/**
-	 * Display the specified resource.
+	 * Return the specified resource.
 	 *
-	 * @return Response
 	 * @param $slug
 	 * @internal param int $id
 	 */
 	public function show($slug)
 	{
-		$user = User::where('slug', $slug)->firstOrFail();
-		return view('member.home')->with('member',$user);
+		return User::where('slug', $slug)->with('department')->with('location')->firstOrFail();
 	}
+
+//	public function show($slug)
+//	{
+//		$user = User::where('slug', $slug)->firstOrFail();
+//		return view('member.home')->with('member',$user);
+//	}
 
 	/**
 	 * Search for the user with the unconfirmed account that

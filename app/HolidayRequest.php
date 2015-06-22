@@ -42,6 +42,8 @@ class HolidayRequest extends Model
     public $approved_by;
     public $declined_by;
 
+    //public $status;
+
     // The default status for a request is Pending
 //    public $status_id = Status::PENDING_ID;
 
@@ -83,6 +85,11 @@ class HolidayRequest extends Model
     public function getEndDate()
     {
         return $this->end_date;
+    }
+
+    public function statusAttribute()
+    {
+        return 'StatusAsString';
     }
 
     // -- Relationships

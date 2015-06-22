@@ -6,6 +6,8 @@ class Status extends Model {
 
     protected $table = 'statuses';
 
+    protected $title;
+
     protected $fillable = [
         'id',
         'title'

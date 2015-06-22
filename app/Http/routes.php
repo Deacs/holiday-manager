@@ -111,9 +111,47 @@ get('beta', function () {
 
 Route::group(['prefix' => 'api', 'as' => 'api.'], function () {
 
-	get('members/', function () {
-		return User::all();
-	});
+	get('location/{location_slug}/departments/teams',
+		[
+			'as' 	=> 'location.department.teams',
+			'uses' 	=> 'LocationController@departmentTeams'
+		]
+	);
+
+	get('location/{slug}/departments',
+		[
+			'as' 	=> 'location.departments',
+			'uses' 	=> 'LocationController@departments'
+		]
+	);
+
+	get('department/{slug}/team',
+		[
+			'as' 	=> 'department.team',
+			'uses' 	=> 'DepartmentController@team'
+		]
+	);
+
+	get('department/{slug}',
+		[
+			'as' 	=> 'department.show',
+			'uses' 	=> 'DepartmentController@show'
+		]
+	);
+
+	get('member/{slug}',
+		[
+			'as' 	=> 'member.show',
+			'uses' 	=> 'UserController@show',
+		]
+	);
+
+	get('members',
+		[
+			'as' 	=> 'members',
+			'uses' 	=> 'UserController@index'
+		]
+	);
 
 	post('members', 'UserController@store');
 

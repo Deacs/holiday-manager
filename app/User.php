@@ -21,6 +21,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 */
 	protected $table = 'users';
 
+	protected $appends = ['avatar_path'];
+
 	/**
 	 * The attributes excluded from the model's JSON form.
 	 *
@@ -58,6 +60,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	public $completed_holiday_balance 		= 0;
 	public $available_holiday_balance 		= 0;
 	public $unavailable_holiday_balance 	= 0;
+	public $avatarPathAttribute;
 
 	// Relationships
 	public function department()
@@ -67,7 +70,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	public function location()
 	{
-		return $this->belongsTo('App\Location', 'id', 'location_id');
+		return $this->belongsTo('App\Location', 'location_id', 'id');
 	}
 
 	public function holidayRequests()
@@ -126,6 +129,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 * @param string $default
 	 */
 	public function getAvatarPath($size = 150, $default = 'mm')
+	{
+		$str = md5(trim(strtolower($this->email)));
+
+		return 'http://www.gravatar.com/avatar/'.$str.'?s='.$size.'&d='.$default;
+	}
+
+	public function getAvatarPathAttribute($size = 150, $default = 'mm')
 	{
 		$str = md5(trim(strtolower($this->email)));
 

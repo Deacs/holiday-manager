@@ -5,12 +5,10 @@ var Vue = require('vue');
 var Moment = require('moment');
 
 Vue.use(require('vue-resource'));
-//Vue.use(require('moment'));
 
 Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('value');
 
 new Vue({
-
     data: {
         displayFlash: false
     }
@@ -106,7 +104,7 @@ new Vue({
             status_id: 'Pending',
             approved_by: '',
             declined_by: '',
-            created_at: '2012-06-18 17:08:37'
+            created_at: Moment()
         },
 
         flashData: {
@@ -118,7 +116,6 @@ new Vue({
     filters: {
 
         dateFormat: function dateFormat(ymd, type) {
-            console.log(type);
             if (type == 'time') {
                 return Moment(ymd).format('DD/MM/YYYY H:mm');
             }
@@ -137,11 +134,11 @@ new Vue({
 
             this.$http.get('/api/member/holiday-requests', function (holidayRequests) {
 
+                console.log(holidayRequests);
+
                 this.holidayRequests = holidayRequests;
 
                 this.haveHistory = this.holidayRequests.length;
-
-                //console.table(this.holidayRequests);
             });
         },
 

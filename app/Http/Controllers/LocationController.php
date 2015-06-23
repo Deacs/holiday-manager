@@ -9,12 +9,12 @@ use Illuminate\Http\Request;
 
 class LocationController extends Controller
 {
-	/**
-	 * Display the specified resource.
-	 * @return Response
-	 * @param $slug
-	 * @internal param int $id
-	 */
+
+	public function index()
+	{
+		return Location::with('departments.lead')->get();
+	}
+
 	public function show($slug)
 	{
 		$location = Location::where('slug', $slug)->firstOrFail();

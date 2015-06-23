@@ -91,6 +91,9 @@ new Vue({
         defaultDate: '',
 
         holidayRequests: [],
+        locations: [],
+        departments: [],
+        members: [],
 
         haveHistory: false,
 
@@ -118,25 +121,52 @@ new Vue({
             }
 
             return Moment(ymd).format("DD/MM/YYYY");
+        },
+
+        nameFormat : function (user) {
+            return user.first_name+' '+user.last_name;
+        },
+
+        getAvatar : function (user, size) {
+            if (typeof(size) == "undefined") {
+                size = 40;
+            }
+
+            return user.avatar_path.replace(/s=[0-9]?/, 's='+size);
         }
     },
 
     ready: function() {
-        this.fetchHolidayRequests();
+        //this.fetchHolidayRequests();
+        this.fetchLocations();
+        this.fetchDepartments();
+        this.fetchMembers();
     },
 
     methods: {
 
         fetchHolidayRequests: function() {
-
             this.$http.get('/api/member/holiday-requests', function(holidayRequests) {
-
-                console.log(holidayRequests);
-
                 this.holidayRequests = holidayRequests;
-
                 this.haveHistory = this.holidayRequests.length;
+            });
+        },
 
+        fetchLocations: function() {
+            this.$http.get('/api/locations', function(locations) {
+                this.locations = locations;
+            });
+        },
+
+        fetchDepartments: function() {
+            this.$http.get('/api/departments', function(departments) {
+                this.departments = departments;
+            });
+        },
+
+        fetchMembers: function() {
+            this.$http.get('/api/members', function(members) {
+                this.members = members;
             });
         },
 

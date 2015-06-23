@@ -6,6 +6,8 @@ class Location extends Model {
 
 	protected $table = 'locations';
 
+    protected $appends = ['url'];
+
     protected $fillable = [
         'name',
         'slug',
@@ -32,6 +34,11 @@ class Location extends Model {
     public function formattedAddress()
     {
         return str_replace(',', '<br />', $this->address);
+    }
+
+    public function getUrlAttribute()
+    {
+        return '/location/'.$this->slug;
     }
 
 }

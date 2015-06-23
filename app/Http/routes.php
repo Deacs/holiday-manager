@@ -125,6 +125,13 @@ Route::group(['prefix' => 'api', 'as' => 'api.'], function () {
 		]
 	);
 
+	get('locations',
+		[
+			'as' 	=> 'locations',
+			'uses'	=> 'LocationController@index'
+		]
+	);
+
 	get('department/{slug}/team',
 		[
 			'as' 	=> 'department.team',
@@ -136,6 +143,13 @@ Route::group(['prefix' => 'api', 'as' => 'api.'], function () {
 		[
 			'as' 	=> 'department.show',
 			'uses' 	=> 'DepartmentController@show'
+		]
+	);
+
+	get('departments',
+		[
+			'as' 	=> 'departments',
+			'uses' 	=> 'DepartmentController@index'
 		]
 	);
 

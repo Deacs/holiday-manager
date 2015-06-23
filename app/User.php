@@ -21,7 +21,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 */
 	protected $table = 'users';
 
-	protected $appends = ['avatar_path'];
+	protected $appends = [
+		'avatar_path',
+		'url'
+	];
 
 	/**
 	 * The attributes excluded from the model's JSON form.
@@ -139,7 +142,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	{
 		$str = md5(trim(strtolower($this->email)));
 
-		return 'http://www.gravatar.com/avatar/'.$str.'?s='.$size.'&d='.$default;
+		return 'http://www.gravatar.com/avatar/'.$str.'?d='.$default.'&s='.$size;
+	}
+
+	public function getUrlAttribute()
+	{
+		return '/member/'.$this->slug;
 	}
 
 	public function sendConfirmationRequestEmail()

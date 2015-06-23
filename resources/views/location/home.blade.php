@@ -2,6 +2,16 @@
 
 @section('content')
 
+    @include('location.listing')
+
+    <hr />
+
+    @include('department.listing')
+
+    <hr />
+
+    @include('member.listing')
+
     <div class="large-12 columns">
         <h1>{{ $location->name }}</h1>
     </div>

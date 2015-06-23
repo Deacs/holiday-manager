@@ -7,6 +7,10 @@ class Department extends Model {
 
 	protected $table = 'departments';
 
+	protected $appends = [
+		'url'
+	];
+
 	protected $fillable = [
 		'name',
 		'slug',
@@ -61,5 +65,10 @@ class Department extends Model {
 	public function scopeBarcelona($query)
 	{
 		return $query->where('location_id', Location::BARCELONA_ID);
+	}
+
+	public function getUrlAttribute()
+	{
+		return '/department/'.$this->slug;
 	}
 }

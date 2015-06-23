@@ -15,7 +15,7 @@ class DepartmentController extends Controller {
 	 */
 	public function index()
 	{
-		return 'index for Department';
+		return Department::with('lead')->get();
 	}
 
 	/**

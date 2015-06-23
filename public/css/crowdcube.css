@@ -2,3 +2,13 @@
     background: url('/img/cc_logo.png') no-repeat;
     padding-left: 45px;
 }
+
+th.sort-field {
+    background: #333333;
+    cursor: pointer;
+    color: #ffffff;
+}
+th.active-field {
+    background: #de770f;
+    color: #333333;
+}

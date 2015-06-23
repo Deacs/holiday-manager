@@ -16,7 +16,7 @@ class UserController extends Controller {
 	 */
 	public function index()
 	{
-		return User::with('department')->orderBy('last_name')->get();
+		return User::with('department')->get();
 	}
 
 	/**

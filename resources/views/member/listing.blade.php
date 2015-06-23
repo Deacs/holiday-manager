@@ -1,12 +1,21 @@
-<table>
+<input type="text" v-model="search">
+<table width="100%">
     <tr>
-        <th>Name</th><th>Role</th><th>Email</th><th>Telephone</th><th>Extension</th>
+        <th class="sort-field"
+            v-repeat="column: memberColumns"
+            v-on="click: sortBy(column.field)"
+            v-class="active-field: sortKey==column.field">
+            @{{ column.title }}
+        </th>
     </tr>
-    <tr v-repeat="member: members">
+    <tr v-repeat="member: members
+                        | filterBy search
+                        | orderBy sortKey reverse"
+    >
         <td><img src="@{{ member | getAvatar }}"> <a href="@{{ member.url }}" v-text="member | nameFormat"></a></td>
         <td v-text="member.role"></td>
         <td><a href="mailto:@{{ email }}" v-text="member.email"></a></td>
         <td v-text="member.telephone"></td>
-        <td></td>
+        <td v-text="member.extension"></td>
     </tr>
 </table>

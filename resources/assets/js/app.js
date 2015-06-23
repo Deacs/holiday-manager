@@ -1,5 +1,5 @@
-var Vue = require('vue');
-var Moment = require('moment');
+var Vue     = require('vue');
+var Moment  = require('moment');
 
 Vue.use(require('vue-resource'));
 
@@ -93,7 +93,19 @@ new Vue({
         holidayRequests: [],
         locations: [],
         departments: [],
+
+        memberColumns: [
+            {field: 'last_name', title: 'Name'},
+            {field: 'role', title: 'Role'},
+            {field: 'email', title: 'email'},
+            {field: 'telephone', title: 'Telephone'},
+            {field: 'extension', title: 'Extension'},
+        ],
         members: [],
+
+        sortKey: '',
+        reverse: false,
+        search: '',
 
         haveHistory: false,
 
@@ -203,6 +215,12 @@ new Vue({
                 });
 
             this.displayFlash = true;
+        },
+
+        sortBy: function(sortKey) {
+
+            this.reverse = (sortKey == this.sortKey) ? ! this.reverse : false;
+            this.sortKey = sortKey;
         }
     }
 });

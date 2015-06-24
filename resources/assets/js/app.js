@@ -81,6 +81,40 @@ new Vue({
 
 // -------------------------------
 
+Vue.component('member_listing', {
+
+    template: document.querySelector('#member-listing'),
+    //template: require('./templates/member_listing'),
+
+    data: function() {
+        return {
+            memberColumns: [
+                {field: 'last_name', title: 'Name'},
+                {field: 'department_name', title: 'Department'},
+                {field: 'role', title: 'Role'},
+                {field: 'email', title: 'email'},
+                {field: 'telephone', title: 'Telephone'},
+                {field: 'extension', title: 'Extension'},
+            ],
+            members: [],
+            sortKey: '',
+            reverse: false,
+            search: ''
+        }
+    },
+
+    methods: {
+
+        fetchMembers: require('./methods/fetchMembers'),
+        sortBy: require('./methods/sortBy')
+    },
+
+    ready: function() {
+        this.fetchMembers();
+    }
+
+});
+
 new Vue({
 
     el: '#app',
@@ -93,19 +127,6 @@ new Vue({
         holidayRequests: [],
         locations: [],
         departments: [],
-
-        memberColumns: [
-            {field: 'last_name', title: 'Name'},
-            {field: 'role', title: 'Role'},
-            {field: 'email', title: 'email'},
-            {field: 'telephone', title: 'Telephone'},
-            {field: 'extension', title: 'Extension'},
-        ],
-        members: [],
-
-        sortKey: '',
-        reverse: false,
-        search: '',
 
         haveHistory: false,
 
@@ -127,101 +148,87 @@ new Vue({
 
     filters : {
 
-        dateFormat : function (ymd, type) {
-            if (type == 'time') {
-                return Moment(ymd).format("DD/MM/YYYY H:mm");
-            }
-
-            return Moment(ymd).format("DD/MM/YYYY");
-        },
-
-        nameFormat : function (user) {
-            return user.first_name+' '+user.last_name;
-        },
-
-        getAvatar : function (user, size) {
-            if (typeof(size) == "undefined") {
-                size = 40;
-            }
-
-            return user.avatar_path.replace(/s=[0-9]?/, 's='+size);
-        }
+        getAvatar: require('./filters/getAvatar'),
+        dateFormat: require('./filters/dateFormat'),
+        nameFormat: require('./filters/nameFormat')
     },
 
     ready: function() {
-        //this.fetchHolidayRequests();
         this.fetchLocations();
         this.fetchDepartments();
-        this.fetchMembers();
     },
 
     methods: {
 
-        fetchHolidayRequests: function() {
-            this.$http.get('/api/member/holiday-requests', function(holidayRequests) {
-                this.holidayRequests = holidayRequests;
-                this.haveHistory = this.holidayRequests.length;
-            });
-        },
+        //fetchMembers: require('./methods/fetchMembers'),
+        //sortBy: require('./methods/sortBy'),
+        fetchLocations: require('./methods/fetchLocations'),
+        fetchDepartments: require('./methods/fetchDepartments')
+        //fetchHolidayRequests: function() {
+        //    this.$http.get('/api/member/holiday-requests', function(holidayRequests) {
+        //        this.holidayRequests = holidayRequests;
+        //        this.haveHistory = this.holidayRequests.length;
+        //    });
+        //},
 
-        fetchLocations: function() {
-            this.$http.get('/api/locations', function(locations) {
-                this.locations = locations;
-            });
-        },
+        //fetchLocations: function() {
+        //    this.$http.get('/api/locations', function(locations) {
+        //        this.locations = locations;
+        //    });
+        //},
 
-        fetchDepartments: function() {
-            this.$http.get('/api/departments', function(departments) {
-                this.departments = departments;
-            });
-        },
+        //fetchDepartments: function() {
+        //    this.$http.get('/api/departments', function(departments) {
+        //        this.departments = departments;
+        //    });
+        //},
 
-        fetchMembers: function() {
-            this.$http.get('/api/members', function(members) {
-                this.members = members;
-            });
-        },
+        //fetchMembers: function() {
+        //    this.$http.get('/api/members', function(members) {
+        //        this.members = members;
+        //    });
+        //},
 
-        requestHoliday: function(e) {
+        //requestHoliday: function(e) {
+        //
+        //    e.preventDefault();
+        //
+        //    var holidayRequest = this.newHolidayRequest;
+        //
+        //    this.holidayRequests.push(holidayRequest);
+        //
+        //    this.haveHistory = true;
+        //
+        //    this.newHolidayRequest = {
+        //        start_date: this.defaultDate,
+        //        end_date: this.defaultDate
+        //    };
+        //
+        //    this.$http.post('/api/holiday/request', holidayRequest)
+        //        .success(function (data) {
+        //            console.log('Success');
+        //            console.log(data);
+        //
+        //            this.flashData = {
+        //                'level': data.status,
+        //                'message': data.message
+        //            };
+        //        })
+        //        .error(function (data) {
+        //            this.flashData = {
+        //                'level': data.status,
+        //                'message': data.message
+        //            };
+        //        });
+        //
+        //    this.displayFlash = true;
+        //},
 
-            e.preventDefault();
-
-            var holidayRequest = this.newHolidayRequest;
-
-            this.holidayRequests.push(holidayRequest);
-
-            this.haveHistory = true;
-
-            this.newHolidayRequest = {
-                start_date: this.defaultDate,
-                end_date: this.defaultDate
-            };
-
-            this.$http.post('/api/holiday/request', holidayRequest)
-                .success(function (data) {
-                    console.log('Success');
-                    console.log(data);
-
-                    this.flashData = {
-                        'level': data.status,
-                        'message': data.message
-                    };
-                })
-                .error(function (data) {
-                    this.flashData = {
-                        'level': data.status,
-                        'message': data.message
-                    };
-                });
-
-            this.displayFlash = true;
-        },
-
-        sortBy: function(sortKey) {
-
-            this.reverse = (sortKey == this.sortKey) ? ! this.reverse : false;
-            this.sortKey = sortKey;
-        }
+        //sortBy: function(sortKey) {
+        //
+        //    this.reverse = (sortKey == this.sortKey) ? ! this.reverse : false;
+        //    this.sortKey = sortKey;
+        //}
     }
 });
 

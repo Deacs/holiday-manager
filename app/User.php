@@ -23,7 +23,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	protected $appends = [
 		'avatar_path',
-		'url'
+		'url',
+		'department_name'
 	];
 
 	/**
@@ -149,6 +150,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	public function getUrlAttribute()
 	{
 		return '/member/'.$this->slug;
+	}
+
+	public function getDepartmentNameAttribute()
+	{
+		return $this->department->name;
 	}
 
 	public function sendConfirmationRequestEmail()

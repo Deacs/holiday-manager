@@ -80,7 +80,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	public function holidayRequests()
 	{
-		return $this->hasMany(HolidayRequest::class);
+
+//		return $this->hasMany(HolidayRequest::class);
+		return $this->hasMany('App\HolidayRequest');
 	}
 
 	/**

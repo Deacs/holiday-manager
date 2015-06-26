@@ -58,8 +58,8 @@ $factory('App\Location', [
     'telephone' => $faker->phoneNumber
 ]);
 
-$factory('App\HolidayRequest', [
-    'user_id'       => 'factory:App\User',
-    'request_date'  => $faker->dateTime, // Carbon instance required
-    'status_id'     => \App\Status::PENDING_ID // This needs checking - it doesn't feel right
-]);
+//$factory('App\HolidayRequest', [
+//    'user_id'       => 'factory:App\User',
+//    'request_date'  => $faker->dateTime, // Carbon instance required
+//    'status_id'     => \App\Status::PENDING_ID // This needs checking - it doesn't feel right
+//]);

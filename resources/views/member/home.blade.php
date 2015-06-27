@@ -2,27 +2,31 @@
 
 @section('content')
     <div class="row">
-        <div class="large-2 columns">
-            {!! HTML::image($member->getAvatarPath(), $member->fullName()) !!}
-        </div>
-        <div class="large-7 columns">
-            <h2>{!! $member->fullName() !!}</h2>
-            <h3>{!! $member->role !!}</h3>
-            <h6>{!! HTML::mailto($member->email, $member->email) !!}</h6>
-        </div>
-        <div class="large-2 columns">
 
-            @include('member.holiday-balance')
+        <script id="member-profile" type="x-template">
 
-        </div>
+            <div class="large-2 columns">
+                <img src="@{{ member | getAvatar '150' }}">
+            </div>
+            <div class="large-6 columns">
+                <h2 v-text="member | nameFormat"></h2>
+                <h3><a href="@{{ member.department.url }}" v-text="member.department.name"></a> / <a href="@{{ member.location.name }}" v-text="member.location.name"></a></h3>
+                <h4 v-text="member.role"></h4>
+            </div>
+            <div class="large-4 columns">
+                <h3>Contact</h3>
+                <ul class="no-bullet">
+                    <li><a href="mailto:@{{ member.email }}" v-text="member.email"></a></li>
+                    <li v-text="member.telephone"></li>
+                    <li v-text="member.extension"></li>
+                    <li><a href="skype:@{{ member.skype_name }}?call">Call</a> | <a href="skype:@{{ member.skype_name }}?chat">Chat</a></li>
+                </ul>
+            </div>
+
+        </script>
+
+        <member_profile slug="{{ $member->slug }}"></member_profile>
+
     </div>
-
-    @if (Auth::check() && Auth::user()->id == $member->id)
-        @include('member.request-holiday')
-    @endif
-
-    @if (Auth::check() && (Auth::user()->id == $member->id || Auth::user()->isDepartmentLead($member->department)))
-        @include('member.holiday-history')
-    @endif
 
 @endsection

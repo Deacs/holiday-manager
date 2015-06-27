@@ -8,14 +8,40 @@ Vue.use(require('vue-resource'));
 
 Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('value');
 
+Vue.component('member_profile', {
+
+    template: document.querySelector('#member-profile'),
+
+    props: ['slug'],
+
+    data: function data() {
+        return {
+            slug: '',
+            member: ''
+        };
+    },
+
+    methods: {
+        fetchMember: require('./methods/fetchMember')
+    },
+
+    ready: function ready() {
+        this.fetchMember(this.slug);
+        console.log(this.member);
+    }
+});
+
 Vue.component('member_listing', {
 
     template: document.querySelector('#member-listing'),
     //template: require('./templates/member_listing'),
 
+    props: ['department'],
+
     data: function data() {
         return {
             memberColumns: [{ field: 'last_name', title: 'Name' }, { field: 'department_name', title: 'Department' }, { field: 'role', title: 'Role' }, { field: 'email', title: 'email' }, { field: 'telephone', title: 'Telephone' }, { field: 'extension', title: 'Extension' }],
+            department: '',
             members: [],
             sortKey: '',
             reverse: false,
@@ -24,13 +50,12 @@ Vue.component('member_listing', {
     },
 
     methods: {
-
         fetchMembers: require('./methods/fetchMembers'),
         sortBy: require('./methods/sortBy')
     },
 
     ready: function ready() {
-        this.fetchMembers();
+        this.fetchMembers(this.department);
     }
 
 });
@@ -80,7 +105,7 @@ new Vue({
     }
 });
 
-},{"./filters/dateFormat":72,"./filters/getAvatar":73,"./filters/nameFormat":74,"./methods/fetchDepartments":75,"./methods/fetchLocations":76,"./methods/fetchMembers":77,"./methods/sortBy":78,"moment":2,"vue":70,"vue-resource":4}],2:[function(require,module,exports){
+},{"./filters/dateFormat":72,"./filters/getAvatar":73,"./filters/nameFormat":74,"./methods/fetchDepartments":75,"./methods/fetchLocations":76,"./methods/fetchMember":77,"./methods/fetchMembers":78,"./methods/sortBy":79,"moment":2,"vue":70,"vue-resource":4}],2:[function(require,module,exports){
 //! moment.js
 //! version : 2.10.3
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -12992,13 +13017,31 @@ module.exports = function () {
 },{}],77:[function(require,module,exports){
 'use strict';
 
-module.exports = function () {
-    this.$http.get('/api/members', function (members) {
-        this.members = members;
+module.exports = function (slug) {
+
+    this.$http.get('/api/member/' + slug, function (member) {
+
+        console.log(member);
+        this.member = member;
     });
 };
 
 },{}],78:[function(require,module,exports){
+'use strict';
+
+module.exports = function (department) {
+
+    var endpoint = '/api/members';
+    if (department != '') {
+        endpoint = '/api/department/' + department + '/team';
+    }
+
+    this.$http.get(endpoint, function (members) {
+        this.members = members;
+    });
+};
+
+},{}],79:[function(require,module,exports){
 "use strict";
 
 module.exports = function (sortKey) {

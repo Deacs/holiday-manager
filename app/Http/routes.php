@@ -156,7 +156,7 @@ Route::group(['prefix' => 'api', 'as' => 'api.'], function () {
 	get('member/{slug}',
 		[
 			'as' 	=> 'member.show',
-			'uses' 	=> 'UserController@show',
+			'uses' 	=> 'UserController@profile',
 		]
 	);
 

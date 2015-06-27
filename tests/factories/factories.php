@@ -11,6 +11,8 @@ $factory('App\User', [
     'password'                  => $faker->word,
     'email'                     => $faker->email,
     'telephone'                 => $faker->phoneNumber,
+    'extension'                 => $faker->phoneNumber,
+    'skype_name'                => 'crowdcube.'.$faker->firstNameMale,
     'department_id'             => 'factory:App\Department',
     'location_id'               => 'factory:App\Location',
     'super_user'                => 0,
@@ -25,6 +27,8 @@ $factory('App\User', 'super_user', [
     'password'                  => $faker->word,
     'email'                     => $faker->email,
     'telephone'                 => $faker->phoneNumber,
+    'extension'                 => $faker->phoneNumber,
+    'skype_name'                => 'crowdcube.'.$faker->firstNameMale,
     'department_id'             => 'factory:App\Department',
     'location_id'               => 'factory:App\Location',
     'super_user'                => 1,
@@ -39,6 +43,8 @@ $factory('App\User', 'new_user', [
     'password'                  => $faker->word,
     'email'                     => $faker->email,
     'telephone'                 => $faker->phoneNumber,
+    'extension'                 => $faker->phoneNumber,
+    'skype_name'                => 'crowdcube.'.$faker->firstNameMale,
     'department_id'             => 'factory:App\Department',
     'location_id'               => 'factory:App\Location',
     'super_user'                => 1,
@@ -58,8 +64,3 @@ $factory('App\Location', [
     'telephone' => $faker->phoneNumber
 ]);
 
-//$factory('App\HolidayRequest', [
-//    'user_id'       => 'factory:App\User',
-//    'request_date'  => $faker->dateTime, // Carbon instance required
-//    'status_id'     => \App\Status::PENDING_ID // This needs checking - it doesn't feel right
-//]);

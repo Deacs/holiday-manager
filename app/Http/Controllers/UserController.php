@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
 
+use App\Repositories\UserRepository;
 use App\User as User;
 use App\Http\Requests;
 use App\Mailers\AppMailer;
@@ -10,6 +11,13 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class UserController extends Controller {
+
+	protected $userRepository;
+
+	public function __construct(UserRepository $userRepository)
+	{
+		$this->userRepository = $userRepository;
+	}
 
 	/**
 	 * Return all users
@@ -51,19 +59,20 @@ class UserController extends Controller {
 	/**
 	 * Return the specified resource.
 	 *
+	 * @return $this
 	 * @param $slug
 	 * @internal param int $id
 	 */
 	public function show($slug)
 	{
-		return User::where('slug', $slug)->with('department')->with('location')->firstOrFail();
+		$member = $this->userRepository->getUserBySlug($slug);
+		return view('member.home')->with('member', $member);
 	}
 
-//	public function show($slug)
-//	{
-//		$user = User::where('slug', $slug)->firstOrFail();
-//		return view('member.home')->with('member',$user);
-//	}
+	public function profile($slug)
+	{
+		return $this->userRepository->getUserBySlug($slug);
+	}
 
 	/**
 	 * Search for the user with the unconfirmed account that

@@ -51,6 +51,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		'password',
 		'telephone',
 		'extension',
+		'skyp_name',
 		'department_id',
 		'location_id',
 		'lead',
@@ -81,8 +82,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	public function holidayRequests()
 	{
 
-//		return $this->hasMany(HolidayRequest::class);
-		return $this->hasMany('App\HolidayRequest');
+		return $this->hasMany(HolidayRequest::class);
 	}
 
 	/**

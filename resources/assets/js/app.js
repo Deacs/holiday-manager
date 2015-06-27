@@ -5,10 +5,35 @@ Vue.use(require('vue-resource'));
 
 Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('value');
 
+Vue.component('member_profile', {
+
+    template: document.querySelector('#member-profile'),
+
+    props: ['slug'],
+
+    data: function() {
+        return {
+            slug: '',
+            member: ''
+        }
+    },
+
+    methods: {
+        fetchMember: require('./methods/fetchMember')
+    },
+
+    ready: function() {
+        this.fetchMember(this.slug);
+        console.log(this.member);
+    }
+});
+
 Vue.component('member_listing', {
 
     template: document.querySelector('#member-listing'),
     //template: require('./templates/member_listing'),
+
+    props: ['department'],
 
     data: function() {
         return {
@@ -20,6 +45,7 @@ Vue.component('member_listing', {
                 {field: 'telephone', title: 'Telephone'},
                 {field: 'extension', title: 'Extension'},
             ],
+            department: '',
             members: [],
             sortKey: '',
             reverse: false,
@@ -28,13 +54,12 @@ Vue.component('member_listing', {
     },
 
     methods: {
-
         fetchMembers: require('./methods/fetchMembers'),
         sortBy: require('./methods/sortBy')
     },
 
     ready: function() {
-        this.fetchMembers();
+        this.fetchMembers(this.department);
     }
 
 });

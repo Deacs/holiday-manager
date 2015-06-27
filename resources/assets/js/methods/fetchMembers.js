@@ -1,5 +1,11 @@
-module.exports = function() {
-    this.$http.get('/api/members', function(members) {
+module.exports = function(department) {
+
+    var endpoint = '/api/members';
+    if (department != '') {
+        endpoint = '/api/department/'+department+'/team';
+    }
+
+    this.$http.get(endpoint, function(members) {
         this.members = members;
     });
 }

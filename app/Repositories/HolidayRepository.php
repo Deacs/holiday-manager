@@ -3,8 +3,7 @@
 use App\HolidayRequest;
 use App\Status;
 
-class
-HolidayRepository {
+class HolidayRepository {
 
     /**
      * Return all Holiday Requests

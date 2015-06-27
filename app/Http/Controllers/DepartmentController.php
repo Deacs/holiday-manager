@@ -21,12 +21,15 @@ class DepartmentController extends Controller {
 	/**
 	 * Display the specified resource.
 	 *
+	 * @return $this
 	 * @param $slug
 	 * @internal param int $id
 	 */
 	public function show($slug)
 	{
-		return Department::where('slug', $slug)->with('lead')->with('team')->firstOrFail();
+		$department = Department::where('slug', $slug)->with('lead')->with('team')->firstOrFail();
+//		dd($department);
+		return view('department.home')->with('department', $department);
 	}
 
 	public function manage($slug)

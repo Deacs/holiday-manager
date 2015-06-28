@@ -1,8 +1,8 @@
-module.exports = function(department) {
+module.exports = function(slug) {
 
     var endpoint = '/api/members';
-    if (department != '') {
-        endpoint = '/api/department/'+department+'/team';
+    if (slug != '') {
+        endpoint = '/api/department/'+slug+'/team';
     }
 
     this.$http.get(endpoint, function(members) {

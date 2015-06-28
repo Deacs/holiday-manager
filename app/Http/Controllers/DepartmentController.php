@@ -1,12 +1,19 @@
 <?php namespace App\Http\Controllers;
 
-use App\Department as Department;
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
-
 use Illuminate\Http\Request;
+use App\Department as Department;
+use App\Http\Controllers\Controller;
+use App\Repositories\DepartmentRepository;
 
 class DepartmentController extends Controller {
+
+	protected $departmentRepository;
+
+	public function __construct(DepartmentRepository $departmentRepository)
+	{
+		$this->departmentRepository = $departmentRepository;
+	}
 
 	/**
 	 * Display a listing of the resource.
@@ -30,6 +37,15 @@ class DepartmentController extends Controller {
 		$department = Department::where('slug', $slug)->with('lead')->with('team')->firstOrFail();
 //		dd($department);
 		return view('department.home')->with('department', $department);
+	}
+
+	/**
+	 * @param $slug
+	 * @return Department
+	 */
+	public function profile($slug)
+	{
+		return $this->departmentRepository->getDepartmentBySlug($slug);
 	}
 
 	public function manage($slug)

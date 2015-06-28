@@ -8,6 +8,29 @@ Vue.use(require('vue-resource'));
 
 Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('value');
 
+Vue.component('department_profile', {
+
+    template: document.querySelector('#department_profile'),
+
+    props: ['slug'],
+
+    data: function data() {
+        return {
+            slug: '',
+            department: ''
+        };
+    },
+
+    methods: {
+        fetchDepartment: require('./methods/fetchDepartment')
+    },
+
+    ready: function ready() {
+        this.fetchDepartment(this.slug);
+    }
+
+});
+
 Vue.component('member_profile', {
 
     template: document.querySelector('#member-profile'),
@@ -27,7 +50,6 @@ Vue.component('member_profile', {
 
     ready: function ready() {
         this.fetchMember(this.slug);
-        console.log(this.member);
     }
 });
 
@@ -105,7 +127,7 @@ new Vue({
     }
 });
 
-},{"./filters/dateFormat":72,"./filters/getAvatar":73,"./filters/nameFormat":74,"./methods/fetchDepartments":75,"./methods/fetchLocations":76,"./methods/fetchMember":77,"./methods/fetchMembers":78,"./methods/sortBy":79,"moment":2,"vue":70,"vue-resource":4}],2:[function(require,module,exports){
+},{"./filters/dateFormat":72,"./filters/getAvatar":73,"./filters/nameFormat":74,"./methods/fetchDepartment":75,"./methods/fetchDepartments":76,"./methods/fetchLocations":77,"./methods/fetchMember":78,"./methods/fetchMembers":79,"./methods/sortBy":80,"moment":2,"vue":70,"vue-resource":4}],2:[function(require,module,exports){
 //! moment.js
 //! version : 2.10.3
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -12999,13 +13021,23 @@ module.exports = function (user) {
 },{}],75:[function(require,module,exports){
 'use strict';
 
+module.exports = function (slug) {
+    console.log('Calling with SLUG : ' + slug);
+    this.$http.get('/api/department/' + slug, function (department) {
+        this.department = department;
+    });
+};
+
+},{}],76:[function(require,module,exports){
+'use strict';
+
 module.exports = function () {
     this.$http.get('/api/departments', function (departments) {
         this.departments = departments;
     });
 };
 
-},{}],76:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 'use strict';
 
 module.exports = function () {
@@ -13014,26 +13046,23 @@ module.exports = function () {
     });
 };
 
-},{}],77:[function(require,module,exports){
+},{}],78:[function(require,module,exports){
 'use strict';
 
 module.exports = function (slug) {
-
     this.$http.get('/api/member/' + slug, function (member) {
-
-        console.log(member);
         this.member = member;
     });
 };
 
-},{}],78:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 'use strict';
 
-module.exports = function (department) {
+module.exports = function (slug) {
 
     var endpoint = '/api/members';
-    if (department != '') {
-        endpoint = '/api/department/' + department + '/team';
+    if (slug != '') {
+        endpoint = '/api/department/' + slug + '/team';
     }
 
     this.$http.get(endpoint, function (members) {
@@ -13041,7 +13070,7 @@ module.exports = function (department) {
     });
 };
 
-},{}],79:[function(require,module,exports){
+},{}],80:[function(require,module,exports){
 "use strict";
 
 module.exports = function (sortKey) {

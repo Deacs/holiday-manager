@@ -7,7 +7,7 @@
     </div>
 
     <div class="large-12 columns" role="content">
-        <h4>{!! HTML::image($department->lead->getAvatarPath(30), $department->lead->fullName()) !!} Department Lead: {{ $department->lead->fullName() }}</h4>
+        <h4>{!! HTML::image($department->lead->getAvatarPath(30), $department->lead->fullName()) !!} Department Lead: <a href="{{ $department->lead->url }}">{{ $department->lead->fullName() }}</a></h4>
 
         @if (Auth::user()->isDepartmentLead($department))
 
@@ -46,7 +46,7 @@
 
         </script>
 
-        <member_listing department="{{ $department->name }}"></member_listing>
+        <member_listing department="{{ $department->slug }}"></member_listing>
 
     </div>
 

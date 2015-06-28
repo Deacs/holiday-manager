@@ -142,7 +142,7 @@ Route::group(['prefix' => 'api', 'as' => 'api.'], function () {
 	get('department/{slug}',
 		[
 			'as' 	=> 'department.show',
-			'uses' 	=> 'DepartmentController@show'
+			'uses' 	=> 'DepartmentController@profile'
 		]
 	);
 

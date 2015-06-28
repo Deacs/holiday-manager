@@ -5,6 +5,29 @@ Vue.use(require('vue-resource'));
 
 Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('value');
 
+Vue.component('department_profile', {
+
+    template: document.querySelector('#department_profile'),
+
+    props: ['slug'],
+
+    data: function() {
+        return {
+            slug:       '',
+            department: ''
+        }
+    },
+
+    methods: {
+        fetchDepartment: require('./methods/fetchDepartment')
+    },
+
+    ready: function() {
+        this.fetchDepartment(this.slug)
+    }
+
+});
+
 Vue.component('member_profile', {
 
     template: document.querySelector('#member-profile'),
@@ -13,7 +36,7 @@ Vue.component('member_profile', {
 
     data: function() {
         return {
-            slug: '',
+            slug:   '',
             member: ''
         }
     },
@@ -24,7 +47,6 @@ Vue.component('member_profile', {
 
     ready: function() {
         this.fetchMember(this.slug);
-        console.log(this.member);
     }
 });
 

@@ -6,7 +6,7 @@ class DepartmentRepository
 {
     public function getDepartmentBySlug($slug)
     {
-        return Department::where('slug', $slug)->with('lead')->firstOrFail();
+        return Department::where('slug', $slug)->with('team')->with('lead')->firstOrFail();
     }
 
     public function getAllDepartments()

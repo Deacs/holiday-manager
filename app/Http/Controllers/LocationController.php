@@ -3,12 +3,20 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Location;
 use DB;
+use App\Location;
 use Illuminate\Http\Request;
+use App\Repositories\LocationRepository;
 
 class LocationController extends Controller
 {
+
+	protected $locationRepository;
+
+	public function __construct(LocationRepository $locationRepository)
+	{
+		$this->locationRepository = $locationRepository;
+	}
 
 	public function index()
 	{
@@ -23,12 +31,13 @@ class LocationController extends Controller
 
 	public function departments($slug)
 	{
-		return Location::where('slug', $slug)->with('departments.lead')->firstOrFail();
+		return $this->locationRepository->getLocationBySlug($slug);
 	}
 
-	public function departmentTeams($location)
+	public function departmentTeams($slug)
 	{
-		return Location::where('slug', $location)->with('departments.team')->firstOrFail();
+		return $this->locationRepository->getLocationDepartmentTeams($slug);
+//		return Location::where('slug', $location)->with('departments.team')->firstOrFail();
 	}
 
 }

@@ -133,7 +133,7 @@ Vue.component('member_listing', {
                 role: '',
                 email: '',
                 telephone: '',
-                extension: '',
+                extension: null,
                 skype_name: '',
                 department_id: 1,
                 location_id: 1,

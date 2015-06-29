@@ -9,17 +9,66 @@
     <div class="large-12 columns" role="content">
         <h4>{!! HTML::image($department->lead->getAvatarPath(30), $department->lead->fullName()) !!} Department Lead: <a href="{{ $department->lead->url }}">{{ $department->lead->fullName() }}</a></h4>
 
-        @if (Auth::user()->isDepartmentLead($department))
-
-            <hr />
-
-            @include('member.add', ['department_id' => $department->id])
-
-        @endif
-
         <h5>Team Members</h5>
 
         <script id="member-listing" type="x-template">
+
+            <h4>Add New Team Member</h4>
+
+            <form method="POST" v-on="submit: addNewMember">
+
+                <div class="row panel radius">
+                    <div class="large-4 columns">
+                        <label>First Name</label>
+                        <input type="text" placeholder="Jamie" name="first_name" v-model="newMember.first_name">
+                    </div>
+                    <div class="large-4 columns">
+                        <label>Last Name</label>
+                        <input type="text" placeholder="Doe" name="last_name" v-model="newMember.last_name">
+                    </div>
+                    <div class="large-4 columns">
+                        <label>Role</label>
+                        <input type="text" placeholder="Analyst" name="role" v-model="newMember.role">
+                    </div>
+
+                    <div class="large-3 columns">
+                        <label>email address</label>
+                        <input type="text" placeholder="jamie.doe@crowdcube.com" name="email" v-model="newMember.email">
+                    </div>
+
+                    <div class="large-3 columns">
+                        <label>Skype Name</label>
+                        <input type="text" placeholder="jamiedoe.crowdcube" name="skype_name" v-model="newMember.skype_name">
+                    </div>
+
+                    <div class="large-2 columns">
+                        <label>Telephone</label>
+                        <input type="text" placeholder="01392 123456" name="telephone" v-model="newMember.telephone">
+                    </div>
+
+                    <div class="large-1 columns">
+                        <label>Ext.</label>
+                        <input type="text" placeholder="123" name="extension" v-model="newMember.extension">
+                    </div>
+                    <div class="large-3 columns">
+                        <label>Location</label>
+
+                        <select name="location_id" v-model="newMember.location_id">
+                            <option value="1" selected>Default</option>
+                        </select>
+
+                        <input type="hidden" name="department_id" value="1" v-model="newMember.department_id" />
+
+                    </div>
+
+                    <div class="large-12 columns">
+                        <button class="small button" title="Add">Add</button>
+                    </div>
+                </div>
+
+            </form>
+
+            <hr />
 
             <input type="text" v-model="search">
             <table width="100%">
@@ -41,6 +90,7 @@
                     <td><a href="mailto:@{{ email }}" v-text="member.email"></a></td>
                     <td v-text="member.telephone"></td>
                     <td v-text="member.extension"></td>
+                    <td v-text="member.skype_name"></td>
                 </tr>
             </table>
 

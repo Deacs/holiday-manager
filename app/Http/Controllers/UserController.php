@@ -28,11 +28,24 @@ class UserController extends Controller {
 	}
 
 	/**
+	 * Return the specified resource.
+	 *
+	 * @return $this
+	 * @param $slug
+	 * @internal param int $id
+	 */
+	public function show($slug)
+	{
+		$member = $this->userRepository->getUserBySlug($slug);
+		return view('member.home')->with('member', $member);
+	}
+
+	/**
 	 * Store a newly created resource in storage.
 	 *
-	 * @return Response
 	 * @param Request $request
 	 * @param AppMailer $mailer
+	 * @return bool
 	 */
 	public function store(Request $request, AppMailer $mailer)
 	{
@@ -51,22 +64,11 @@ class UserController extends Controller {
 		// Email a confirmation link to the newly created user
 		$mailer->sendConfirmationRequestEmail($user);
 
-		Flash::success('Member Successfully Added');
+		return $user;
 
-		return redirect()->back();
-	}
-
-	/**
-	 * Return the specified resource.
-	 *
-	 * @return $this
-	 * @param $slug
-	 * @internal param int $id
-	 */
-	public function show($slug)
-	{
-		$member = $this->userRepository->getUserBySlug($slug);
-		return view('member.home')->with('member', $member);
+//		Flash::success('Member Successfully Added');
+//
+//		return redirect()->back();
 	}
 
 	public function profile($slug)

@@ -31,6 +31,63 @@ Vue.component('department_profile', {
 
 });
 
+//Vue.component('add_member', {
+//
+//    template: document.querySelector('#add-member'),
+//
+//    data: function() {
+//        return {
+//            //newMember: {
+//            //    first_name: '',
+//            //    last_name: '',
+//            //    slug: '',
+//            //    role: '',
+//            //    email: '',
+//            //    telephone: '',
+//            //    extension: '',
+//            //    skype_name: '',
+//            //    department_id: 1,
+//            //    location_id: 1,
+//            //    created_at: Moment()
+//            //},
+//            //members: []
+//        }
+//    },
+//
+//    methods: {
+//        //onSubmitForm: function(e) {
+//        //
+//        //    e.preventDefault();
+//        //
+//        //    var member = this.newMember;
+//        //
+//        //    this.members.push(member);
+//        //    this.newMember = {
+//        //        first_name: '',
+//        //        last_name: '',
+//        //        slug: '',
+//        //        role: '',
+//        //        email: '',
+//        //        telephone: '',
+//        //        extension: '',
+//        //        skype_name: '',
+//        //        department_id: 1,
+//        //        location_id: 1,
+//        //        created_at: Moment()
+//        //    };
+//        //
+//        //    //console.log("Submit New Member Form");
+//        //    console.log(member);
+//        //    console.log(this.members);
+//        //    //console.log('*****************');
+//        //
+//        //    this.$http.post('/api/member/add', member);
+//        //
+//        //    this.submitted = true;
+//        //}
+//    }
+//});
+
 Vue.component('member_profile', {
 
     template: document.querySelector('#member-profile'),
@@ -40,7 +97,8 @@ Vue.component('member_profile', {
     data: function data() {
         return {
             slug: '',
-            member: ''
+            member: '',
+            members: []
         };
     },
 
@@ -62,18 +120,57 @@ Vue.component('member_listing', {
 
     data: function data() {
         return {
-            memberColumns: [{ field: 'last_name', title: 'Name' }, { field: 'department_name', title: 'Department' }, { field: 'role', title: 'Role' }, { field: 'email', title: 'email' }, { field: 'telephone', title: 'Telephone' }, { field: 'extension', title: 'Extension' }],
+            memberColumns: [{ field: 'last_name', title: 'Name' }, { field: 'department_name', title: 'Department' }, { field: 'role', title: 'Role' }, { field: 'email', title: 'email' }, { field: 'telephone', title: 'Telephone' }, { field: 'extension', title: 'Extension' }, { field: 'skype_name', title: 'Skype Name' }],
             department: '',
             members: [],
             sortKey: '',
             reverse: false,
-            search: ''
+            search: '',
+            newMember: {
+                first_name: '',
+                last_name: '',
+                slug: '',
+                role: '',
+                email: '',
+                telephone: '',
+                extension: '',
+                skype_name: '',
+                department_id: 1,
+                location_id: 1,
+                created_at: Moment()
+            }
         };
     },
 
     methods: {
         fetchMembers: require('./methods/fetchMembers'),
-        sortBy: require('./methods/sortBy')
+        sortBy: require('./methods/sortBy'),
+
+        addNewMember: function addNewMember(e) {
+
+            e.preventDefault();
+
+            var member = this.newMember;
+
+            this.members.push(member);
+            this.newMember = {
+                first_name: '',
+                last_name: '',
+                slug: '',
+                role: '',
+                email: '',
+                telephone: '',
+                extension: '',
+                skype_name: '',
+                department_id: 1,
+                location_id: 1,
+                created_at: Moment()
+            };
+
+            this.$http.post('/api/member/add', member);
+
+            this.submitted = true;
+        }
     },
 
     ready: function ready() {
@@ -93,16 +190,6 @@ new Vue({
         locations: [],
         departments: [],
         haveHistory: false,
-
-        newHolidayRequest: {
-            user_id: '',
-            start_date: '',
-            end_date: '',
-            status_id: 'Pending',
-            approved_by: '',
-            declined_by: '',
-            created_at: Moment()
-        },
 
         flashData: {
             'level': '',

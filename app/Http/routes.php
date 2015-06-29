@@ -167,7 +167,12 @@ Route::group(['prefix' => 'api', 'as' => 'api.'], function () {
 		]
 	);
 
-	post('members', 'UserController@store');
+	post('member/add',
+		[
+			'as' 	=> 'member.add',
+			'uses' 	=> 'UserController@store'
+		]
+	);
 
 	get('member/holiday-requests',
 		[

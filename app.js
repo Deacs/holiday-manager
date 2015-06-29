@@ -15,7 +15,7 @@ new Vue({
             department_id: ''
         },
 
-        submitted: false,
+        submitted: false
     },
 
     computed: {

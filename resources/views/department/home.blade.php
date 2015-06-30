@@ -54,10 +54,12 @@
                         <label>Location</label>
 
                         <select name="location_id" v-model="newMember.location_id">
-                            <option value="1" selected>Default</option>
+                            <option v-repeat="location: locations" value="@{{ location.id }}">@{{ location.name }}</option>
                         </select>
 
-                        <input type="hidden" name="department_id" value="1" v-model="newMember.department_id" />
+                        <select name="department_id" v-model="newMember.department_id">
+                            <option v-repeat="department: departments" value="@{{ department.id }}">@{{ department.name }}</option>
+                        </select>
 
                     </div>
 

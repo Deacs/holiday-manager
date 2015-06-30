@@ -127,6 +127,8 @@ Vue.component('member_listing', {
                 {field: 'skype_name', title: 'Skype Name'},
             ],
             department: '',
+            departments: [],
+            locations: [],
             members: [],
             sortKey: '',
             reverse: false,
@@ -140,14 +142,16 @@ Vue.component('member_listing', {
                 telephone: '',
                 extension: null,
                 skype_name: '',
-                department_id: 1,
-                location_id: 1,
+                department_id: '',
+                location_id: '',
                 created_at: Moment()
             }
         }
     },
 
     methods: {
+        fetchDepartments: require('./methods/fetchDepartments'),
+        fetchLocations: require('./methods/fetchLocations'),
         fetchMembers: require('./methods/fetchMembers'),
         sortBy: require('./methods/sortBy'),
 
@@ -156,6 +160,8 @@ Vue.component('member_listing', {
             e.preventDefault();
 
             var member = this.newMember;
+            // Need to resolve the department name from the ID
+            //member.department_name = 'fooBar';
 
             this.members.push(member);
             this.newMember = {
@@ -167,8 +173,8 @@ Vue.component('member_listing', {
                 telephone: '',
                 extension: '',
                 skype_name: '',
-                department_id: 1,
-                location_id: 1,
+                department_id: '',
+                location_id: '',
                 created_at: Moment()
             };
 
@@ -180,6 +186,8 @@ Vue.component('member_listing', {
 
     ready: function() {
         this.fetchMembers(this.department);
+        this.fetchDepartments();
+        this.fetchLocations();
     }
 
 });

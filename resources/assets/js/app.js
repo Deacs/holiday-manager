@@ -111,7 +111,6 @@ Vue.component('member_profile', {
 Vue.component('member_listing', {
 
     template: document.querySelector('#member-listing'),
-    //template: require('./templates/member_listing'),
 
     props: ['department'],
 
@@ -150,38 +149,11 @@ Vue.component('member_listing', {
     },
 
     methods: {
-        fetchDepartments: require('./methods/fetchDepartments'),
-        fetchLocations: require('./methods/fetchLocations'),
-        fetchMembers: require('./methods/fetchMembers'),
-        sortBy: require('./methods/sortBy'),
-
-        addNewMember: function(e) {
-
-            e.preventDefault();
-
-            var member = this.newMember;
-            // Need to resolve the department name from the ID
-            //member.department_name = 'fooBar';
-
-            this.members.push(member);
-            this.newMember = {
-                first_name: '',
-                last_name: '',
-                slug: '',
-                role: '',
-                email: '',
-                telephone: '',
-                extension: '',
-                skype_name: '',
-                department_id: '',
-                location_id: '',
-                created_at: Moment()
-            };
-
-            this.$http.post('/api/member/add', member);
-
-            this.submitted = true;
-        }
+        fetchDepartments:   require('./methods/fetchDepartments'),
+        fetchLocations:     require('./methods/fetchLocations'),
+        fetchMembers:       require('./methods/fetchMembers'),
+        sortBy:             require('./methods/sortBy'),
+        addUser:            require('./methods/addMember')
     },
 
     ready: function() {

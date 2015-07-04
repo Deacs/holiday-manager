@@ -54,12 +54,10 @@
                         <label>Location</label>
 
                         <select name="location_id" v-model="newMember.location_id">
+                            <option>Select a Location</option>
                             <option v-repeat="location: locations" value="@{{ location.id }}">@{{ location.name }}</option>
                         </select>
-
-                        <select name="department_id" v-model="newMember.department_id">
-                            <option v-repeat="department: departments" value="@{{ department.id }}">@{{ department.name }}</option>
-                        </select>
+                        <input type="hidden" name="department_id" value="{{ $department->id }}" v-model="newMember.department_id">
 
                     </div>
 
@@ -86,7 +84,7 @@
                         | filterBy search
                         | orderBy sortKey reverse"
                         >
-                    <td><img src="@{{ member | getAvatar '20' }}"> <a href="@{{ member.url }}" v-text="member | nameFormat"></a></td>
+                    <td><img v-attr="src:member | getAvatar '20'" width="20"> <a href="@{{ member.url }}" v-text="member | nameFormat"></a></td>
                     <td v-text="member.department_name"></td>
                     <td v-text="member.role"></td>
                     <td><a href="mailto:@{{ email }}" v-text="member.email"></a></td>

@@ -120,7 +120,7 @@ Vue.component('member_listing', {
 
     data: function data() {
         return {
-            memberColumns: [{ field: 'last_name', title: 'Name' }, { field: 'department_name', title: 'Department' }, { field: 'role', title: 'Role' }, { field: 'email', title: 'email' }, { field: 'telephone', title: 'Telephone' }, { field: 'extension', title: 'Extension' }, { field: 'skype_name', title: 'Skype Name' }],
+            memberColumns: [{ field: 'last_name', title: 'Name' }, { field: 'department_name', title: 'Department' }, { field: 'role', title: 'Role' }, { field: 'email', title: 'email' }, { field: 'telephone', title: 'Telephone' }, { field: 'extension', title: 'Extension' }, { field: 'skype_name', title: 'Skype' }],
             department: '',
             departments: [],
             locations: [],
@@ -148,35 +148,9 @@ Vue.component('member_listing', {
         fetchDepartments: require('./methods/fetchDepartments'),
         fetchLocations: require('./methods/fetchLocations'),
         fetchMembers: require('./methods/fetchMembers'),
+        addNewMember: require('./methods/addMember'),
         sortBy: require('./methods/sortBy'),
-
-        addNewMember: function addNewMember(e) {
-
-            e.preventDefault();
-
-            var member = this.newMember;
-            // Need to resolve the department name from the ID
-            //member.department_name = 'fooBar';
-
-            this.members.push(member);
-            this.newMember = {
-                first_name: '',
-                last_name: '',
-                slug: '',
-                role: '',
-                email: '',
-                telephone: '',
-                extension: '',
-                skype_name: '',
-                department_id: '',
-                location_id: '',
-                created_at: Moment()
-            };
-
-            this.$http.post('/api/member/add', member);
-
-            this.submitted = true;
-        }
+        getAvatar: require('./filters/getAvatar')
     },
 
     ready: function ready() {
@@ -222,7 +196,7 @@ new Vue({
     }
 });
 
-},{"./filters/dateFormat":72,"./filters/getAvatar":73,"./filters/nameFormat":74,"./methods/fetchDepartment":75,"./methods/fetchDepartments":76,"./methods/fetchLocations":77,"./methods/fetchMember":78,"./methods/fetchMembers":79,"./methods/sortBy":80,"moment":2,"vue":70,"vue-resource":4}],2:[function(require,module,exports){
+},{"./filters/dateFormat":72,"./filters/getAvatar":73,"./filters/nameFormat":74,"./methods/addMember":75,"./methods/fetchDepartment":76,"./methods/fetchDepartments":77,"./methods/fetchLocations":78,"./methods/fetchMember":79,"./methods/fetchMembers":80,"./methods/sortBy":81,"moment":2,"vue":70,"vue-resource":4}],2:[function(require,module,exports){
 //! moment.js
 //! version : 2.10.3
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -13103,6 +13077,10 @@ module.exports = function (user, size) {
         size = 40;
     }
 
+    if (typeof user.avatar_path == "undefined") {
+        return "/img/avatar.jpg";
+    }
+
     return user.avatar_path.replace(/s=[0-9]?/, "s=" + size);
 };
 
@@ -13116,6 +13094,39 @@ module.exports = function (user) {
 },{}],75:[function(require,module,exports){
 'use strict';
 
+module.exports = function (e) {
+
+    var Moment = require('moment');
+
+    e.preventDefault();
+
+    var member = this.newMember;
+    // Need to resolve the department name from the ID
+
+    this.newMember = {
+        first_name: '',
+        last_name: '',
+        slug: '',
+        role: '',
+        email: '',
+        telephone: '',
+        extension: '',
+        skype_name: '',
+        department_id: '',
+        location_id: '',
+        avatar_path: '/img/avatar.jpg',
+        department_name: 'OUTER SPACE',
+        created_at: Moment()
+    };
+
+    this.members.push(member);
+
+    this.$http.post('/api/member/add', member);
+};
+
+},{"moment":2}],76:[function(require,module,exports){
+'use strict';
+
 module.exports = function (slug) {
     console.log('Calling with SLUG : ' + slug);
     this.$http.get('/api/department/' + slug, function (department) {
@@ -13123,7 +13134,7 @@ module.exports = function (slug) {
     });
 };
 
-},{}],76:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 'use strict';
 
 module.exports = function () {
@@ -13132,7 +13143,7 @@ module.exports = function () {
     });
 };
 
-},{}],77:[function(require,module,exports){
+},{}],78:[function(require,module,exports){
 'use strict';
 
 module.exports = function () {
@@ -13141,7 +13152,7 @@ module.exports = function () {
     });
 };
 
-},{}],78:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 'use strict';
 
 module.exports = function (slug) {
@@ -13150,7 +13161,7 @@ module.exports = function (slug) {
     });
 };
 
-},{}],79:[function(require,module,exports){
+},{}],80:[function(require,module,exports){
 'use strict';
 
 module.exports = function (slug) {
@@ -13165,7 +13176,7 @@ module.exports = function (slug) {
     });
 };
 
-},{}],80:[function(require,module,exports){
+},{}],81:[function(require,module,exports){
 "use strict";
 
 module.exports = function (sortKey) {

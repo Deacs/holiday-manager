@@ -1,6 +1,6 @@
 {!! Form::open(['route' => 'member.add']) !!}
 
-    <h4>Add New Team Member</h4>
+    <h4>Add New Team Member HERE</h4>
 
     <div class="row panel radius">
         <div class="large-4 columns">

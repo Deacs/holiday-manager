@@ -1,11 +1,12 @@
 module.exports = function(e) {
 
+    var Moment  = require('moment');
+
     e.preventDefault();
 
     var member = this.newMember;
     // Need to resolve the department name from the ID
 
-    this.members.push(member);
     this.newMember = {
         first_name: '',
         last_name: '',
@@ -17,10 +18,12 @@ module.exports = function(e) {
         skype_name: '',
         department_id: '',
         location_id: '',
+        avatar_path: '/img/avatar.jpg',
+        department_name: 'OUTER SPACE',
         created_at: Moment()
     };
 
-    this.$http.post('/api/member/add', member);
+    this.members.push(member);
 
-    this.submitted = true;
+    this.$http.post('/api/member/add', member);
 }

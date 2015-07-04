@@ -111,6 +111,7 @@ Vue.component('member_profile', {
 Vue.component('member_listing', {
 
     template: document.querySelector('#member-listing'),
+    //template: require('./templates/member_listing'),
 
     props: ['department'],
 
@@ -123,7 +124,7 @@ Vue.component('member_listing', {
                 {field: 'email', title: 'email'},
                 {field: 'telephone', title: 'Telephone'},
                 {field: 'extension', title: 'Extension'},
-                {field: 'skype_name', title: 'Skype Name'},
+                {field: 'skype_name', title: 'Skype'},
             ],
             department: '',
             departments: [],
@@ -152,8 +153,9 @@ Vue.component('member_listing', {
         fetchDepartments:   require('./methods/fetchDepartments'),
         fetchLocations:     require('./methods/fetchLocations'),
         fetchMembers:       require('./methods/fetchMembers'),
+        addNewMember:       require('./methods/addMember'),
         sortBy:             require('./methods/sortBy'),
-        addUser:            require('./methods/addMember')
+        getAvatar:          require('./filters/getAvatar')
     },
 
     ready: function() {

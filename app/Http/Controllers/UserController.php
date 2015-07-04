@@ -65,10 +65,6 @@ class UserController extends Controller {
 		$mailer->sendConfirmationRequestEmail($user);
 
 		return $user;
-
-//		Flash::success('Member Successfully Added');
-//
-//		return redirect()->back();
 	}
 
 	public function profile($slug)

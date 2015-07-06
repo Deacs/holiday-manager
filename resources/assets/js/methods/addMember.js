@@ -4,17 +4,10 @@ module.exports = function(e) {
 
     var member = this.newMember
 
-    //$.post(
-    //    '/api/member/add',
-    //    member);
+    this.$http.post('/api/member/add', member, function(data) {
+        member.url          = data.slug;
+        member.avatar_path  = data.avatar_path;
 
-    //console.log($);
-
-    //member.slug = makeSlug;
-    //
-    //console.log('+++++ '+member.slug);
-
-    this.$http.post('/api/member/add', member);
-
-    this.members.push(member);
+        this.members.push(member);
+    });
 }

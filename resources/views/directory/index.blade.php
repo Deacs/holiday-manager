@@ -7,33 +7,35 @@
     </div>
 
     <div class="large-12 columns" role="content">
-        @if (count($members))
-            <table id="staff-directory">
+        <script id="member-listing" type="x-template">
+
+             <input type="text" v-model="search">
+            <table width="100%">
                 <tr>
-                    <th>Name</th>
-                    <th>Department</th>
-                    <th>Location</th>
-                    <th>Role</th>
-                    <th>email</th>
-                    <th>Telephone</th>
+                    <th class="sort-field"
+                        v-repeat="column: memberColumns"
+                        v-on="click: sortBy(column.field)"
+                        v-class="active-field: sortKey==column.field">
+                        @{{ column.title }}
+                    </th>
                 </tr>
-                @foreach ($members as $member)
-                    <tr>
-                        <td>{!! HTML::image($member->getAvatarPath(30), $member->fullName()) !!} {!! link_to_route('member.home', $member->fullName(), ['slug' => $member->slug]) !!}</td>
-                        <td>{!! link_to_route('department.home', $member->department->name, ['slug' => $member->department->slug]) !!}</td>
-                        <td>{!! link_to_route('location.home', $member->department->location->name, ['slug' => $member->department->location->slug]) !!}</td>
-                        <td>{!! $member->role !!}</td>
-                        <td>{!! HTML::mailto($member->email, $member->email) !!}</td>
-                        <td>{!! $member->telephone !!}</td>
-                    </tr>
-                @endforeach
+                <tr v-repeat="member: members
+                        | filterBy search
+                        | orderBy sortKey reverse"
+                        >
+                    <td><img v-attr="src:member | getAvatar '20'" width="20"> <a href="@{{ member.url }}" v-text="member | nameFormat"></a></td>
+                    <td v-text="member.department_name"></td>
+                    <td v-text="member.role"></td>
+                    <td><a href="mailto:@{{ email }}" v-text="member.email"></a></td>
+                    <td v-text="member.telephone"></td>
+                    <td v-text="member.extension"></td>
+                    <td v-text="member.skype_name"></td>
+                </tr>
             </table>
-        @else
-            <div data-alert="" class="alert-box info radius">
-                No Team Members associated with {!! $department->name !!}
-                <a href="#" class="close">×</a>
-            </div>
-        @endif
+
+        </script>
+
+        <member_listing></member_listing>
     </div>
 
 @endsection

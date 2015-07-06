@@ -31,63 +31,6 @@ Vue.component('department_profile', {
 
 });
 
-//Vue.component('add_member', {
-//
-//    template: document.querySelector('#add-member'),
-//
-//    data: function() {
-//        return {
-//            //newMember: {
-//            //    first_name: '',
-//            //    last_name: '',
-//            //    slug: '',
-//            //    role: '',
-//            //    email: '',
-//            //    telephone: '',
-//            //    extension: '',
-//            //    skype_name: '',
-//            //    department_id: 1,
-//            //    location_id: 1,
-//            //    created_at: Moment()
-//            //},
-//            //members: []
-//        }
-//    },
-//
-//    methods: {
-//        //onSubmitForm: function(e) {
-//        //
-//        //    e.preventDefault();
-//        //
-//        //    var member = this.newMember;
-//        //
-//        //    this.members.push(member);
-//        //    this.newMember = {
-//        //        first_name: '',
-//        //        last_name: '',
-//        //        slug: '',
-//        //        role: '',
-//        //        email: '',
-//        //        telephone: '',
-//        //        extension: '',
-//        //        skype_name: '',
-//        //        department_id: 1,
-//        //        location_id: 1,
-//        //        created_at: Moment()
-//        //    };
-//        //
-//        //    //console.log("Submit New Member Form");
-//        //    console.log(member);
-//        //    console.log(this.members);
-//        //    //console.log('*****************');
-//        //
-//        //    this.$http.post('/api/member/add', member);
-//        //
-//        //    this.submitted = true;
-//        //}
-//    }
-//});
-
 Vue.component('member_profile', {
 
     template: document.querySelector('#member-profile'),
@@ -116,12 +59,14 @@ Vue.component('member_listing', {
     template: document.querySelector('#member-listing'),
     //template: require('./templates/member_listing'),
 
-    props: ['department'],
+    props: ['dept_name', 'dept_slug'],
 
     data: function data() {
+        console.log('***** ' + this.dept_name);
         return {
             memberColumns: [{ field: 'last_name', title: 'Name' }, { field: 'department_name', title: 'Department' }, { field: 'role', title: 'Role' }, { field: 'email', title: 'email' }, { field: 'telephone', title: 'Telephone' }, { field: 'extension', title: 'Extension' }, { field: 'skype_name', title: 'Skype' }],
-            department: '',
+            dept_slug: '',
+            dept_name: '',
             departments: [],
             locations: [],
             members: [],
@@ -134,10 +79,11 @@ Vue.component('member_listing', {
                 slug: '',
                 role: '',
                 email: '',
-                telephone: '',
+                telephone: null,
                 extension: null,
-                skype_name: '',
+                skype_name: null,
                 department_id: '',
+                department_name: '',
                 location_id: '',
                 created_at: Moment()
             }
@@ -150,11 +96,12 @@ Vue.component('member_listing', {
         fetchMembers: require('./methods/fetchMembers'),
         addNewMember: require('./methods/addMember'),
         sortBy: require('./methods/sortBy'),
-        getAvatar: require('./filters/getAvatar')
+        makeSlug: require('./methods/makeSlug')
     },
 
     ready: function ready() {
-        this.fetchMembers(this.department);
+
+        this.fetchMembers(this.dept_slug);
         this.fetchDepartments();
         this.fetchLocations();
     }
@@ -196,7 +143,7 @@ new Vue({
     }
 });
 
-},{"./filters/dateFormat":72,"./filters/getAvatar":73,"./filters/nameFormat":74,"./methods/addMember":75,"./methods/fetchDepartment":76,"./methods/fetchDepartments":77,"./methods/fetchLocations":78,"./methods/fetchMember":79,"./methods/fetchMembers":80,"./methods/sortBy":81,"moment":2,"vue":70,"vue-resource":4}],2:[function(require,module,exports){
+},{"./filters/dateFormat":72,"./filters/getAvatar":73,"./filters/nameFormat":74,"./methods/addMember":75,"./methods/fetchDepartment":76,"./methods/fetchDepartments":77,"./methods/fetchLocations":78,"./methods/fetchMember":79,"./methods/fetchMembers":80,"./methods/makeSlug":81,"./methods/sortBy":82,"moment":2,"vue":70,"vue-resource":4}],2:[function(require,module,exports){
 //! moment.js
 //! version : 2.10.3
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -13096,39 +13043,29 @@ module.exports = function (user) {
 
 module.exports = function (e) {
 
-    var Moment = require('moment');
-
     e.preventDefault();
 
     var member = this.newMember;
-    // Need to resolve the department name from the ID
 
-    this.newMember = {
-        first_name: '',
-        last_name: '',
-        slug: '',
-        role: '',
-        email: '',
-        telephone: '',
-        extension: '',
-        skype_name: '',
-        department_id: '',
-        location_id: '',
-        avatar_path: '/img/avatar.jpg',
-        department_name: 'OUTER SPACE',
-        created_at: Moment()
-    };
+    //$.post(
+    //    '/api/member/add',
+    //    member);
 
-    this.members.push(member);
+    //console.log($);
+
+    //member.slug = makeSlug;
+    //
+    //console.log('+++++ '+member.slug);
 
     this.$http.post('/api/member/add', member);
+
+    this.members.push(member);
 };
 
-},{"moment":2}],76:[function(require,module,exports){
+},{}],76:[function(require,module,exports){
 'use strict';
 
 module.exports = function (slug) {
-    console.log('Calling with SLUG : ' + slug);
     this.$http.get('/api/department/' + slug, function (department) {
         this.department = department;
     });
@@ -13177,6 +13114,27 @@ module.exports = function (slug) {
 };
 
 },{}],81:[function(require,module,exports){
+'use strict';
+
+module.exports = function () {
+
+    e.preventDefault();
+
+    var member = this.newMember;
+
+    console.log(member.first_name);
+    console.log(member.last_name);
+
+    //this.members.push(member);
+
+    console.log(member.first_name + '-' + member.last_name);
+
+    return '******** ' + member.first_name + '-' + member.last_name + ' ********';
+
+    //this.$http.post('/api/member/add', member);
+};
+
+},{}],82:[function(require,module,exports){
 "use strict";
 
 module.exports = function (sortKey) {

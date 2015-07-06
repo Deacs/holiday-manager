@@ -28,63 +28,6 @@ Vue.component('department_profile', {
 
 });
 
-//Vue.component('add_member', {
-//
-//    template: document.querySelector('#add-member'),
-//
-//    data: function() {
-//        return {
-//            //newMember: {
-//            //    first_name: '',
-//            //    last_name: '',
-//            //    slug: '',
-//            //    role: '',
-//            //    email: '',
-//            //    telephone: '',
-//            //    extension: '',
-//            //    skype_name: '',
-//            //    department_id: 1,
-//            //    location_id: 1,
-//            //    created_at: Moment()
-//            //},
-//            //members: []
-//        }
-//    },
-//
-//    methods: {
-//        //onSubmitForm: function(e) {
-//        //
-//        //    e.preventDefault();
-//        //
-//        //    var member = this.newMember;
-//        //
-//        //    this.members.push(member);
-//        //    this.newMember = {
-//        //        first_name: '',
-//        //        last_name: '',
-//        //        slug: '',
-//        //        role: '',
-//        //        email: '',
-//        //        telephone: '',
-//        //        extension: '',
-//        //        skype_name: '',
-//        //        department_id: 1,
-//        //        location_id: 1,
-//        //        created_at: Moment()
-//        //    };
-//        //
-//        //    //console.log("Submit New Member Form");
-//        //    console.log(member);
-//        //    console.log(this.members);
-//        //    //console.log('*****************');
-//        //
-//        //    this.$http.post('/api/member/add', member);
-//        //
-//        //    this.submitted = true;
-//        //}
-//    }
-//});
-
 Vue.component('member_profile', {
 
     template: document.querySelector('#member-profile'),
@@ -113,9 +56,10 @@ Vue.component('member_listing', {
     template: document.querySelector('#member-listing'),
     //template: require('./templates/member_listing'),
 
-    props: ['department'],
+    props: ['dept_name', 'dept_slug'],
 
     data: function() {
+        console.log('***** '+this.dept_name);
         return {
             memberColumns: [
                 {field: 'last_name', title: 'Name'},
@@ -126,7 +70,8 @@ Vue.component('member_listing', {
                 {field: 'extension', title: 'Extension'},
                 {field: 'skype_name', title: 'Skype'},
             ],
-            department: '',
+            dept_slug: '',
+            dept_name: '',
             departments: [],
             locations: [],
             members: [],
@@ -139,10 +84,11 @@ Vue.component('member_listing', {
                 slug: '',
                 role: '',
                 email: '',
-                telephone: '',
+                telephone: null,
                 extension: null,
-                skype_name: '',
+                skype_name: null,
                 department_id: '',
+                department_name: '',
                 location_id: '',
                 created_at: Moment()
             }
@@ -155,11 +101,12 @@ Vue.component('member_listing', {
         fetchMembers:       require('./methods/fetchMembers'),
         addNewMember:       require('./methods/addMember'),
         sortBy:             require('./methods/sortBy'),
-        getAvatar:          require('./filters/getAvatar')
+        makeSlug:           require('./methods/makeSlug')
     },
 
     ready: function() {
-        this.fetchMembers(this.department);
+
+        this.fetchMembers(this.dept_slug);
         this.fetchDepartments();
         this.fetchLocations();
     }

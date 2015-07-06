@@ -1,29 +1,20 @@
 module.exports = function(e) {
 
-    var Moment  = require('moment');
-
     e.preventDefault();
 
-    var member = this.newMember;
-    // Need to resolve the department name from the ID
+    var member = this.newMember
 
-    this.newMember = {
-        first_name: '',
-        last_name: '',
-        slug: '',
-        role: '',
-        email: '',
-        telephone: '',
-        extension: '',
-        skype_name: '',
-        department_id: '',
-        location_id: '',
-        avatar_path: '/img/avatar.jpg',
-        department_name: 'OUTER SPACE',
-        created_at: Moment()
-    };
+    //$.post(
+    //    '/api/member/add',
+    //    member);
 
-    this.members.push(member);
+    //console.log($);
+
+    //member.slug = makeSlug;
+    //
+    //console.log('+++++ '+member.slug);
 
     this.$http.post('/api/member/add', member);
+
+    this.members.push(member);
 }

@@ -58,6 +58,7 @@
                             <option v-repeat="location: locations" value="@{{ location.id }}">@{{ location.name }}</option>
                         </select>
                         <input type="hidden" name="department_id" value="{{ $department->id }}" v-model="newMember.department_id">
+                        <input type="hidden" name="department_name" value="{{ $department->name }}" v-model="newMember.department_name">
 
                     </div>
 
@@ -96,7 +97,7 @@
 
         </script>
 
-        <member_listing department="{{ $department->slug }}"></member_listing>
+        <member_listing dept_slug="{{ $department->slug }}" dept_name="{{ $department->name }}"></member_listing>
 
     </div>
 

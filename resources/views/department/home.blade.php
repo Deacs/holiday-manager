@@ -14,6 +14,7 @@
         <script id="member-listing" type="x-template">
 
             <h4>Add New Team Member</h4>
+            @include('notifications.result')
 
             <form method="POST" v-on="submit: addNewMember">
 

@@ -56,10 +56,10 @@ Vue.component('member_listing', {
     template: document.querySelector('#member-listing'),
     //template: require('./templates/member_listing'),
 
-    props: ['dept_name', 'dept_slug'],
+    props: ['dept_name', 'dept_slug', 'flash-data', 'display-flash'],
 
     data: function() {
-        console.log('***** '+this.dept_name);
+
         return {
             memberColumns: [
                 {field: 'last_name', title: 'Name'},
@@ -68,7 +68,7 @@ Vue.component('member_listing', {
                 {field: 'email', title: 'email'},
                 {field: 'telephone', title: 'Telephone'},
                 {field: 'extension', title: 'Extension'},
-                {field: 'skype_name', title: 'Skype'},
+                {field: 'skype_name', title: 'Skype'}
             ],
             dept_slug: '',
             dept_name: '',
@@ -91,7 +91,12 @@ Vue.component('member_listing', {
                 department_name: '',
                 location_id: '',
                 created_at: Moment()
-            }
+            },
+            flashData: {
+                'level': '',
+                'message': ''
+            },
+            displayFlash: false
         }
     },
 
@@ -117,6 +122,11 @@ new Vue({
 
     el: '#app',
 
+    methods: {
+        fetchLocations:     require('./methods/fetchLocations'),
+        fetchDepartments:   require('./methods/fetchDepartments')
+    },
+
     data: {
         displayFlash:       false,
         defaultDate:        '',
@@ -126,8 +136,8 @@ new Vue({
         haveHistory:        false,
 
         flashData: {
-            'level': '',
-            'message': ''
+            'level':    '',
+            'message':  ''
         }
     },
 
@@ -140,11 +150,6 @@ new Vue({
     ready: function() {
         this.fetchLocations();
         this.fetchDepartments();
-    },
-
-    methods: {
-        fetchLocations:     require('./methods/fetchLocations'),
-        fetchDepartments:   require('./methods/fetchDepartments')
     }
 });
 

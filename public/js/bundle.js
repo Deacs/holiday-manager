@@ -59,10 +59,10 @@ Vue.component('member_listing', {
     template: document.querySelector('#member-listing'),
     //template: require('./templates/member_listing'),
 
-    props: ['dept_name', 'dept_slug'],
+    props: ['dept_name', 'dept_slug', 'flash-data', 'display-flash'],
 
     data: function data() {
-        console.log('***** ' + this.dept_name);
+
         return {
             memberColumns: [{ field: 'last_name', title: 'Name' }, { field: 'department_name', title: 'Department' }, { field: 'role', title: 'Role' }, { field: 'email', title: 'email' }, { field: 'telephone', title: 'Telephone' }, { field: 'extension', title: 'Extension' }, { field: 'skype_name', title: 'Skype' }],
             dept_slug: '',
@@ -86,7 +86,12 @@ Vue.component('member_listing', {
                 department_name: '',
                 location_id: '',
                 created_at: Moment()
-            }
+            },
+            flashData: {
+                'level': '',
+                'message': ''
+            },
+            displayFlash: false
         };
     },
 
@@ -112,6 +117,11 @@ new Vue({
 
     el: '#app',
 
+    methods: {
+        fetchLocations: require('./methods/fetchLocations'),
+        fetchDepartments: require('./methods/fetchDepartments')
+    },
+
     data: {
         displayFlash: false,
         defaultDate: '',
@@ -135,11 +145,6 @@ new Vue({
     ready: function ready() {
         this.fetchLocations();
         this.fetchDepartments();
-    },
-
-    methods: {
-        fetchLocations: require('./methods/fetchLocations'),
-        fetchDepartments: require('./methods/fetchDepartments')
     }
 });
 
@@ -13048,11 +13053,33 @@ module.exports = function (e) {
     var member = this.newMember;
 
     this.$http.post('/api/member/add', member, function (data) {
+        // Prepare the extra fields for the push to the listing
         member.url = data.slug;
         member.avatar_path = data.avatar_path;
 
+        // Push the newly created user to the array
         this.members.push(member);
+
+        this.flashData = {
+            level: 'success',
+            message: 'User successfully added'
+        };
+    }).error(function (data, status) {
+
+        console.log(data.first_name);
+        console.log(data.last_name);
+
+        //for (var i; i < data.length; i++) {
+        //    console.log(data[i]);
+        //}
+
+        this.flashData = {
+            level: 'alert',
+            message: 'User could not be added'
+        };
     });
+
+    this.displayFlash = true;
 };
 
 },{}],76:[function(require,module,exports){

@@ -23,7 +23,7 @@
                         | filterBy search
                         | orderBy sortKey reverse"
                         >
-                    <td><img v-attr="src:member | getAvatar '20'" width="20"> <a href="@{{ member.url }}" v-text="member | nameFormat"></a></td>
+                    <td><img v-attr="src:member | getAvatar '20'" width="20"> <a v-attr=href="@{{ member.url }}" v-text="member | nameFormat"></a></td>
                     <td v-text="member.department_name"></td>
                     <td v-text="member.role"></td>
                     <td><a href="mailto:@{{ email }}" v-text="member.email"></a></td>

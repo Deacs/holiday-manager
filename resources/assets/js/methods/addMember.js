@@ -22,11 +22,10 @@ module.exports = function(e) {
         console.log(data.first_name);
         console.log(data.last_name);
 
-        //for (var i; i < data.length; i++) {
-        //    console.log(data[i]);
-        //}
+        // Each field that has failed validation needs
+        // to highlight the relevant input field
 
-        this.flashData      = {
+        this.flashData = {
             level:      'alert',
             message:    'User could not be added'
         };

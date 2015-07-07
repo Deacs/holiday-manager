@@ -30,6 +30,7 @@
                     <td><a href="mailto:@{{ email }}" v-text="member.email"></a></td>
                     <td v-text="member.telephone"></td>
                     <td v-text="member.extension"></td>
+                    <td v-text="member.skype_name"></td>
                 </tr>
             </table>
 

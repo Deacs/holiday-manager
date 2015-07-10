@@ -5,9 +5,9 @@ Vue.use(require('vue-resource'));
 
 Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('value');
 
-Vue.component('department_profile', {
+var departmentProfile = Vue.extend({
 
-    template: document.querySelector('#department_profile'),
+    template:'#department_profile',
 
     props: ['slug'],
 
@@ -25,12 +25,10 @@ Vue.component('department_profile', {
     ready: function() {
         this.fetchDepartment(this.slug)
     }
-
 });
 
-Vue.component('member_profile', {
-
-    template: document.querySelector('#member-profile'),
+var MemberProfile = Vue.extend({
+    template: '#member-profile',
 
     props: ['slug'],
 
@@ -51,12 +49,14 @@ Vue.component('member_profile', {
     }
 });
 
-Vue.component('member_listing', {
 
-    template: document.querySelector('#member-listing'),
-    //template: require('./templates/member_listing'),
+var MemberListing = Vue.extend({
 
-    props: ['dept_name', 'dept_slug', 'flash-data', 'display-flash'],
+    template: '#member-listing',
+
+    //template: require('./templates/member-listing.html'),
+
+    props: ['dept_name', 'dept_slug', 'flashdata', 'displayflash'],
 
     data: function() {
 
@@ -92,11 +92,11 @@ Vue.component('member_listing', {
                 location_id: '',
                 created_at: Moment()
             },
-            flashData: {
+            flashdata: {
                 'level': '',
-                'message': ''
+                'message': 'Standard'
             },
-            displayFlash: false
+            displayflash: true
         }
     },
 
@@ -115,29 +115,38 @@ Vue.component('member_listing', {
         this.fetchDepartments();
         this.fetchLocations();
     }
-
 });
+
+Vue.component('department_profile', departmentProfile);
+Vue.component('member_profile', MemberProfile);
+Vue.component('member_listing', MemberListing);
 
 new Vue({
 
     el: '#app',
 
-    methods: {
-        fetchLocations:     require('./methods/fetchLocations'),
-        fetchDepartments:   require('./methods/fetchDepartments')
-    },
-
     data: {
-        displayFlash:       false,
+        displayflash:       false,
         defaultDate:        '',
         holidayRequests:    [],
         locations:          [],
         departments:        [],
         haveHistory:        false,
 
-        flashData: {
+        flashdata: {
             'level':    '',
             'message':  ''
+        }
+    },
+
+    methods: {
+        fetchLocations:     require('./methods/fetchLocations'),
+        fetchDepartments:   require('./methods/fetchDepartments'),
+
+        updateFlash: function(vis, level, msg) {
+            this.displayflash       = vis;
+            this.flashdata.level    = level;
+            this.flashdata.msg      = msg;
         }
     },
 

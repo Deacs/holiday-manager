@@ -8,9 +8,9 @@ Vue.use(require('vue-resource'));
 
 Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('value');
 
-Vue.component('department_profile', {
+var departmentProfile = Vue.extend({
 
-    template: document.querySelector('#department_profile'),
+    template: '#department_profile',
 
     props: ['slug'],
 
@@ -28,12 +28,10 @@ Vue.component('department_profile', {
     ready: function ready() {
         this.fetchDepartment(this.slug);
     }
-
 });
 
-Vue.component('member_profile', {
-
-    template: document.querySelector('#member-profile'),
+var MemberProfile = Vue.extend({
+    template: '#member-profile',
 
     props: ['slug'],
 
@@ -54,12 +52,13 @@ Vue.component('member_profile', {
     }
 });
 
-Vue.component('member_listing', {
+var MemberListing = Vue.extend({
 
-    template: document.querySelector('#member-listing'),
-    //template: require('./templates/member_listing'),
+    template: '#member-listing',
 
-    props: ['dept_name', 'dept_slug', 'flash-data', 'display-flash'],
+    //template: require('./templates/member-listing.html'),
+
+    props: ['dept_name', 'dept_slug', 'flashdata', 'displayflash'],
 
     data: function data() {
 
@@ -87,11 +86,11 @@ Vue.component('member_listing', {
                 location_id: '',
                 created_at: Moment()
             },
-            flashData: {
+            flashdata: {
                 'level': '',
-                'message': ''
+                'message': 'Standard'
             },
-            displayFlash: false
+            displayflash: true
         };
     },
 
@@ -110,29 +109,38 @@ Vue.component('member_listing', {
         this.fetchDepartments();
         this.fetchLocations();
     }
-
 });
+
+Vue.component('department_profile', departmentProfile);
+Vue.component('member_profile', MemberProfile);
+Vue.component('member_listing', MemberListing);
 
 new Vue({
 
     el: '#app',
 
-    methods: {
-        fetchLocations: require('./methods/fetchLocations'),
-        fetchDepartments: require('./methods/fetchDepartments')
-    },
-
     data: {
-        displayFlash: false,
+        displayflash: false,
         defaultDate: '',
         holidayRequests: [],
         locations: [],
         departments: [],
         haveHistory: false,
 
-        flashData: {
+        flashdata: {
             'level': '',
             'message': ''
+        }
+    },
+
+    methods: {
+        fetchLocations: require('./methods/fetchLocations'),
+        fetchDepartments: require('./methods/fetchDepartments'),
+
+        updateFlash: function updateFlash(vis, level, msg) {
+            this.displayflash = vis;
+            this.flashdata.level = level;
+            this.flashdata.msg = msg;
         }
     },
 
@@ -13060,7 +13068,7 @@ module.exports = function (e) {
         // Push the newly created user to the array
         this.members.push(member);
 
-        this.flashData = {
+        this.flashdata = {
             level: 'success',
             message: 'User successfully added'
         };
@@ -13071,14 +13079,28 @@ module.exports = function (e) {
 
         // Each field that has failed validation needs
         // to highlight the relevant input field
+        for (var key in data) {
+            if (data.hasOwnProperty(key)) {
+                var obj = data[key];
+                for (var prop in obj) {
+                    // important check that this is objects own property
+                    // not from prototype prop inherited
+                    if (obj.hasOwnProperty(prop)) {
+                        console.log(prop + ' = ' + key + ' >> ' + obj[prop]);
+                    }
+                }
+            }
+        }
 
-        this.flashData = {
+        this.flashdata = {
             level: 'alert',
             message: 'User could not be added'
         };
+
+        //this.updateFlash(true, 'success', 'from function');
     });
 
-    this.displayFlash = true;
+    this.displayflash = true;
 };
 
 },{}],76:[function(require,module,exports){

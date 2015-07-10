@@ -11,9 +11,10 @@
 
         <h5>Team Members</h5>
 
-        <script id="member-listing" type="x-template">
+        <script id="member-listing" type="x-template" src="/js/member-listing.js">
 
             <h4>Add New Team Member</h4>
+
             @include('notifications.result')
 
             <form method="POST" v-on="submit: addNewMember">

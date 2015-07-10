@@ -88,22 +88,24 @@ CREATE TABLE `locations` (
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `slug` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `address` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `lat` float NOT NULL,
+  `lon` float NOT NULL,
   `telephone` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 LOCK TABLES `locations` WRITE;
 /*!40000 ALTER TABLE `locations` DISABLE KEYS */;
 
-INSERT INTO `locations` (`id`, `name`, `slug`, `address`, `telephone`, `created_at`, `updated_at`)
+INSERT INTO `locations` (`id`, `name`, `slug`, `address`, `lat`, `lon`, `telephone`, `created_at`, `updated_at`)
 VALUES
-	(1,'Exeter','exeter','Innovation Centre, Rennes Drive, Exeter, EX4 4RN','01392 241319','0000-00-00 00:00:00','0000-00-00 00:00:00'),
-	(2,'London','london','62 Dean Street, London, W1D 4QF','0181 1234567','0000-00-00 00:00:00','0000-00-00 00:00:00'),
-	(3,'Edinburgh','edinburgh','Silicon Walk, 25 Greenside Ln, Edinburgh, EH1 3AA','0111 1234567','2015-24-03 22:34:16','0000-00-00 00:00:00'),
-	(4,'Manchester','manchester','Coronation Street, Manchester, MN12 123','0122 1234567','2015-24-03 22:34:16','0000-00-00 00:00:00'),
-	(5,'Barcelona','barcelona','c/ Roselló 216, Planta 11, 08008, Barcelona, España','+34 93 348 7322','2015-24-03 22:34:16','0000-00-00 00:00:00');
+	(1, 'Exeter', 'exeter', 'Innovation Centre, Rennes Drive, Exeter, EX4 4RN', 50.7381, -3.53062, '01392 241319', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+	(2, 'London', 'london', '62 Dean Street, London, W1D 4QF', 51.513, -0.132277, '0181 1234567', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+	(3, 'Edinburgh', 'edinburgh', 'Silicon Walk, 25 Greenside Ln, Edinburgh, EH1 3AA', 55.9571, -3.18488, '0111 1234567', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+	(4, 'Manchester', 'manchester', 'Coronation Street, Manchester, MN12 123', 53.4617, -2.27171, '0122 1234567', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+	(5, 'Barcelona', 'barcelona', 'c/ Roselló 216, Planta 11, 08008, Barcelona, España', 40.4407, -3.67004, '+34 93 348 7322', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
 /*!40000 ALTER TABLE `locations` ENABLE KEYS */;
 UNLOCK TABLES;

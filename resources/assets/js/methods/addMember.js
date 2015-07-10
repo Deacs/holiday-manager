@@ -12,7 +12,7 @@ module.exports = function(e) {
         // Push the newly created user to the array
         this.members.push(member);
 
-        this.flashData      = {
+        this.flashdata      = {
             level:      'success',
             message:    'User successfully added'
         };
@@ -24,13 +24,27 @@ module.exports = function(e) {
 
         // Each field that has failed validation needs
         // to highlight the relevant input field
+        for (var key in data) {
+            if (data.hasOwnProperty(key)) {
+                var obj = data[key];
+                for (var prop in obj) {
+                    // important check that this is objects own property
+                    // not from prototype prop inherited
+                    if(obj.hasOwnProperty(prop)){
+                        console.log(prop + " = " + key + " >> " +obj[prop]);
+                    }
+                }
+            }
+        }
 
-        this.flashData = {
+        this.flashdata = {
             level:      'alert',
             message:    'User could not be added'
         };
 
+        //this.updateFlash(true, 'success', 'from function');
+
     });
 
-    this.displayFlash = true;
+    this.displayflash = true;
 }

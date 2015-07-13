@@ -9,7 +9,7 @@
     <div class="large-12 columns" role="content">
         <script id="member-listing" type="x-template">
 
-             <input type="text" v-model="search">
+            <input type="text" v-model="search">
             <table width="100%">
                 <tr>
                     <th class="sort-field"

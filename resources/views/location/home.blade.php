@@ -3,9 +3,18 @@
 @section('content')
 
     <div class="large-12 columns">
-        <h1>{{ $location->name }}</h1>
-        <input type="hidden" id="lat" value="{{ $location->lat }}">
-        <input type="hidden" id="lon" value="{{ $location->lon }}">
+        <h1>{{ $location->name }}<button data-reveal-id="addLocation" class="button round right">Add New Location</button></h1>
+        <input type="hidden" id="loc_lat" value="{{ $location->lat }}">
+        <input type="hidden" id="loc_lon" value="{{ $location->lon }}">
+    </div>
+
+    <div id="addLocation" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog" style="display: block">
+        <h4 id="modalTitle">Add New Location</h4>
+        <input type="text" name="title" placeholder="Title" />
+        <input type="text" name="lat" id="new_loc_lat" />
+        <input type="text" name="lon" id="new_loc_lon" />
+        <div class="large-12 columns"  id="new_location_map" style="height:400px;"></div>
+        <a class="close-reveal-modal" aria-label="Close">&#215;</a>
     </div>
 
     <div class="large-6 columns">
@@ -30,9 +39,6 @@
     @include('member.listing')
 
 
-
-
-
     <div class="large-12 columns">
         @if (count($departments))
             <ul>
@@ -47,30 +53,82 @@
             </div>
         @endif
     </div>
-
-
+    
 @endsection
 
 @section('scripts')
 <script>
-    function initialize() {
-        var lat = document.getElementById("lat").value;
-        var lon = document.getElementById("lon").value;
+    var map = null;
+    var new_loc_marker = null;
 
-        var myLatlng = new google.maps.LatLng(lat, lon);
-        var myOptions = {
+    // A function to create the marker and set up the event window function
+    function createMarker(latlng) {
+
+        var marker = new google.maps.Marker({
+            position: latlng,
+            map: new google.maps.Map(document.getElementById("new_location_map")),
+            icon: '/img/map_marker.png'
+        });
+
+        google.maps.event.trigger(marker, 'click');
+        return marker;
+    }
+
+    function initialize() {
+        var loc_lat = document.getElementById("loc_lat").value;
+        var loc_lon = document.getElementById("loc_lon").value;
+
+        var myLocLatlng = new google.maps.LatLng(loc_lat, loc_lon);
+        var myLocOptions = {
             zoom: 15,
-            center: myLatlng,
+            center: myLocLatlng,
             mapTypeId: google.maps.MapTypeId.ROADMAP
         }
-        var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+        var loc_map = new google.maps.Map(document.getElementById("map_canvas"), myLocOptions);
         var iconBase = '/img/';
-        var marker = new google.maps.Marker({
-            position: myLatlng,
-            map: map,
+        var loc_marker = new google.maps.Marker({
+            position: myLocLatlng,
+            map: loc_map,
             title: 'Crowdcube',
             icon: iconBase + 'map_marker.png'
         });
+
+        // New Location init
+        var newLocOptions = {
+            zoom: 8,
+            center: new google.maps.LatLng(50.476303, -3.5230705),
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+        var new_loc_map = new google.maps.Map(document.getElementById("new_location_map"), newLocOptions);
+
+        google.maps.event.addListener(new_loc_map, 'click', function( event ){
+            document.getElementById("new_loc_lat").value = event.latLng.lat();
+            document.getElementById("new_loc_lon").value = event.latLng.lng();
+
+            var newLocLatLng = new google.maps.LatLng(event.latLng.lat(), event.latLng.lng());
+
+            if (new_loc_marker) {
+                new_loc_marker.setMap(null);
+                new_loc_marker = null;
+            }
+
+            var iconBase = '/img/';
+            new_loc_marker = new google.maps.Marker({
+                position: newLocLatLng,
+                map: new_loc_map,
+                title: 'Crowdcube',
+                icon: iconBase + 'map_marker.png'
+            });
+            new_loc_map.setCenter(new_loc_marker.getPosition());
+        });
+
+
+//        google.maps.event.trigger(new_loc_marker, 'click');
+//            return new_loc_marker;
+//        });
+
+
+
     }
 
     function loadScript() {

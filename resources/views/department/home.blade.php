@@ -11,7 +11,7 @@
 
         <h5>Team Members</h5>
 
-        <script id="member-listing" type="x-template" src="/js/member-listing.js">
+        <script id="member-listing" type="x-template">
 
             <h4>Add New Team Member</h4>
 

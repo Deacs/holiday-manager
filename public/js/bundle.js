@@ -111,9 +111,39 @@ var MemberListing = Vue.extend({
     }
 });
 
+var AddLocation = Vue.extend({
+
+    template: '#add-location',
+
+    data: function data() {
+
+        return {
+            newMember: {
+                name: '',
+                address: '',
+                telephone: null,
+                lat: '',
+                lon: '',
+                created_at: Moment()
+            },
+            flashdata: {
+                'level': '',
+                'message': 'Standard'
+            },
+            displayflash: true
+        };
+    },
+
+    methods: {
+        addLocation: require('./methods/addLocation')
+    }
+
+});
+
 Vue.component('department_profile', departmentProfile);
 Vue.component('member_profile', MemberProfile);
 Vue.component('member_listing', MemberListing);
+Vue.component('add_location', AddLocation);
 
 new Vue({
 
@@ -156,7 +186,7 @@ new Vue({
     }
 });
 
-},{"./filters/dateFormat":72,"./filters/getAvatar":73,"./filters/nameFormat":74,"./methods/addMember":75,"./methods/fetchDepartment":76,"./methods/fetchDepartments":77,"./methods/fetchLocations":78,"./methods/fetchMember":79,"./methods/fetchMembers":80,"./methods/makeSlug":81,"./methods/sortBy":82,"moment":2,"vue":70,"vue-resource":4}],2:[function(require,module,exports){
+},{"./filters/dateFormat":72,"./filters/getAvatar":73,"./filters/nameFormat":74,"./methods/addLocation":75,"./methods/addMember":76,"./methods/fetchDepartment":77,"./methods/fetchDepartments":78,"./methods/fetchLocations":79,"./methods/fetchMember":80,"./methods/fetchMembers":81,"./methods/makeSlug":82,"./methods/sortBy":83,"moment":2,"vue":70,"vue-resource":4}],2:[function(require,module,exports){
 //! moment.js
 //! version : 2.10.3
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -13058,6 +13088,58 @@ module.exports = function (e) {
 
     e.preventDefault();
 
+    var location = this.newLocation;
+
+    this.$http.post('/api/location/add', member, function (data) {
+        // Prepare the extra fields for the push to the listing
+        //member.url          = data.slug;
+        //member.avatar_path  = data.avatar_path;
+
+        // Push the newly created department to the array
+        //this.members.push(member);
+
+        this.flashdata = {
+            level: 'success',
+            message: 'Location successfully added'
+        };
+    }).error(function (data, status) {
+
+        //console.log(data.first_name);
+        //console.log(data.last_name);
+
+        // Each field that has failed validation needs
+        // to highlight the relevant input field
+        for (var key in data) {
+            if (data.hasOwnProperty(key)) {
+                var obj = data[key];
+                for (var prop in obj) {
+                    // important check that this is objects own property
+                    // not from prototype prop inherited
+                    if (obj.hasOwnProperty(prop)) {
+                        console.log(prop + ' = ' + key + ' >> ' + obj[prop]);
+                    }
+                }
+            }
+        }
+
+        this.flashdata = {
+            level: 'alert',
+            message: 'Location could not be added'
+        };
+
+        //this.updateFlash(true, 'success', 'from function');
+    });
+
+    this.displayflash = true;
+};
+
+},{}],76:[function(require,module,exports){
+'use strict';
+
+module.exports = function (e) {
+
+    e.preventDefault();
+
     var member = this.newMember;
 
     this.$http.post('/api/member/add', member, function (data) {
@@ -13103,7 +13185,7 @@ module.exports = function (e) {
     this.displayflash = true;
 };
 
-},{}],76:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 'use strict';
 
 module.exports = function (slug) {
@@ -13112,7 +13194,7 @@ module.exports = function (slug) {
     });
 };
 
-},{}],77:[function(require,module,exports){
+},{}],78:[function(require,module,exports){
 'use strict';
 
 module.exports = function () {
@@ -13121,7 +13203,7 @@ module.exports = function () {
     });
 };
 
-},{}],78:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 'use strict';
 
 module.exports = function () {
@@ -13130,7 +13212,7 @@ module.exports = function () {
     });
 };
 
-},{}],79:[function(require,module,exports){
+},{}],80:[function(require,module,exports){
 'use strict';
 
 module.exports = function (slug) {
@@ -13139,7 +13221,7 @@ module.exports = function (slug) {
     });
 };
 
-},{}],80:[function(require,module,exports){
+},{}],81:[function(require,module,exports){
 'use strict';
 
 module.exports = function (slug) {
@@ -13154,7 +13236,7 @@ module.exports = function (slug) {
     });
 };
 
-},{}],81:[function(require,module,exports){
+},{}],82:[function(require,module,exports){
 'use strict';
 
 module.exports = function () {
@@ -13175,7 +13257,7 @@ module.exports = function () {
     //this.$http.post('/api/member/add', member);
 };
 
-},{}],82:[function(require,module,exports){
+},{}],83:[function(require,module,exports){
 "use strict";
 
 module.exports = function (sortKey) {

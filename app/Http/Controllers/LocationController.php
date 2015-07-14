@@ -40,4 +40,28 @@ class LocationController extends Controller
 //		return Location::where('slug', $location)->with('departments.team')->firstOrFail();
 	}
 
+
+
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @param Request $request
+	 * @return bool
+	 */
+	public function store(Request $request)
+	{
+		$this->validate($request, [
+			'name' 			=> 'required|unique:locations',
+			'address' 		=> 'required',
+			'telephone' 	=> 'required',
+			'lat' 			=> 'required|numeric',
+			'lon' 			=> 'required|numeric',
+		]);
+
+		// Slug is generated within the UserObserver
+		$user = Location::create($request->all());
+
+		return $user;
+	}
+
 }

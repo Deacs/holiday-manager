@@ -117,9 +117,40 @@ var MemberListing = Vue.extend({
     }
 });
 
+var AddLocation = Vue.extend({
+
+    template: '#add-location',
+
+    data: function() {
+
+        return {
+            newMember: {
+                name: '',
+                address: '',
+                telephone: null,
+                lat: '',
+                lon: '',
+                created_at: Moment()
+            },
+            flashdata: {
+                'level': '',
+                'message': 'Standard'
+            },
+            displayflash: true
+        }
+
+    },
+
+    methods: {
+        addLocation: require('./methods/addLocation')
+    }
+
+});
+
 Vue.component('department_profile', departmentProfile);
 Vue.component('member_profile', MemberProfile);
 Vue.component('member_listing', MemberListing);
+Vue.component('add_location', AddLocation);
 
 new Vue({
 

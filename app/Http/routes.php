@@ -125,6 +125,13 @@ Route::group(['prefix' => 'api', 'as' => 'api.'], function () {
 		]
 	);
 
+	post('location/add',
+		[
+			'as' 	=> 'location.add',
+			'uses' 	=> 'LocationController@store'
+		]
+	);
+
 	get('locations',
 		[
 			'as' 	=> 'locations',

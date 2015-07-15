@@ -124,7 +124,7 @@ var AddLocation = Vue.extend({
     data: function() {
 
         return {
-            newMember: {
+            newLocation: {
                 name: '',
                 address: '',
                 telephone: null,

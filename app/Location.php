@@ -12,7 +12,9 @@ class Location extends Model {
         'name',
         'slug',
         'telephone',
-        'address'
+        'address',
+        'lat',
+        'lon'
     ];
 
     const EXETER_ID 	= 1;

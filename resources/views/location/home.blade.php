@@ -10,23 +10,23 @@
 
     <div id="addLocation" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
         <script id="add-location" type="x-template">
-            <form method="POST" action="/api/location/add" v-on="submit: addNewLocation">
+            <form method="POST" action="/api/location/add" v-on="submit: addLocation">
                 <input type="hidden" name="_token" value="{!! csrf_token() !!}">
                 <h4 id="modalTitle">Add New Location</h4>
                 <div class="large-12 columns">
                     <div class="large-2 left"><label for="loc_name">Name</label></div>
-                    <div class="large-10 right"><input type="text" id="loc_name" name="name" placeholder="Crowdcube Towers"></div>
+                    <div class="large-10 right"><input type="text" id="loc_name" name="name" placeholder="Crowdcube Towers" v-model="newLocation.name"></div>
                 </div>
                 <div class="large-12 columns">
                     <div class="large-2 left"><label for="loc_address">Address</label></div>
-                    <div class="large-10 right"><input type="text" id="loc_address" name="address" placeholder="Separate each line with a comma"></div>
+                    <div class="large-10 right"><input type="text" id="loc_address" name="address" placeholder="Separate each line with a comma" v-model="newLocation.address"></div>
                 </div>
                 <div class="large-12 columns">
                     <div class="large-2 left"><label for="loc_telephone">Telephone</label></div>
-                    <div class="large-10 right"><input type="tel" id="loc_telephone" name="telephone" placeholder="01392 123456"></div>
+                    <div class="large-10 right"><input type="tel" id="loc_telephone" name="telephone" placeholder="01392 123456" v-model="newLocation.telephone"></div>
                 </div>
-                <input type="text" name="lat" id="new_loc_lat" style="width:45%;" class="left" />
-                <input type="text" name="lon" id="new_loc_lon" style="width:45%;" class="right" />
+                <input type="text" name="lat" id="new_loc_lat" style="width:45%;" class="left" v-model="newLocation.lat" />
+                <input type="text" name="lon" id="new_loc_lon" style="width:45%;" class="right" v-model="newLocation.lon" />
                 <div class="large-12 columns"  id="new_location_map" style="height:400px;"></div>
                 <a class="close-reveal-modal" aria-label="Close">&#215;</a>
                 <div class="large-12 columns">
@@ -143,13 +143,6 @@
             });
             new_loc_map.setCenter(new_loc_marker.getPosition());
         });
-
-
-//        google.maps.event.trigger(new_loc_marker, 'click');
-//            return new_loc_marker;
-//        });
-
-
 
     }
 

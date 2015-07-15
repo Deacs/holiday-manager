@@ -4,7 +4,9 @@ module.exports = function(e) {
 
     var location = this.newLocation;
 
-    this.$http.post('/api/location/add', member, function(data) {
+    this.$http.post('/api/location/add', location, function(data) {
+
+        console.log(data);
         // Prepare the extra fields for the push to the listing
         //member.url          = data.slug;
         //member.avatar_path  = data.avatar_path;

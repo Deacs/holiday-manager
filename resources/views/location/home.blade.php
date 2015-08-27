@@ -3,40 +3,8 @@
 @section('content')
 
     <div class="large-12 columns">
-        <h1>{{ $location->name }}<button data-reveal-id="addLocation" class="button round right">Add New Location</button></h1>
         <input type="hidden" id="loc_lat" value="{{ $location->lat }}">
         <input type="hidden" id="loc_lon" value="{{ $location->lon }}">
-    </div>
-
-    <div id="addLocation" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
-        <script id="add-location" type="x-template">
-            <form method="POST" action="/api/location/add" v-on="submit: addLocation">
-                <input type="hidden" name="_token" value="{!! csrf_token() !!}">
-                <h4 id="modalTitle">Add New Location</h4>
-                <div class="large-12 columns">
-                    <div class="large-2 left"><label for="loc_name">Name</label></div>
-                    <div class="large-10 right"><input type="text" id="loc_name" name="name" placeholder="Crowdcube Towers" v-model="newLocation.name"></div>
-                </div>
-                <div class="large-12 columns">
-                    <div class="large-2 left"><label for="loc_address">Address</label></div>
-                    <div class="large-10 right"><input type="text" id="loc_address" name="address" placeholder="Separate each line with a comma" v-model="newLocation.address"></div>
-                </div>
-                <div class="large-12 columns">
-                    <div class="large-2 left"><label for="loc_telephone">Telephone</label></div>
-                    <div class="large-10 right"><input type="tel" id="loc_telephone" name="telephone" placeholder="01392 123456" v-model="newLocation.telephone"></div>
-                </div>
-                <input type="text" name="lat" id="new_loc_lat" style="width:45%;" class="left" v-model="newLocation.lat" />
-                <input type="text" name="lon" id="new_loc_lon" style="width:45%;" class="right" v-model="newLocation.lon" />
-                <div class="large-12 columns"  id="new_location_map" style="height:400px;"></div>
-                <a class="close-reveal-modal" aria-label="Close">&#215;</a>
-                <div class="large-12 columns">
-                    <button class="button round success right">Add Location</button>
-                </div>
-            </form>
-        </script>
-
-        <add_location></add_location>
-
     </div>
 
     <div class="large-6 columns">
@@ -81,20 +49,6 @@
 @section('scripts')
 <script>
     var map = null;
-    var new_loc_marker = null;
-
-    // A function to create the marker and set up the event window function
-    function createMarker(latlng) {
-
-        var marker = new google.maps.Marker({
-            position: latlng,
-            map: new google.maps.Map(document.getElementById("new_location_map")),
-            icon: '/img/map_marker.png'
-        });
-
-        google.maps.event.trigger(marker, 'click');
-        return marker;
-    }
 
     function initialize() {
         var loc_lat = document.getElementById("loc_lat").value;
@@ -114,36 +68,6 @@
             title: 'Crowdcube',
             icon: iconBase + 'map_marker.png'
         });
-
-        // New Location init
-        var newLocOptions = {
-            zoom: 8,
-            center: new google.maps.LatLng(50.476303, -3.5230705),
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        }
-        var new_loc_map = new google.maps.Map(document.getElementById("new_location_map"), newLocOptions);
-
-        google.maps.event.addListener(new_loc_map, 'click', function( event ){
-            document.getElementById("new_loc_lat").value = event.latLng.lat();
-            document.getElementById("new_loc_lon").value = event.latLng.lng();
-
-            var newLocLatLng = new google.maps.LatLng(event.latLng.lat(), event.latLng.lng());
-
-            if (new_loc_marker) {
-                new_loc_marker.setMap(null);
-                new_loc_marker = null;
-            }
-
-            var iconBase = '/img/';
-            new_loc_marker = new google.maps.Marker({
-                position: newLocLatLng,
-                map: new_loc_map,
-                title: 'Crowdcube',
-                icon: iconBase + 'map_marker.png'
-            });
-            new_loc_map.setCenter(new_loc_marker.getPosition());
-        });
-
     }
 
     function loadScript() {

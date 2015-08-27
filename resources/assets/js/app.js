@@ -23,11 +23,12 @@ var departmentProfile = Vue.extend({
     },
 
     ready: function() {
-        this.fetchDepartment(this.slug)
+        this.fetchDepartment(this.slug);
     }
 });
 
 var MemberProfile = Vue.extend({
+
     template: '#member-profile',
 
     props: ['slug'],

@@ -40,6 +40,11 @@ class LocationController extends Controller
 //		return Location::where('slug', $location)->with('departments.team')->firstOrFail();
 	}
 
+	public function create()
+	{
+		return view('location.add');
+	}
+
 
 
 	/**
@@ -59,9 +64,13 @@ class LocationController extends Controller
 		]);
 
 		// Slug is generated within the UserObserver
-		$user = Location::create($request->all());
+		$location = Location::create($request->all());
 
-		return $user;
+		return redirect('/location/'.$location->slug);
+
+//		dd($location);
+//
+//		return $location;
 	}
 
 }

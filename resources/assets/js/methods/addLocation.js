@@ -4,25 +4,25 @@ module.exports = function(e) {
 
     var location = this.newLocation;
 
+    console.log(location);
+
     this.$http.post('/api/location/add', location, function(data) {
 
+        console.log('*********************');
+        console.log(location);
         console.log(data);
-        // Prepare the extra fields for the push to the listing
-        //member.url          = data.slug;
-        //member.avatar_path  = data.avatar_path;
-
-        // Push the newly created department to the array
-        //this.members.push(member);
+        console.log('*********************');
 
         this.flashdata = {
             level:      'success',
             message:    'Location successfully added'
         };
 
-    }).error(function (data, status) {
+        // Close the modal
 
-        //console.log(data.first_name);
-        //console.log(data.last_name);
+        // Push the newly created location to the array
+
+    }).error(function (data, status) {
 
         // Each field that has failed validation needs
         // to highlight the relevant input field

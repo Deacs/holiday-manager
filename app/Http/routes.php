@@ -24,63 +24,9 @@ get('directory',
 	]
 );
 
-get('location/{slug}',
-	[
-		'as' 	=> 'location.home',
-		'uses' 	=> 'LocationController@show'
-	]
-);
-
-Route::group(['prefix' => 'department', 'as' => 'department.'], function () {
-
-	get('{slug}',
-		[
-			'as' => 'home',
-			'uses' => 'DepartmentController@show'
-		]
-	);
-
-	get('{slug}/manage',
-		[
-			'middleware' 	=> 'lead',
-			'as' 			=> 'manage',
-			'uses' 			=> 'DepartmentController@manage'
-		]
-	);
-});
-
-Route::group(['prefix' => 'member', 'as' => 'member.'], function () {
-
-	get('{slug}',
-		[
-			'as' => 'home',
-			'uses' => 'UserController@show'
-		]
-	);
-
-	post('add',
-		[
-			'as' => 'add',
-			'uses' => 'UserController@store'
-		]
-	);
-
-	get('confirm/{token}',
-		[
-			'as' => 'confirm',
-			'uses' => 'UserController@confirm'
-		]
-	);
-
-	post('confirm',
-		[
-			'as' => 'complete-confirmation',
-			'uses' => 'UserController@completeConfirmation'
-		]
-	);
-
-});
-
+/**
+ * Session handling
+ */
 get('login',
 	[
 		'as' 	=> 'login.home',
@@ -102,6 +48,81 @@ get('logout',
 	]
 );
 
+Route::group(['prefix' => 'department', 'as' => 'department.'], function () {
+
+	get('{slug}',
+		[
+			'as' 	=> 'home',
+			'uses' 	=> 'DepartmentController@show'
+		]
+	);
+
+	get('{slug}/manage',
+		[
+			'middleware' 	=> 'lead',
+			'as' 			=> 'manage',
+			'uses' 			=> 'DepartmentController@manage'
+		]
+	);
+});
+
+Route::group(['prefix' => 'member', 'as' => 'member.'], function () {
+
+	get('{slug}',
+		[
+			'as' 	=> 'home',
+			'uses' 	=> 'UserController@show'
+		]
+	);
+
+	post('add',
+		[
+			'as' 	=> 'add',
+			'uses' 	=> 'UserController@store'
+		]
+	);
+
+	get('confirm/{token}',
+		[
+			'as' 	=> 'confirm',
+			'uses'	=> 'UserController@confirm'
+		]
+	);
+
+	post('confirm',
+		[
+			'as' 	=> 'complete-confirmation',
+			'uses' 	=> 'UserController@completeConfirmation'
+		]
+	);
+});
+
+Route::group(['prefix' => 'location', 'as' => 'location.'], function () {
+
+	get('add',
+		[
+			'as' 			=> 'location.create',
+			'uses' 			=> 'LocationController@create',
+			'middleware' 	=> 'superuser',
+		]
+	);
+
+	post('add',
+		[
+			'as' 			=> 'add',
+			'uses' 			=> 'LocationController@store',
+			'middleware' 	=> 'superuser'
+		]
+	);
+
+	get('{slug}',
+		[
+			'as' 	=> 'home',
+			'uses' 	=> 'LocationController@show'
+		]
+	);
+});
+
 /**
  * API : Powered by VueJS
  */
@@ -122,13 +143,6 @@ Route::group(['prefix' => 'api', 'as' => 'api.'], function () {
 		[
 			'as' 	=> 'location.departments',
 			'uses' 	=> 'LocationController@departments'
-		]
-	);
-
-	post('location/add',
-		[
-			'as' 	=> 'location.add',
-			'uses' 	=> 'LocationController@store'
 		]
 	);
 
@@ -197,6 +211,6 @@ Route::group(['prefix' => 'api', 'as' => 'api.'], function () {
 });
 
 Route::controllers([
-	'auth' => 'Auth\AuthController',
-	'password' => 'Auth\PasswordController',
+	'auth' 		=> 'Auth\AuthController',
+	'password' 	=> 'Auth\PasswordController',
 ]);

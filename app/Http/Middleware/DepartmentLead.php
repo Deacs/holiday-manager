@@ -1,7 +1,7 @@
 <?php namespace App\Http\Middleware;
 
 /**
- * Guard against no Department Leads performing reserved actions
+ * Guard against non Department Leads performing reserved actions
  */
 
 use Closure;

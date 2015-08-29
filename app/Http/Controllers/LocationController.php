@@ -37,15 +37,12 @@ class LocationController extends Controller
 	public function departmentTeams($slug)
 	{
 		return $this->locationRepository->getLocationDepartmentTeams($slug);
-//		return Location::where('slug', $location)->with('departments.team')->firstOrFail();
 	}
 
 	public function create()
 	{
 		return view('location.add');
 	}
-
-
 
 	/**
 	 * Store a newly created resource in storage.
@@ -67,10 +64,6 @@ class LocationController extends Controller
 		$location = Location::create($request->all());
 
 		return redirect('/location/'.$location->slug);
-
-//		dd($location);
-//
-//		return $location;
 	}
 
 }

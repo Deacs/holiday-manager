@@ -19,10 +19,7 @@ module.exports = function(e) {
 
     }).error(function (data, status) {
 
-        console.log(data.first_name);
-        console.log(data.last_name);
-
-        // Each field that has failed validation needs
+            // Each field that has failed validation needs
         // to highlight the relevant input field
         for (var key in data) {
             if (data.hasOwnProperty(key)) {
@@ -41,8 +38,6 @@ module.exports = function(e) {
             level:      'alert',
             message:    'User could not be added'
         };
-
-        //this.updateFlash(true, 'success', 'from function');
 
     });
 

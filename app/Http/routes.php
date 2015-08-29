@@ -48,7 +48,14 @@ get('logout',
 	]
 );
 
-Route::group(['prefix' => 'department', 'as' => 'department.'], function () {
+Route::group(['prefix' => 'departments', 'as' => 'department.'], function () {
+
+	get('/',
+		[
+			'as' 	=> 'index',
+			'uses' 	=> 'DepartmentController@index'
+		]
+	);
 
 	get('{slug}',
 		[
@@ -170,7 +177,7 @@ Route::group(['prefix' => 'api', 'as' => 'api.'], function () {
 	get('departments',
 		[
 			'as' 	=> 'departments',
-			'uses' 	=> 'DepartmentController@index'
+			'uses' 	=> 'DepartmentController@listing'
 		]
 	);
 

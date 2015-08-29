@@ -22,6 +22,14 @@ class DepartmentController extends Controller {
 	 */
 	public function index()
 	{
+//		$departments = Department::with('lead')->get();
+//		return $departments;
+		return view('department.index');
+//		return view('department.index')->with('departments', $departments);
+	}
+
+	public function listing()
+	{
 		return Department::with('lead')->get();
 	}
 
@@ -35,7 +43,6 @@ class DepartmentController extends Controller {
 	public function show($slug)
 	{
 		$department = Department::where('slug', $slug)->with('lead')->with('team')->firstOrFail();
-//		dd($department);
 		return view('department.home')->with('department', $department);
 	}
 

@@ -1,4 +1,9 @@
+
+<li>{!! link_to_route('home', 'Directory') !!}</li>
+<li class="divider"></li>
+<li>{!! link_to_route('department.index', 'Departments') !!}</li>
 @if (Auth::user()->leadDepartment())
+    <li class="divider"></li>
     @include('navigation.my_team')
 @endif
 <li class="divider hide-for-small"></li>
@@ -17,8 +22,6 @@
         @endforeach
     </ul>
 </li>
-<li class="divider"></li>
-<li>{!! link_to_route('home', 'Directory') !!}</li>
 <li class="divider"></li>
 <li class="has-dropdown hover"><a>{!! Auth::user()->fullName() !!}</a>
     <ul class="dropdown"><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li>

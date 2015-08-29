@@ -50,12 +50,44 @@ var MemberProfile = Vue.extend({
     }
 });
 
+var DepartmentListing = Vue.extend({
+
+    template: '#department-listing',
+
+    props: ['flashdata', 'displayflash'],
+
+    data: function() {
+
+        return {
+            departmentColumns: [
+                {field: 'name', title: 'Name'},
+                {field: 'lead.name', title: 'Department'},
+                {field: 'lead.email', title: 'email'},
+                {field: 'lead.telephone', title: 'Telephone'},
+                {field: 'lead.extension', title: 'Extension'},
+                {field: 'lead.skype_name', title: 'Skype'}
+            ],
+            departments: [],
+            members: [],
+            sortKey: '',
+            reverse: false,
+            search: ''
+        }
+    },
+    methods: {
+        fetchDepartments:   require('./methods/fetchDepartments'),
+        sortBy:             require('./methods/sortBy')
+    },
+
+    ready: function() {
+        this.fetchDepartments();
+    }
+});
+
 
 var MemberListing = Vue.extend({
 
     template: '#member-listing',
-
-    //template: require('./templates/member-listing.html'),
 
     props: ['dept_name', 'dept_slug', 'flashdata', 'displayflash'],
 
@@ -95,9 +127,9 @@ var MemberListing = Vue.extend({
             },
             flashdata: {
                 'level': '',
-                'message': 'Standard'
+                'message': ''
             },
-            displayflash: true
+            displayflash: false
         }
     },
 
@@ -151,6 +183,7 @@ var AddLocation = Vue.extend({
 Vue.component('department_profile', departmentProfile);
 Vue.component('member_profile', MemberProfile);
 Vue.component('member_listing', MemberListing);
+Vue.component('department_listing', DepartmentListing);
 Vue.component('add_location', AddLocation);
 
 new Vue({

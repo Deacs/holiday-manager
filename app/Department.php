@@ -69,6 +69,6 @@ class Department extends Model {
 
 	public function getUrlAttribute()
 	{
-		return '/department/'.$this->slug;
+		return '/departments/'.$this->slug;
 	}
 }

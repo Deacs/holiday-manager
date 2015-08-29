@@ -10,7 +10,7 @@
 
         <script id="member-listing" type="x-template">
 
-            <input type="text" v-model="search">
+            <input type="text" v-model="search" placeholder="Start typing any of the fields below to search....">
             <table width="100%">
                 <tr>
                     <th class="sort-field"
@@ -25,7 +25,7 @@
                         | orderBy sortKey reverse"
                         >
                     <td><img src="@{{ member | getAvatar '20' }}"> <a href="@{{ member.url }}" v-text="member | nameFormat"></a></td>
-                    <td v-text="member.department_name"></td>
+                    <td><a href="@{{ member.department.url }}" v-text="member.department_name"></a></td>
                     <td v-text="member.role"></td>
                     <td><a href="mailto:@{{ email }}" v-text="member.email"></a></td>
                     <td v-text="member.telephone"></td>

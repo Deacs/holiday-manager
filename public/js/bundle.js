@@ -62,7 +62,7 @@ var DepartmentListing = Vue.extend({
     data: function data() {
 
         return {
-            departmentColumns: [{ field: 'name', title: 'Name' }, { field: 'lead.name', title: 'Department' }, { field: 'lead.email', title: 'email' }, { field: 'lead.telephone', title: 'Telephone' }, { field: 'lead.extension', title: 'Extension' }, { field: 'lead.skype_name', title: 'Skype' }],
+            departmentColumns: [{ field: 'name', title: 'Name' }, { field: 'lead.last_name', title: 'Lead' }, { field: 'lead.email', title: 'email' }, { field: 'lead.telephone', title: 'Telephone' }, { field: 'lead.extension', title: 'Extension' }, { field: 'lead.skype_name', title: 'Skype' }],
             departments: [],
             members: [],
             sortKey: '',
@@ -73,6 +73,9 @@ var DepartmentListing = Vue.extend({
     methods: {
         fetchDepartments: require('./methods/fetchDepartments'),
         sortBy: require('./methods/sortBy')
+    },
+    filters: {
+        nameFormat: require('./filters/nameFormat')
     },
 
     ready: function ready() {

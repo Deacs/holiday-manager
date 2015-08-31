@@ -6,11 +6,6 @@
 
     <div class="row">
 
-        *************
-
-        LEVEL : @{{ flashdata.level }} >> MESSAGE : @{{ flash-data.message }}
-        *************
-
         @yield('content')
 
     </div>

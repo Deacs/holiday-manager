@@ -51,7 +51,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		'password',
 		'telephone',
 		'extension',
-		'skyp_name',
+		'skype_name',
 		'department_id',
 		'location_id',
 		'lead',
@@ -81,8 +81,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	public function holidayRequests()
 	{
-
-		return $this->hasMany(HolidayRequest::class);
+		//return $this->hasMany(HolidayRequest::class);
 	}
 
 	/**
@@ -124,6 +123,19 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	public function isSuperUser()
 	{
 		return $this->super_user == 1;
+	}
+
+	/**
+	 * Can this User manage Departments
+	 * Generally they will be a Department Lead but this may be extended to allow Team Leads to deputise
+	 * There is possibly a Super User that can manage in the absence of relevant Department Lead
+	 *
+	 * @return bool
+	 * @param Department $department
+	 */
+	public function hasManageDepartmentPermission(Department $department = null)
+	{
+		return $this->isSuperUser() || $this->isDepartmentLead($department);
 	}
 
 	/**

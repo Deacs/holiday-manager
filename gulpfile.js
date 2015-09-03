@@ -20,5 +20,6 @@ elixir(function(mix) {
         'app/foundation/foundation.alert.js',
         'app/foundation/foundation.reveal.js'
     ], 'public/js/vendor.js'),
-    mix.browserify('app.js')
+    mix.browserify('app.js'),
+    mix.phpUnit()
 });

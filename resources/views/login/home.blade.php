@@ -3,7 +3,7 @@
 @section('content')
 
     <div class="large-12 columns">
-        <h1>Login</h1>
+        <h1>Login to your account</h1>
     </div>
 
     <div class="large-12 columns" role="content">

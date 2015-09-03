@@ -48,7 +48,7 @@ get('logout',
 	]
 );
 
-Route::group(['prefix' => 'departments', 'as' => 'department.'], function () {
+Route::group(['middleware' => 'auth', 'prefix' => 'departments', 'as' => 'department.'], function () {
 
 	get('/',
 		[

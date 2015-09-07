@@ -1,10 +1,13 @@
 <?php
 
 use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class DepartmentTest extends TestCase
+class DepartmentTest extends CrowdcubeTester
 {
+
+//    use DatabaseMigrations;
 
     protected $baseUrl = 'http://caliente.dev';
 

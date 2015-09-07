@@ -17,6 +17,7 @@ class CreateDepartmentsTable extends Migration {
             $table->string('name');
 			$table->string('slug');
 			$table->integer('lead_id');
+			$table->integer('location_id');
             $table->timestamps();
         });
 	}

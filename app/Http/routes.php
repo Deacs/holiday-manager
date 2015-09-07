@@ -3,26 +3,31 @@
 use App\User;
 use Illuminate\Http\Request;
 
-get('test', 'ManagerController@test');
+//get('test', 'ManagerController@test');
+//
+//get('test', ['middleware' => 'lead', function () {
+//
+//	dd('Middleware Passed Test');
+//}]);
+//
+//get('calendar', 'CalendarController@index');
 
-get('test', ['middleware' => 'lead', function () {
+Route::group(['middleware' => 'auth'], function() {
 
-	dd('Middleware Passed Test');
-//	dd('Passed Middleware');
-//	$user = Auth::loginUsingId(2);
-//	dd($user);
-}]);
+	get('/',
+		[
+			'as' 	=> 'home',
+			'uses' 	=> 'ManagerController@index'
+		]
+	);
 
-get('/', ['as' => 'home', 'uses' => 'ManagerController@index']);
-
-get('calendar', 'CalendarController@index');
-
-get('directory',
-	[
-		'as' 	=> 'directory.home',
-		'uses' 	=> 'StaffDirectoryController@index'
-	]
-);
+	get('directory',
+		[
+			'as' 	=> 'directory.home',
+			'uses' 	=> 'StaffDirectoryController@index'
+		]
+	);
+});
 
 /**
  * Session handling
@@ -73,7 +78,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'departments', 'as' => 'depart
 	);
 });
 
-Route::group(['prefix' => 'member', 'as' => 'member.'], function () {
+Route::group(['middleware' => 'auth', 'prefix' => 'member', 'as' => 'member.'], function () {
 
 	get('{slug}',
 		[
@@ -104,7 +109,7 @@ Route::group(['prefix' => 'member', 'as' => 'member.'], function () {
 	);
 });
 
-Route::group(['prefix' => 'location', 'as' => 'location.'], function () {
+Route::group(['middleware' => 'auth', 'prefix' => 'location', 'as' => 'location.'], function () {
 
 	get('add',
 		[

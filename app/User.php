@@ -54,7 +54,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		'skype_name',
 		'department_id',
 		'location_id',
-		'lead',
 		'super_user',
 		'annual_holiday_allowance'
 	];

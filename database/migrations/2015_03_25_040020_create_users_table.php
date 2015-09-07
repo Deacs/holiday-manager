@@ -17,7 +17,7 @@ class CreateUsersTable extends Migration {
             $table->string('first_name');
             $table->string('last_name');
             $table->string('slug');
-			$table->string('position');
+			$table->string('role');
             $table->string('email')->unique();
 			$table->string('password');
             $table->string('telephone')->nullable();
@@ -26,7 +26,6 @@ class CreateUsersTable extends Migration {
 			$table->integer('department_id')->foreign('department_id')->references('id')->on('departments');
 			$table->integer('location_id')->foreign('location_id')->references('id')->on('locations');
             $table->boolean('super_user')->default(0);
-			$table->integer('annual_holiday_allowance')->default(25);
 			$table->boolean('confirmed')->default(0);
 			$table->string('confirmation_token')->nullable();
 			$table->rememberToken();

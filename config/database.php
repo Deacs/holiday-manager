@@ -27,8 +27,8 @@ return [
 	*/
 
 //	'default' => 'sqlite',
-//	'default' => $app->environment() == 'testing' ? 'sqlite_testing' : 'mysql',
-	'default' => 'mysql',
+	'default' => $app->environment() == 'testing' ? 'sqlite' : 'mysql',
+//	'default' => 'mysql',
 
 	/*
 	|--------------------------------------------------------------------------

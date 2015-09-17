@@ -1,5 +1,7 @@
 <?php
 
+use App\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -41,6 +43,16 @@ class DepartmentTest extends CrowdcubeTester
                 ->see('Engineering');
     }
 
+    public function request_to_show_department_returns_correct_data()
+    {
+        // @TODO write test
+    }
+
+    public function request_to_show_all_departments_returns_correct_data()
+    {
+        // @TODO write test
+    }
+
     /**
      * @test
      */
@@ -65,7 +77,7 @@ class DepartmentTest extends CrowdcubeTester
     }
 
     /**
-     * @test
+     * @not_test
      */
     public function add_new_member_form_displayed_to_super_user()
     {
@@ -83,6 +95,34 @@ class DepartmentTest extends CrowdcubeTester
         Auth::loginUsingId(2);
 
         $this->visit('/departments/investments')
-            ->dontSee('Add New Team Member');
+                ->dontSee('Add New Team Member');
+    }
+
+    /**
+     * @test
+     */
+    public function adding_new_member_results_in_new_record_in_db()
+    {
+        $this->withoutMiddleware();
+
+        $credentials = [
+            'first_name'    => 'Taylor',
+            'last_name'     => 'Swift',
+            'role'          => 'Junior Developer',
+            'email'         => 'taylor@crowdcube.com',
+            'skype_name'    => 'taylor.crowdcube',
+            'telephone'     => '987654321',
+            'extension'     => '123',
+            'location_id'   => '1',
+            'department_id' => '1',
+        ];
+
+        $this->call('POST', '/member/add', $credentials);
+
+        $this->assertResponseOk();
+
+        $this->seeInDatabase('users', [
+            'last_name' => 'Swift',
+        ]);
     }
 }

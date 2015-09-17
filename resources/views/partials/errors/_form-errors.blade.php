@@ -1,4 +1,5 @@
-@if (count($errors) > 0)
+{{--@if (count($errors) > 0)--}}
+@if (!empty($errors))
     <div data-alert class="alert-box alert radius alert">
         <ul>
             @foreach ($errors->all() as $error)

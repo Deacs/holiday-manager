@@ -49,6 +49,8 @@ class UserController extends Controller {
 	 */
 	public function store(Request $request, AppMailer $mailer)
 	{
+//		dd($request->all());
+
 		$this->validate($request, [
 			'first_name' 	=> 'required',
 			'last_name' 	=> 'required',
@@ -60,6 +62,8 @@ class UserController extends Controller {
 
 		// Slug, initial password and confirmation token are generated within the UserObserver
 		$user = User::create($request->all());
+
+//		dd($user);
 
 		// Email a confirmation link to the newly created user
 		$mailer->sendConfirmationRequestEmail($user);

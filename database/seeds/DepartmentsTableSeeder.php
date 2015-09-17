@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 // composer require laracasts/testdummy
@@ -29,6 +30,8 @@ class DepartmentsTableSeeder extends Seeder {
                 'slug'          => $department[1],
                 'lead_id'       => $department[2],
                 'location_id'   => $department[3],
+                'created_at'    => Carbon::now(),
+                'updated_at'    => Carbon::now(),
             ]);
         }
     }

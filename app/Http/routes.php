@@ -3,15 +3,6 @@
 use App\User;
 use Illuminate\Http\Request;
 
-//get('test', 'ManagerController@test');
-//
-//get('test', ['middleware' => 'lead', function () {
-//
-//	dd('Middleware Passed Test');
-//}]);
-//
-//get('calendar', 'CalendarController@index');
-
 Route::group(['middleware' => 'auth'], function() {
 
 	get('/',
@@ -115,7 +106,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'location', 'as' => 'location.
 		[
 			'as' 			=> 'location.create',
 			'uses' 			=> 'LocationController@create',
-			'middleware' 	=> 'superuser',
+			//'middleware' 	=> 'superuser',
 		]
 	);
 

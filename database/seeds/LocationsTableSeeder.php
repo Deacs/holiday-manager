@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 // composer require laracasts/testdummy
@@ -20,12 +21,14 @@ class LocationsTableSeeder extends Seeder {
         foreach ($locations as $location) {
 
             DB::table('locations')->insert([
-                'name'      => $location[0],
-                'slug'      => $location[1],
-                'address'   => $location[2],
-                'lat'       => $location[3],
-                'lon'       => $location[4],
-                'telephone' => $location[5]
+                'name'          => $location[0],
+                'slug'          => $location[1],
+                'address'       => $location[2],
+                'lat'           => $location[3],
+                'lon'           => $location[4],
+                'telephone'     => $location[5],
+                'created_at'    => Carbon::now(),
+                'updated_at'    => Carbon::now(),
             ]);
         }
     }

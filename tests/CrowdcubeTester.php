@@ -13,8 +13,8 @@ class CrowdcubeTester extends TestCase {
         Artisan::call('db:seed');
     }
 
-    public function __construct()
-    {
-//        $this->fake = \Faker::create();
-    }
+//    public function __construct()
+//    {
+////        $this->fake = \Faker::create();
+//    }
 }

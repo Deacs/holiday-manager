@@ -10,7 +10,7 @@ class DepartmentHomeDisplayCest
 
     public function openDepartmentHomePageAndNavigateToMemberProfile(AcceptanceTester $I)
     {
-        $I->amOnPage('/department/engineering');
+        $I->amOnPage('/departments/engineering');
         $I->see('Engineering');
         $I->see('Department Lead: David Ives');
         $I->see('Team Members');
@@ -21,7 +21,7 @@ class DepartmentHomeDisplayCest
 
     public function seeCorrectMessageForTeamWithMembers(AcceptanceTester $I)
     {
-        $I->amOnPage('/department/product');
+        $I->amOnPage('/departments/product');
         $I->see('Product');
         $I->see('Department Lead: Thor Mitchell');
         $I->dontSee('No team members associated with Product');
@@ -29,7 +29,7 @@ class DepartmentHomeDisplayCest
 
     public function cantSeeAddNewMemberForm(AcceptanceTester $I)
     {
-        $I->amOnPage('/department/engineering');
+        $I->amOnPage('/departments/engineering');
         $I->dontSee('Add New Team Member');
     }
 }

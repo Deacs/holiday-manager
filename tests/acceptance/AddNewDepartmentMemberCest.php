@@ -18,7 +18,7 @@ class AddNewDepartmentMemberCest
     {
         $I->registerNewUser($I);
 
-        $I->seeCurrentUrlEquals('/department/engineering');
+        $I->seeCurrentUrlEquals('/departments/engineering');
         $I->see('Member Successfully Added', '.success');
         // New user should now be visible within listing
         $I->see('Jack Way', '.member-link');

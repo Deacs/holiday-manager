@@ -15,7 +15,7 @@ class DepartmentLeadTeamAdminCest
 
     public function seeTeamMembers(AcceptanceTester $I)
     {
-        $I->amOnPage('/department/engineering');
+        $I->amOnPage('/departments/engineering');
         $I->see('David Ives', '.member-link');
         $I->see('Head of Technology');
         $I->see('Rob Crowe', '.member-link');
@@ -26,7 +26,7 @@ class DepartmentLeadTeamAdminCest
 
     public function seeHolidayRequestManagementOptions(AcceptanceTester $I)
     {
-        $I->amOnPage('/department/engineering');
+        $I->amOnPage('/departments/engineering');
         $I->seeElement('#team-holiday-status');
         $I->seeElement('a', ['data-balance-type' => 'pending']);
         $I->seeElement('a', ['data-balance-type' => 'approved']);
@@ -35,32 +35,32 @@ class DepartmentLeadTeamAdminCest
 
     public function canViewMemberProfileFromDepartmentListing(AcceptanceTester $I)
     {
-        $I->amOnPage('/department/engineering');
+        $I->amOnPage('/departments/engineering');
         $I->click('Rob Crowe');
         $I->seeCurrentUrlEquals('/member/rob-crowe');
     }
 
     public function canEmailMemberFromDepartmentListing(AcceptanceTester $I)
     {
-        $I->amOnPage('/department/engineering');
+        $I->amOnPage('/departments/engineering');
         $I->see('rob@crowdcube.com', 'a');
     }
 
     public function cannotSeeAdministrationOptionsForOtherDepartments(AcceptanceTester $I)
     {
-        $I->amOnPage('/department/marketing');
+        $I->amOnPage('/departments/marketing');
         $I->dontSee('#team-holiday-status');
     }
 
     public function canSeeAddNewDepartmentMemberForm(AcceptanceTester $I)
     {
-        $I->amOnPage('/department/engineering');
+        $I->amOnPage('/departments/engineering');
         $I->see('Add New Team Member', 'h4');
     }
 
     public function canSeeCorrectAddNewTeamMemberFormFields(AcceptanceTester $I)
     {
-        $I->amOnPage('/department/engineering');
+        $I->amOnPage('/departments/engineering');
         // Can be written as $I->seeElement('input[name=first_name]');
         $I->seeElement('input', ['name' => 'first_name']);
         $I->seeElement('input', ['name' => 'last_name']);

@@ -30,6 +30,6 @@ class StaffDirectoryCest
     {
         $I->see('Business Development', 'a');
         $I->click('Business Development');
-        $I->seeCurrentUrlEquals('/department/business-development');
+        $I->seeCurrentUrlEquals('/departments/business-development');
     }
 }

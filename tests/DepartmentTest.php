@@ -43,14 +43,26 @@ class DepartmentTest extends CrowdcubeTester
                 ->see('Engineering');
     }
 
+    /**
+     * @test
+     */
     public function request_to_show_department_returns_correct_data()
     {
-        // @TODO write test
+        Auth::loginUsingId(1);
+        $this->get('/api/departments/engineering')->seeJsonContains([
+            'name'          => 'Engineering',
+            'slug'          => 'engineering',
+            'lead_id'       => '1',
+            'location_id'   => '1',
+        ]);
     }
 
     public function request_to_show_all_departments_returns_correct_data()
     {
-        // @TODO write test
+        Auth::loginUsingId(1);
+        $this->get('/api/departments')->seeJsonContains([
+
+        ]);
     }
 
     /**
@@ -101,7 +113,7 @@ class DepartmentTest extends CrowdcubeTester
     /**
      * @test
      */
-    public function adding_new_member_results_in_new_record_in_db()
+    public function adding_new_member_results_in_correct_data_in_db()
     {
         $this->withoutMiddleware();
 
@@ -121,8 +133,6 @@ class DepartmentTest extends CrowdcubeTester
 
         $this->assertResponseOk();
 
-        $this->seeInDatabase('users', [
-            'last_name' => 'Swift',
-        ]);
+        $this->seeInDatabase('users', $credentials);
     }
 }

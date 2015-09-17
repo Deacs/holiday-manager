@@ -28,6 +28,6 @@ class LocationHomeDisplayCest
     {
         $I->see('Engineering', 'a');
         $I->click('Engineering');
-        $I->seeCurrentUrlEquals('/department/engineering');
+        $I->seeCurrentUrlEquals('/departments/engineering');
     }
 }

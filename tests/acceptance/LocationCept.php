@@ -12,4 +12,4 @@ $I->seeElement('.department-link');
 
 $I->see('Engineering', '.department-link');
 $I->click('Engineering');
-$I->canSeeCurrentUrlEquals('/department/engineering');
+$I->canSeeCurrentUrlEquals('/departments/engineering');

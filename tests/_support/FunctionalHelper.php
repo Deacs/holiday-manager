@@ -38,7 +38,7 @@ class FunctionalHelper extends Module
 
     public function registerNewUser(FunctionalTester $I)
     {
-//        $I->amOnPage('/department/engineering');
+//        $I->amOnPage('/departments/engineering');
 //        $I->fillField('first_name', 'Jack');
 //        $I->fillField('last_name', 'Way');
 //        $I->fillField('role', 'Front End Engineer');

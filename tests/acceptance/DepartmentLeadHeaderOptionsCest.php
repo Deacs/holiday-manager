@@ -16,6 +16,6 @@ class DepartmentLeadHeaderOptionsCest
     {
         $I->see('My Team');
         $I->click('My Team');
-        $I->seeCurrentUrlEquals('/department/engineering');
+        $I->seeCurrentUrlEquals('/departments/engineering');
     }
 }

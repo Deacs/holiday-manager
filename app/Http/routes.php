@@ -156,14 +156,14 @@ Route::group(['prefix' => 'api', 'as' => 'api.'], function () {
 		]
 	);
 
-	get('department/{slug}/team',
+	get('departments/{slug}/team',
 		[
 			'as' 	=> 'department.team',
 			'uses' 	=> 'DepartmentController@team'
 		]
 	);
 
-	get('department/{slug}',
+	get('departments/{slug}',
 		[
 			'as' 	=> 'department.show',
 			'uses' 	=> 'DepartmentController@profile'

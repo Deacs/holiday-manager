@@ -152,7 +152,7 @@ Route::group(['prefix' => 'api', 'as' => 'api.'], function () {
 	get('locations/{slug}',
 		[
 			'as' 	=> 'locations',
-			'uses'	=> 'LocationController@show'
+			'uses'	=> 'LocationController@profile'
 		]
 	);
 

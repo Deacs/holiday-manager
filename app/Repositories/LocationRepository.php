@@ -6,7 +6,7 @@ class LocationRepository
 {
     public function getLocationBySlug($slug)
     {
-        return Location::where('slug', $slug)->with('departments')->with('lead')->firstOrFail();
+        return Location::where('slug', $slug)->with('departments')->firstOrFail();
     }
 
     public function getAllLocations()

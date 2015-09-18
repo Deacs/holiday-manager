@@ -19,9 +19,9 @@ class LocationTest extends CrowdcubeTester
         $this->call('GET', '/api/locations/exeter');
 
         $this->assertResponseOk();
-//        $this->get('/api/locations/exeter')->seeJsonContains([
-//            'name'          => 'Exeter',
-//            'slug'          => 'exeter',
-//        ]);
+        $this->get('/api/locations/exeter')->seeJsonContains([
+            'name' => 'Exeter',
+            'slug' => 'exeter',
+        ]);
     }
 }

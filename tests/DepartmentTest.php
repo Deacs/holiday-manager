@@ -28,6 +28,7 @@ class DepartmentTest extends CrowdcubeTester
     public function viewing_engineering_route_displays_correct_page()
     {
         Auth::loginUsingId(6);
+
         $this->visit('/departments/engineering')
                 ->see('Engineering');
     }
@@ -38,6 +39,7 @@ class DepartmentTest extends CrowdcubeTester
     public function request_to_show_department_returns_correct_data()
     {
         Auth::loginUsingId(1);
+
         $this->get('/api/departments/engineering')->seeJsonContains([
             'name'          => 'Engineering',
             'slug'          => 'engineering',
@@ -52,6 +54,7 @@ class DepartmentTest extends CrowdcubeTester
     public function request_to_show_all_departments_returns_correct_department_names()
     {
         Auth::loginUsingId(1);
+
         $this->get('/api/departments')->seeJson([
             'name' => 'Engineering',
             'name' => 'Marketing',
@@ -113,11 +116,11 @@ class DepartmentTest extends CrowdcubeTester
     /**
      * @test
      */
-    public function adding_new_member_results_in_correct_data_in_db()
+    public function adding_new_department_member_results_in_correct_data_being_persisted()
     {
         $this->withoutMiddleware();
 
-        $credentials = [
+        $data = [
             'first_name'    => 'Taylor',
             'last_name'     => 'Swift',
             'role'          => 'Junior Developer',
@@ -129,10 +132,13 @@ class DepartmentTest extends CrowdcubeTester
             'department_id' => '1',
         ];
 
-        $this->call('POST', '/member/add', $credentials);
+        $this->call('POST', '/member/add', $data);
 
         $this->assertResponseOk();
 
-        $this->seeInDatabase('users', $credentials);
+        $this->seeInDatabase('users', $data);
+
+        // A slug should have been automatically generated
+        $this->seeInDatabase('users', ['slug' => 'taylor-swift']);
     }
 }

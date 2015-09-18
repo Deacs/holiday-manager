@@ -14,17 +14,6 @@ class DepartmentTest extends CrowdcubeTester
     protected $baseUrl = 'http://caliente.dev';
 
     /**
-     * A basic functional test example.
-     *
-     * @return void
-     */
-    public function testBasicExample()
-    {
-        $this->visit('/')
-            ->see('Staff Directory');
-    }
-
-    /**
      * @test
      */
     public function anonymous_users_are_redirected_to_login_when_requesting_engineering_route()
@@ -57,11 +46,22 @@ class DepartmentTest extends CrowdcubeTester
         ]);
     }
 
-    public function request_to_show_all_departments_returns_correct_data()
+    /**
+     * @test
+     */
+    public function request_to_show_all_departments_returns_correct_department_names()
     {
         Auth::loginUsingId(1);
-        $this->get('/api/departments')->seeJsonContains([
-
+        $this->get('/api/departments')->seeJson([
+            'name' => 'Engineering',
+            'name' => 'Marketing',
+            'name' => 'Finance',
+            'name' => 'Business Development',
+            'name' => 'Product',
+            'name' => 'Completions',
+            'name' => 'Investments',
+            'name' => 'Legal',
+            'name' => 'Bonds',
         ]);
     }
 

@@ -100,7 +100,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'member', 'as' => 'member.'], 
 	);
 });
 
-Route::group(['middleware' => 'auth', 'prefix' => 'location', 'as' => 'location.'], function () {
+Route::group(['middleware' => 'auth', 'prefix' => 'locations', 'as' => 'location.'], function () {
 
 	get('add',
 		[
@@ -135,17 +135,24 @@ get('beta', function () {
 
 Route::group(['prefix' => 'api', 'as' => 'api.'], function () {
 
-	get('location/{location_slug}/departments/teams',
+	get('locations/{location_slug}/departments/teams',
 		[
 			'as' 	=> 'location.department.teams',
 			'uses' 	=> 'LocationController@departmentTeams'
 		]
 	);
 
-	get('location/{slug}/departments',
+	get('locations/{slug}/departments',
 		[
 			'as' 	=> 'location.departments',
 			'uses' 	=> 'LocationController@departments'
+		]
+	);
+
+	get('locations/{slug}',
+		[
+			'as' 	=> 'locations',
+			'uses'	=> 'LocationController@show'
 		]
 	);
 

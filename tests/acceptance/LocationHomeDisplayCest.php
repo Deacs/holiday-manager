@@ -7,7 +7,7 @@ class LocationHomeDisplayCest
     {
         $I->am('a logged in user');
         $I->loginUser($I);
-        $I->amOnPage('/location/exeter');
+        $I->amOnPage('/locations/exeter');
     }
 
     public function _after(AcceptanceTester $I)

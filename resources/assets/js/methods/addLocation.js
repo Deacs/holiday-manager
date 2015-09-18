@@ -6,7 +6,7 @@ module.exports = function(e) {
 
     console.log(location);
 
-    this.$http.post('/api/location/add', location, function(data) {
+    this.$http.post('/api/locations/add', location, function(data) {
 
         console.log('*********************');
         console.log(location);

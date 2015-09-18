@@ -29,6 +29,15 @@ class LocationController extends Controller
 		return view('location.home')->with('location', $location)->with('departments', $location->departments);
 	}
 
+	/**
+	 * @param $slug
+	 * @return Location
+	 */
+	public function profile($slug)
+	{
+		return $this->locationRepository->getLocationBySlug($slug);
+	}
+
 	public function departments($slug)
 	{
 		return $this->locationRepository->getLocationBySlug($slug);
@@ -63,7 +72,7 @@ class LocationController extends Controller
 		// Slug is generated within the UserObserver
 		$location = Location::create($request->all());
 
-		return redirect('/location/'.$location->slug);
+		return redirect('/locations/'.$location->slug);
 	}
 
 }

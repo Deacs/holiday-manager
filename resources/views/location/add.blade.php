@@ -4,7 +4,7 @@
 
     <h1>Add new Location</h1>
 
-    <form method="POST" action="/location/add">
+    <form method="POST" action="/locations/add">
         <input type="hidden" name="_token" value="{!! csrf_token() !!}">
         <div class="large-12 columns">
             <div class="large-2 left"><label for="loc_name">Name</label></div>

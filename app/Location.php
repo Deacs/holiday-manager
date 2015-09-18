@@ -40,7 +40,7 @@ class Location extends Model {
 
     public function getUrlAttribute()
     {
-        return '/location/'.$this->slug;
+        return '/locations/'.$this->slug;
     }
 
 }

@@ -1,21 +1,27 @@
 <?php
 
 use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class LocationTest extends TestCase
+class LocationTest extends CrowdcubeTester
 {
 
     protected $baseUrl = 'http://caliente.dev';
 
     /**
-     * A basic functional test example.
-     *
-     * @return void
+     * @test
      */
-    public function testBasicExample()
+    public function request_to_show_location_returns_correct_data()
     {
-        $this->visit('/')
-            ->see('Staff Directory');
+        Auth::loginUsingId(1);
+
+        $this->call('GET', '/api/locations/exeter');
+
+        $this->assertResponseOk();
+//        $this->get('/api/locations/exeter')->seeJsonContains([
+//            'name'          => 'Exeter',
+//            'slug'          => 'exeter',
+//        ]);
     }
 }

@@ -141,4 +141,25 @@ class DepartmentTest extends CrowdcubeTester
         // A slug should have been automatically generated
         $this->seeInDatabase('users', ['slug' => 'taylor-swift']);
     }
+
+    /**
+     * @test
+     */
+    public function attempting_to_add_department_member_missing_required_fields_prevents_persistence()
+    {
+        $this->withoutMiddleware();
+
+        $data = [
+            'first_name'    => 'Taylor',
+            'last_name'     => 'Swift',
+            'role'          => 'Junior Developer',
+            'email'         => 'taylor@crowdcube.com',
+        ];
+
+        $this->call('POST', '/member/add', $data);
+
+        $this->assertResponseStatus(302);
+
+        $this->notSeeInDatabase('users', $data);
+    }
 }

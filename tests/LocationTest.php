@@ -46,8 +46,6 @@ class LocationTest extends CrowdcubeTester
      */
     public function adding_new_location_results_in_correct_data_being_persisted()
     {
-        Auth::loginUsingId(15);
-
         $this->withoutMiddleware();
 
         $data =[
@@ -73,8 +71,6 @@ class LocationTest extends CrowdcubeTester
      */
     public function attempting_to_add_location_missing_required_fields_prevents_persistence()
     {
-        Auth::loginUsingId(15);
-
         $this->withoutMiddleware();
 
         $data =[
@@ -92,11 +88,4 @@ class LocationTest extends CrowdcubeTester
         $this->notSeeInDatabase('locations', ['name' => 'Test Office']);
     }
 
-    /**
-     * @test
-     */
-//    public function missing_data_should_throw_exception_and_prevent_record_being_persisted()
-//    {
-//        $this->
-//    }
 }

@@ -12,33 +12,10 @@ class LocationTest extends CrowdcubeTester
     /**
      * @test
      */
-    public function request_to_show_location_returns_correct_data()
+    public function anonymous_users_are_redirected_to_login_when_requesting_location_route()
     {
-        Auth::loginUsingId(1);
-
-        $this->get('/api/locations/exeter')->seeJsonContains([
-            'name'      => 'Exeter',
-            'slug'      => 'exeter',
-            'address'   => 'Innovation Centre, Rennes Drive, Exeter, EX4 4RN',
-            'telephone' => '01392 241319',
-            'lat'       => '50.7381',
-            'lon'       => '-3.53062',
-        ]);
-    }
-
-    /**
-     * @test
-     */
-    public function request_to_show_all_locations_returns_correct_location_names()
-    {
-        Auth::loginUsingid(1);
-
-        $this->get('/api/locations')->seeJsonContains([
-            'name' => 'Exeter',
-            'name' => 'London',
-            'name' => 'Manchester',
-            'name' => 'Barcelona',
-        ]);
+        $this->visit('/locations/exeter')
+            ->onPage('/login');
     }
 
     /**

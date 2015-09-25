@@ -78,6 +78,13 @@ Route::group(['middleware' => 'auth', 'prefix' => 'member', 'as' => 'member.'], 
 		]
 	);
 
+	get('{slug}/edit',
+		[
+			'as' 	=> 'edit',
+			'uses' 	=> 'UserController@edit',
+		]
+	);
+
 	post('add',
 		[
 			'as' 	=> 'add',
@@ -106,7 +113,6 @@ Route::group(['middleware' => 'auth', 'prefix' => 'locations', 'as' => 'location
 		[
 			'as' 			=> 'location.create',
 			'uses' 			=> 'LocationController@create',
-			//'middleware' 	=> 'superuser',
 		]
 	);
 

@@ -13122,7 +13122,7 @@ module.exports = function (e) {
 
     console.log(location);
 
-    this.$http.post('/api/location/add', location, function (data) {
+    this.$http.post('/api/locations/add', location, function (data) {
 
         console.log('*********************');
         console.log(location);
@@ -13216,7 +13216,7 @@ module.exports = function (e) {
 'use strict';
 
 module.exports = function (slug) {
-    this.$http.get('/api/department/' + slug, function (department) {
+    this.$http.get('/api/departments/' + slug, function (department) {
         this.department = department;
     });
 };
@@ -13255,7 +13255,7 @@ module.exports = function (slug) {
 
     var endpoint = '/api/members';
     if (slug != '') {
-        endpoint = '/api/department/' + slug + '/team';
+        endpoint = '/api/departments/' + slug + '/team';
     }
 
     this.$http.get(endpoint, function (members) {

@@ -18,4 +18,15 @@ class MemberTest extends TestCase
         $this->visit('/')
             ->see('Staff Directory');
     }
+
+    /**
+     * @test
+     */
+    public function edit_option_is_not_shown_to_standard_user_when_viewing_another_users_profile()
+    {
+        Auth::loginUsingId(2);
+
+        $this->visit('/member/david-ives')
+                ->dontSee('Edit User');
+    }
 }

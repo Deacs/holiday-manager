@@ -1,13 +1,14 @@
 <?php namespace App\Http\Controllers;
 
-use App\Repositories\UserRepository;
 use App\User as User;
 use App\Http\Requests;
+use Illuminate\Support\Facades\Gate;
+use Laracasts\Flash\Flash;
 use App\Mailers\AppMailer;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
-use Laracasts\Flash\Flash;
-use Illuminate\Http\Request;
+use App\Repositories\UserRepository;
 use App\Http\Controllers\Controller;
 
 class UserController extends Controller {
@@ -40,6 +41,17 @@ class UserController extends Controller {
 		return view('member.home')->with('member', $member);
 	}
 
+	public function edit($slug)
+	{
+		$member = $this->userRepository->getUserBySlug($slug);
+
+		if (Gate::denies('edit-member', $member)) {
+			abort(403);
+		}
+
+		return 'Edit : '.$member->first_name;
+	}
+
 	/**
 	 * Store a newly created resource in storage.
 	 *
@@ -49,8 +61,6 @@ class UserController extends Controller {
 	 */
 	public function store(Request $request, AppMailer $mailer)
 	{
-//		dd($request->all());
-
 		$this->validate($request, [
 			'first_name' 	=> 'required',
 			'last_name' 	=> 'required',
@@ -62,8 +72,6 @@ class UserController extends Controller {
 
 		// Slug, initial password and confirmation token are generated within the UserObserver
 		$user = User::create($request->all());
-
-//		dd($user);
 
 		// Email a confirmation link to the newly created user
 		$mailer->sendConfirmationRequestEmail($user);

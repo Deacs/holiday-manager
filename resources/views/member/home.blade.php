@@ -7,8 +7,7 @@
 
             <div class="large-2 columns">
                 <img src="@{{ member | getAvatar '200' }}">
-
-                    {!! link_to_route('member.edit', 'EDIT USER', ['slug' => $member->slug], ['class' => 'button']) !!}
+                {!! link_to_route('member.edit', 'EDIT USER', ['slug' => $member->slug], ['class' => 'button', 'id' => 'edit-user']) !!}
             </div>
             <div class="large-6 columns">
                 <h2 v-text="member | nameFormat"></h2>

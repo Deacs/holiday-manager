@@ -33,33 +33,14 @@ class MemberTest extends TestCase
     /**
      * @test
      */
-    public function standard_user_can_open_edit_user_screen_to_update_details()
+    public function standard_user_can_open_edit_user_screen_to_update_own_details()
     {
-        Auth::loginUsingId(1);
+        Auth::loginUsingId(2);
 
-        // Cannot understand why this is failing
-        // InvalidArgumentException: Could not find a link with a body, name, or ID attribute of [edit-user].
-        // Even though there is a link with that value as an ID
-//        $this->visit('/member/david-ives')
-//                ->see('EDIT USER')
-//                ->click('edit-user')
-//                ->onPage('/member/david-ives/edit');
-    }
-
-    /**
-     * @test
-     */
-    public function department_lead_can_edit_user_details_for_members_of_their_own_team()
-    {
-        /* @TODO Write test */
-    }
-
-    /**
-     * @test
-     */
-    public function super_user_can_edit_user_details_of_any_member()
-    {
-        /* @TODO Write test */
+        $this->visit('/member/rob-crowe')
+                ->see('EDIT USER')
+                ->click('EDIT USER')
+                ->onPage('/member/rob-crowe/edit');
     }
 
     /**
@@ -94,4 +75,38 @@ class MemberTest extends TestCase
         $this->get('/member/becca-lewis/edit')
             ->assertResponseOk();
     }
+
+    /**
+     * @test
+     */
+    public function department_lead_can_edit_user_details_for_members_of_their_own_team()
+    {
+        Auth::loginUsingId(1);
+
+        $this->visit('/member/rob-crowe/edit')
+                ->see('Edit Details')
+                ->type('Roberto', 'first_name')
+                ->submitForm('Update',
+                    [
+                        'first_name'    => 'Roberto',
+                        'last_name'     => 'Crowington',
+                    ]
+                )
+                ->seeInDatabase('users',
+                    [
+                        'first_name'    => 'Roberto',
+                        'last_name'     => 'Crowington',
+                        'email'         => 'rob@crowdcube.com',
+                    ]
+                );
+    }
+
+    /**
+     * @test
+     */
+    public function super_user_can_edit_user_details_of_any_member()
+    {
+        /* @TODO Write test */
+    }
+
 }

@@ -1,14 +1,13 @@
 <?php namespace App;
 
 use App\HolidayRequest;
+use Laracasts\Flash\Flash;
+use \Exception as Exception;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
-
-use \Exception as Exception;
-use Laracasts\Flash\Flash;
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract {
 
@@ -76,11 +75,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	public function location()
 	{
 		return $this->belongsTo('App\Location', 'location_id', 'id');
-	}
-
-	public function holidayRequests()
-	{
-		//return $this->hasMany(HolidayRequest::class);
 	}
 
 	/**

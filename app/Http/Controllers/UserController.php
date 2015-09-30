@@ -2,7 +2,6 @@
 
 use App\User as User;
 use App\Http\Requests;
-use Illuminate\Support\Facades\Gate;
 use Laracasts\Flash\Flash;
 use App\Mailers\AppMailer;
 use Illuminate\Http\Request;
@@ -10,16 +9,17 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\UserRepository;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller {
 
 	protected $userRepository;
-
+	
 	public function __construct(UserRepository $userRepository)
 	{
 		$this->userRepository = $userRepository;
 	}
-
+	
 	/**
 	 * Return all users
 	 */
@@ -27,20 +27,13 @@ class UserController extends Controller {
 	{
 		return User::with('department')->get();
 	}
-
+	
 	/**
-	 * Return the specified resource.
+	 * Return the edit screen
 	 *
-	 * @return $this
 	 * @param $slug
-	 * @internal param int $id
+	 * @return $this
 	 */
-	public function show($slug)
-	{
-		$member = $this->userRepository->getUserBySlug($slug);
-		return view('member.home')->with('member', $member);
-	}
-
 	public function edit($slug)
 	{
 		$member = $this->userRepository->getUserBySlug($slug);
@@ -49,7 +42,46 @@ class UserController extends Controller {
 			abort(403);
 		}
 
-		return 'Edit : '.$member->first_name;
+		return view('member.edit')->with('member', $member);
+	}
+
+	/**
+	 * Return the specified resource.
+	 *
+	 * @param $slug
+	 * @internal param int $id
+	 * @return $this
+	 */
+	public function show($slug)
+	{
+		$member = $this->userRepository->getUserBySlug($slug);
+		return view('member.home')->with('member', $member);
+	}
+
+	/**
+	 * Update an existing record
+	 *
+	 * @param Request $request
+	 * @param $slug
+	 * @internal param $id
+	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+	 */
+	public function update(Request $request, $slug)
+	{
+		$user = $this->userRepository->getUserBySlug($slug);
+
+		if (Gate::denies('edit-member', $user)) {
+			abort(403);
+		}
+
+		if($this->userRepository->update($user, $request)) {
+			Flash::success('Update Successful');
+			return redirect('member/'.$user->slug);
+		}
+
+		Flash::error('Update Failed');
+		/* @TODO Return with the errors */
+		//return back()->withErrors(););
 	}
 
 	/**
@@ -85,28 +117,6 @@ class UserController extends Controller {
 	}
 
 	/**
-	 * Search for the user with the unconfirmed account that
-	 * has the token matching the received version
-	 *
-	 * @return \Illuminate\View\View
-	 * @param $token
-	 */
-	public function confirm($token)
-	{
-		$user = User::where('confirmed', false)
-					->whereNotNull('confirmation_token')
-					->where('confirmation_token', $token)
-					->first();
-
-		if ($user) {
-			return view('member.complete-confirmation')->with('user_id', $user->id);
-		}
-
-		Flash::error('Your account could not be confirmed');
-		return view('member.confirm');
-	}
-
-	/**
 	 * A valid confirmation request has been received
 	 * Validate the request then update the temporary password
 	 * Confirm the account - set the confirmed flag, remove the token
@@ -132,12 +142,25 @@ class UserController extends Controller {
 	}
 
 	/**
-	 * Called via the API
-	 * Returns the Holiday Request records to be consumed by the FE app
+	 * Search for the user with the unconfirmed account that
+	 * has the token matching the received version
+	 *
+	 * @param $token
+	 * @return \Illuminate\View\View
 	 */
-	public function holidayRequests()
+	public function confirm($token)
 	{
-		return Auth::user()->holidayRequests;
+		$user = User::where('confirmed', false)
+				->whereNotNull('confirmation_token')
+				->where('confirmation_token', $token)
+				->first();
+
+		if ($user) {
+			return view('member.complete-confirmation')->with('user_id', $user->id);
+		}
+
+		Flash::error('Your account could not be confirmed');
+		return view('member.confirm');
 	}
 
 }

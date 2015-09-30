@@ -85,6 +85,13 @@ Route::group(['middleware' => 'auth', 'prefix' => 'member', 'as' => 'member.'], 
 		]
 	);
 
+	post('{slug}/edit',
+		[
+			'as' 	=> 'edit',
+			'uses' 	=> 'UserController@update',
+		]
+	);
+
 	post('add',
 		[
 			'as' 	=> 'add',

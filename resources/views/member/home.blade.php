@@ -7,13 +7,15 @@
 
             <div class="large-2 columns">
                 <img src="@{{ member | getAvatar '200' }}">
-                {!! link_to_route('member.edit', 'EDIT USER', ['slug' => $member->slug], ['class' => 'button', 'name' => 'edit-user']) !!}
             </div>
             <div class="large-6 columns">
                 <h2 v-text="member | nameFormat"></h2>
                 <h5><i class="fi-torso large"></i> @{{ member.role }}</h5>
                 <h6><i class="fi-torsos-all large"></i> <a href="@{{ member.department.url }}" v-text="member.department.name"></a></h6>
                 <h6><i class="fi-compass"></i> <a href="@{{ member.location.url }}" v-text="member.location.name"></a></h6>
+                @can('edit-member', $member)
+                    {!! link_to_route('member.edit', 'EDIT USER', ['slug' => $member->slug], ['class' => 'button', 'name' => 'edit-user']) !!}
+                @endcan
             </div>
             <div class="large-4 columns">
                 <h4>Contact</h4>

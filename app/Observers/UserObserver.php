@@ -12,13 +12,24 @@ class UserObserver {
      */
     public function creating($model)
     {
-        $model->slug = strtolower(join('-', [$model->first_name, $model->last_name]));
-        $model->password = bcrypt($model->slug.microtime());
+        $this->createSlug($model);
         $model->confirmation_token = str_random(32);
     }
 
     public function saved($model)
     {
+        //$this->createSlug($model);
+    }
+
+    public function updating($model)
+    {
+        $this->createSlug($model);
+    }
+
+    private function createSlug($model)
+    {
+        $model->slug = strtolower(join('-', [$model->first_name, $model->last_name]));
+        $model->password = bcrypt($model->slug . microtime());
     }
 
 }

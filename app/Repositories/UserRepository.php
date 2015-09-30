@@ -34,26 +34,10 @@ class UserRepository
         $user->department_id    = $request['department_id'];
         $user->location_id      = $request['location_id'];
 
-        /* @TODO SLug needs to be recreated - use Observer */
+       // Slug is automatically updated by the Observer
 
         return $user->save();
     }
-    /**
-     * @TODO Move to dedicated Repository
-     *
-     * @param $slug
-     * @return
-     */
-//    public function getAllDepartmentMembersBySlug($slug)
-//    {
-//        $department = Department::where('slug', $slug)->firstOrFail();
-//        return User::where('department_id', $department->id)->with('location')->get();
-//    }
-//
-//    public function getAllMembers()
-//    {
-//        return User::all()->with('department')->with('location')->get();
-//    }
 
     /**
      * @TODO Move to dedicated Repository
@@ -61,9 +45,9 @@ class UserRepository
      * @param $slug
      * @return
      */
-    public function getAllLocationMembersBySlug($slug)
-    {
-        $location = Location::where('slug', $slug)->firstOrFail();
-        return User::where('location_id', $location->id)->with('department')->get();
-    }
+//    public function getAllLocationMembersBySlug($slug)
+//    {
+//        $location = Location::where('slug', $slug)->firstOrFail();
+//        return User::where('location_id', $location->id)->with('department')->get();
+//    }
 }

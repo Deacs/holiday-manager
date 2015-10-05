@@ -39,13 +39,13 @@ class LocationTest extends CrowdcubeTester
         $this->withoutMiddleware();
 
         $this->post('/locations/add')
-            ->assertResponseStatus(403);
+                ->assertResponseStatus(403);
     }
-
+    
     /**
      * @test
      */
-    public function adding_new_location_results_in_correct_data_being_persisted()
+    public function super_user_adding_new_location_results_in_correct_data_being_persisted()
     {
         Auth::loginUsingId(15);
 

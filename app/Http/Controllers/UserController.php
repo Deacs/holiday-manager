@@ -74,14 +74,14 @@ class UserController extends Controller {
 			abort(403);
 		}
 
-		if($this->userRepository->update($user, $request)) {
+		if ($this->userRepository->update($user, $request)) {
 			Flash::success('Update Successful');
 			return redirect('member/'.$user->slug);
 		}
 
 		Flash::error('Update Failed');
-		/* @TODO Return with the errors */
-		//return back()->withErrors(););
+
+		Redirect::back();
 	}
 
 	/**

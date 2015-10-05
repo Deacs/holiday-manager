@@ -18,18 +18,20 @@ class AuthServiceProvider extends ServiceProvider
     {
         parent::registerPolicies($gate);
 
-        // Can the currently logged in user edit the member's details
+        // Can the current user edit the member's details
         $gate->define('edit-member', function ($user, $member) {
 
-            //dd($user);
             // They either own the profile, are the lead of the user's dept or a super user
             if ($user->isSuperUser() || $user->isDepartmentLead($member->department) || $user->id === $member->id) {
-            //if ($user->hasManageDepartmentPermission($member->department) || $user->id === $member->id) {
-            //if ($user->isSuperUser() || $user->id === $member->id || $member->department->lead_id == $user->id) {
                 return true;
             }
 
             return false;
+        });
+
+        // Can the current user add new Locations
+        $gate->define('add-locations', function ($user) {
+            return $user->isSuperUser();
         });
     }
 }

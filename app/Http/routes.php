@@ -127,7 +127,6 @@ Route::group(['middleware' => 'auth', 'prefix' => 'locations', 'as' => 'location
 		[
 			'as' 			=> 'add',
 			'uses' 			=> 'LocationController@store',
-			'middleware' 	=> 'superuser'
 		]
 	);
 

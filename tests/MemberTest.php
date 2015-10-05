@@ -3,7 +3,7 @@
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class MemberTest extends TestCase
+class MemberTest extends CrowdcubeTester
 {
 
     protected $baseUrl = 'http://caliente.dev';
@@ -97,6 +97,7 @@ class MemberTest extends TestCase
                         'first_name'    => 'Roberto',
                         'last_name'     => 'Crowington',
                         'email'         => 'rob@crowdcube.com',
+                        'slug'          => 'roberto-crowington',
                     ]
                 );
     }
@@ -106,7 +107,25 @@ class MemberTest extends TestCase
      */
     public function super_user_can_edit_user_details_of_any_member()
     {
-        /* @TODO Write test */
+        Auth::loginUsingId(15);
+
+        $this->visit('/member/rob-crowe/edit')
+            ->see('Edit Details')
+            ->type('Roberto', 'first_name')
+            ->submitForm('Update',
+                [
+                    'first_name'    => 'Roberto',
+                    'last_name'     => 'Crowington',
+                ]
+            )
+            ->seeInDatabase('users',
+                [
+                    'first_name'    => 'Roberto',
+                    'last_name'     => 'Crowington',
+                    'email'         => 'rob@crowdcube.com',
+                    'slug'          => 'roberto-crowington',
+                ]
+            );
     }
 
 }

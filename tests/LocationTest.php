@@ -21,8 +21,34 @@ class LocationTest extends CrowdcubeTester
     /**
      * @test
      */
+    public function standard_user_attempting_to_view_add_location_screen_receives_unauthorised_response()
+    {
+        Auth::loginUsingId(2);
+
+        $this->visit('/locations/add')
+                ->see('Only Super Users are permitted to add new Locations');
+    }
+
+    /**
+     * @test
+     */
+    public function non_super_user_attempting_to_add_new_location_receives_unauthorised_response()
+    {
+        Auth::loginUsingId(2);
+
+        $this->withoutMiddleware();
+
+        $this->post('/locations/add')
+            ->assertResponseStatus(403);
+    }
+
+    /**
+     * @test
+     */
     public function adding_new_location_results_in_correct_data_being_persisted()
     {
+        Auth::loginUsingId(15);
+
         $this->withoutMiddleware();
 
         $data =[
@@ -48,6 +74,8 @@ class LocationTest extends CrowdcubeTester
      */
     public function attempting_to_add_location_missing_required_fields_prevents_persistence()
     {
+        Auth::loginUsingId(15);
+
         $this->withoutMiddleware();
 
         $data =[

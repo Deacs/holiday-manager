@@ -1,11 +1,11 @@
 <?php namespace App\Http\Controllers;
 
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
-
 use DB;
 use App\Location;
+use App\Http\Requests;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
 use App\Repositories\LocationRepository;
 
 class LocationController extends Controller
@@ -61,6 +61,10 @@ class LocationController extends Controller
 	 */
 	public function store(Request $request)
 	{
+		if (Gate::denies('add-locations')) {
+			abort(403);
+		}
+
 		$this->validate($request, [
 			'name' 			=> 'required|unique:locations',
 			'address' 		=> 'required',

@@ -25,6 +25,7 @@ class UserRepository
      */
     public function update(User $user, Request $request)
     {
+        // Slug is automatically updated by the Observer, does not need to be managed here
         $user->first_name       = $request['first_name'];
         $user->last_name        = $request['last_name'];
         $user->role             = $request['role'];
@@ -34,20 +35,7 @@ class UserRepository
         $user->department_id    = $request['department_id'];
         $user->location_id      = $request['location_id'];
 
-       // Slug is automatically updated by the Observer
 
         return $user->save();
     }
-
-    /**
-     * @TODO Move to dedicated Repository
-     *
-     * @param $slug
-     * @return
-     */
-//    public function getAllLocationMembersBySlug($slug)
-//    {
-//        $location = Location::where('slug', $slug)->firstOrFail();
-//        return User::where('location_id', $location->id)->with('department')->get();
-//    }
 }

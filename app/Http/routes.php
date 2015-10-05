@@ -147,10 +147,17 @@ get('beta', function () {
 
 Route::group(['prefix' => 'api', 'as' => 'api.'], function () {
 
-	get('locations/{location_slug}/departments/teams',
+	get('locations/{slug}/departments/teams',
 		[
 			'as' 	=> 'location.department.teams',
 			'uses' 	=> 'LocationController@departmentTeams'
+		]
+	);
+
+	get('locations/{slug}/members',
+		[
+			'as' 	=> 'location.members',
+			'uses' 	=> 'LocationController@members'
 		]
 	);
 

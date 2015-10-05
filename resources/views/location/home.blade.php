@@ -18,7 +18,7 @@
         <span class="radius secondary label">{!! $location->telephone !!}</span>
     </div>
 
-    <div class="large-12 columns" id="map_canvas" style="height: 400px">MAP HERE</div>
+    <div class="large-12 columns" id="map_canvas" style="height: 400px">Map missing? Please check your internet connection.</div>
 
     <div class="large-12 columns">
 
@@ -52,32 +52,38 @@
 
         </script>
 
-        <department_listing></department_listing>
-
-
-        <h3>Departments</h3>
-        @include('location.departments')
-        <hr />
-        @include('department.listing')
-        <hr />
+        <department_listing location_slug="{{ $location->slug }}"></department_listing>
 
         <h3>Staff Listing</h3>
-        @include('member.listing')
-    </div>
+        <script id="member-listing" type="x-template">
 
-    <div class="large-12 columns">
-        @if (count($departments))
-            <ul>
-                @foreach ($departments as $department)
-                    <li class="department-link">{!! link_to_route('department.home', $department->name, ['slug' => $department->slug]) !!}</li>
-                @endforeach
-            </ul>
-        @else
-            <div data-alert="" class="alert-box info radius">
-                No Departments associated with {!! $location->name !!}
-                <a href="#" class="close">×</a>
-            </div>
-        @endif
+            <input type="text" v-model="search" placeholder="Start typing any of the fields below to search....">
+            <table width="100%">
+                <tr>
+                    <th class="sort-field"
+                        v-repeat="column: memberColumns"
+                        v-on="click: sortBy(column.field)"
+                        v-class="active-field: sortKey==column.field">
+                        @{{ column.title }}
+                    </th>
+                </tr>
+                <tr v-repeat="member: members
+                        | filterBy search
+                        | orderBy sortKey reverse"
+                        >
+                    <td><img v-attr="src:member | getAvatar"> <a href="@{{ member.url }}" v-text="member | nameFormat"></a></td>
+                    <td v-text="member.department_name"></td>
+                    <td v-text="member.role"></td>
+                    <td><a href="mailto:@{{ email }}" v-text="member.email"></a></td>
+                    <td v-text="member.telephone"></td>
+                    <td v-text="member.extension"></td>
+                    <td v-text="member.skype_name"></td>
+                </tr>
+            </table>
+
+        </script>
+
+        <member_listing location_slug="{{ $location->slug }}"></member_listing>
     </div>
 
 @endsection

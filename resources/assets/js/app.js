@@ -54,7 +54,7 @@ var DepartmentListing = Vue.extend({
 
     template: '#department-listing',
 
-    props: ['flashdata', 'displayflash'],
+    props: ['flashdata', 'displayflash', 'location_slug'],
 
     data: function() {
 
@@ -67,6 +67,7 @@ var DepartmentListing = Vue.extend({
                 {field: 'lead.extension', title: 'Extension'},
                 {field: 'lead.skype_name', title: 'Skype'}
             ],
+            location_slug: '',
             departments: [],
             members: [],
             sortKey: '',
@@ -75,15 +76,16 @@ var DepartmentListing = Vue.extend({
         }
     },
     methods: {
-        fetchDepartments:   require('./methods/fetchDepartments'),
-        sortBy:             require('./methods/sortBy')
+        fetchLocationDepartments:   require('./methods/fetchLocationDepartments'),
+        fetchDepartments:           require('./methods/fetchDepartments'),
+        sortBy:                     require('./methods/sortBy')
     },
     filters: {
         nameFormat: require('./filters/nameFormat')
     },
 
     ready: function() {
-        this.fetchDepartments();
+        this.fetchLocationDepartments();
     }
 });
 
@@ -92,7 +94,7 @@ var MemberListing = Vue.extend({
 
     template: '#member-listing',
 
-    props: ['dept_name', 'dept_slug', 'flashdata', 'displayflash'],
+    props: ['dept_name', 'dept_slug', 'location_slug', 'flashdata', 'displayflash'],
 
     data: function() {
 
@@ -108,6 +110,7 @@ var MemberListing = Vue.extend({
             ],
             dept_slug: '',
             dept_name: '',
+            location_slug: '',
             departments: [],
             locations: [],
             members: [],
@@ -147,7 +150,19 @@ var MemberListing = Vue.extend({
 
     ready: function() {
 
-        this.fetchMembers(this.dept_slug);
+        var dept        = '';
+        var location    = '';
+
+        var bounds = {
+            dept       : this.dept_slug,
+            location   : this.location_slug
+            };
+
+        console.log('-------------------');
+        console.log(bounds);
+        console.log('-------------------');
+
+        this.fetchMembers(bounds);
         this.fetchDepartments();
         this.fetchLocations();
     }

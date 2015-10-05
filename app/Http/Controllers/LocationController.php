@@ -48,6 +48,11 @@ class LocationController extends Controller
 		return $this->locationRepository->getLocationDepartmentTeams($slug);
 	}
 
+	public function members($slug)
+	{
+		return $this->locationRepository->getLocationTeamMembers($slug);
+	}
+
 	public function create()
 	{
 		return view('location.add');

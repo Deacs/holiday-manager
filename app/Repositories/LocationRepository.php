@@ -18,4 +18,13 @@ class LocationRepository
     {
         return Location::where('slug', $slug)->with('departments.team')->firstOrFail();
     }
+
+    /**
+     * Return all users that are based at this Location
+     */
+    public function getLocationTeamMembers($slug)
+    {
+        $location = Location::where('slug', $slug)->firstOrFail();
+        return $location->users()->get();
+    }
 }

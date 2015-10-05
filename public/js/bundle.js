@@ -57,12 +57,13 @@ var DepartmentListing = Vue.extend({
 
     template: '#department-listing',
 
-    props: ['flashdata', 'displayflash'],
+    props: ['flashdata', 'displayflash', 'location_slug'],
 
     data: function data() {
 
         return {
             departmentColumns: [{ field: 'name', title: 'Name' }, { field: 'lead.last_name', title: 'Lead' }, { field: 'lead.email', title: 'email' }, { field: 'lead.telephone', title: 'Telephone' }, { field: 'lead.extension', title: 'Extension' }, { field: 'lead.skype_name', title: 'Skype' }],
+            location_slug: '',
             departments: [],
             members: [],
             sortKey: '',
@@ -71,6 +72,7 @@ var DepartmentListing = Vue.extend({
         };
     },
     methods: {
+        fetchLocationDepartments: require('./methods/fetchLocationDepartments'),
         fetchDepartments: require('./methods/fetchDepartments'),
         sortBy: require('./methods/sortBy')
     },
@@ -79,7 +81,7 @@ var DepartmentListing = Vue.extend({
     },
 
     ready: function ready() {
-        this.fetchDepartments();
+        this.fetchLocationDepartments();
     }
 });
 
@@ -87,7 +89,7 @@ var MemberListing = Vue.extend({
 
     template: '#member-listing',
 
-    props: ['dept_name', 'dept_slug', 'flashdata', 'displayflash'],
+    props: ['dept_name', 'dept_slug', 'location_slug', 'flashdata', 'displayflash'],
 
     data: function data() {
 
@@ -95,6 +97,7 @@ var MemberListing = Vue.extend({
             memberColumns: [{ field: 'last_name', title: 'Name' }, { field: 'department_name', title: 'Department' }, { field: 'role', title: 'Role' }, { field: 'email', title: 'email' }, { field: 'telephone', title: 'Telephone' }, { field: 'extension', title: 'Extension' }, { field: 'skype_name', title: 'Skype' }],
             dept_slug: '',
             dept_name: '',
+            location_slug: '',
             departments: [],
             locations: [],
             members: [],
@@ -134,7 +137,19 @@ var MemberListing = Vue.extend({
 
     ready: function ready() {
 
-        this.fetchMembers(this.dept_slug);
+        var dept = '';
+        var location = '';
+
+        var bounds = {
+            dept: this.dept_slug,
+            location: this.location_slug
+        };
+
+        console.log('-------------------');
+        console.log(bounds);
+        console.log('-------------------');
+
+        this.fetchMembers(bounds);
         this.fetchDepartments();
         this.fetchLocations();
     }
@@ -216,7 +231,7 @@ new Vue({
     }
 });
 
-},{"./filters/dateFormat":72,"./filters/getAvatar":73,"./filters/nameFormat":74,"./methods/addLocation":75,"./methods/addMember":76,"./methods/fetchDepartment":77,"./methods/fetchDepartments":78,"./methods/fetchLocations":79,"./methods/fetchMember":80,"./methods/fetchMembers":81,"./methods/makeSlug":82,"./methods/sortBy":83,"moment":2,"vue":70,"vue-resource":4}],2:[function(require,module,exports){
+},{"./filters/dateFormat":72,"./filters/getAvatar":73,"./filters/nameFormat":74,"./methods/addLocation":75,"./methods/addMember":76,"./methods/fetchDepartment":77,"./methods/fetchDepartments":78,"./methods/fetchLocationDepartments":79,"./methods/fetchLocations":80,"./methods/fetchMember":81,"./methods/fetchMembers":82,"./methods/makeSlug":83,"./methods/sortBy":84,"moment":2,"vue":70,"vue-resource":4}],2:[function(require,module,exports){
 //! moment.js
 //! version : 2.10.3
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -13233,13 +13248,30 @@ module.exports = function () {
 },{}],79:[function(require,module,exports){
 'use strict';
 
+module.exports = function (slug) {
+
+    console.log('SLUG: ' + slug);
+
+    var endpoint = '/api/departments';
+    if (slug != '' && typeof slug != 'undefined') {
+        endpoint = '/api/locations/' + slug + '/departments';
+    }
+
+    this.$http.get(endpoint, function (departments) {
+        this.departments = departments;
+    });
+};
+
+},{}],80:[function(require,module,exports){
+'use strict';
+
 module.exports = function () {
     this.$http.get('/api/locations', function (locations) {
         this.locations = locations;
     });
 };
 
-},{}],80:[function(require,module,exports){
+},{}],81:[function(require,module,exports){
 'use strict';
 
 module.exports = function (slug) {
@@ -13248,22 +13280,35 @@ module.exports = function (slug) {
     });
 };
 
-},{}],81:[function(require,module,exports){
+},{}],82:[function(require,module,exports){
 'use strict';
 
-module.exports = function (slug) {
+module.exports = function (bounds) {
 
     var endpoint = '/api/members';
-    if (slug != '') {
-        endpoint = '/api/departments/' + slug + '/team';
+
+    if (typeof bounds !== 'undefined') {
+
+        console.log('Have Member Bounds');
+        console.log(bounds);
+
+        if (bounds.dept != '') {
+            endpoint = '/api/departments/' + bounds.dept + '/team';
+        } else if (bounds.location != '') {
+            endpoint = '/api/locations/' + bounds.location + '/members';
+        }
+    } else {
+        console.log('No Member Bounds');
     }
+
+    console.log('Member Endpoint : ' + endpoint);
 
     this.$http.get(endpoint, function (members) {
         this.members = members;
     });
 };
 
-},{}],82:[function(require,module,exports){
+},{}],83:[function(require,module,exports){
 'use strict';
 
 module.exports = function () {
@@ -13284,7 +13329,7 @@ module.exports = function () {
     //this.$http.post('/api/member/add', member);
 };
 
-},{}],83:[function(require,module,exports){
+},{}],84:[function(require,module,exports){
 "use strict";
 
 module.exports = function (sortKey) {

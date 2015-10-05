@@ -41,7 +41,7 @@ class LocationTest extends CrowdcubeTester
         $this->post('/locations/add')
                 ->assertResponseStatus(403);
     }
-    
+
     /**
      * @test
      */
@@ -91,6 +91,25 @@ class LocationTest extends CrowdcubeTester
         $this->getExpectedException('foo');
 
         $this->notSeeInDatabase('locations', ['name' => 'Test Office']);
+    }
+
+    /**
+     * @test
+     */
+    public function location_page_displays_correct_data()
+    {
+        Auth::loginUsingId(2);
+
+        /* @TODO This needs to use CSS selectors */
+        $this->visit('/locations/exeter')
+                ->see('Exeter')
+                ->see('Innovation Centre')
+                ->see('Rennes Drive')
+                ->see('Exeter')
+                ->see('EX4 4RN')
+                ->see('01392 241319')
+                ->see('Departments')
+                ->see('Engineering');
     }
 
 }

@@ -92,16 +92,7 @@ var DepartmentListing = Vue.extend({
                 location: this.location_slug
             };
         }
-        //var location    = '';
-        //
-        //var bounds = {
-        //    location   : this.location_slug
-        //};
-
-        console.log('Bounds:');
-        console.log(bounds);
-
-        //this.fetchDepartments();
+        
         this.fetchDepartments(bounds);
     }
 });

@@ -40,7 +40,7 @@ class LocationController extends Controller
 
 	public function departments($slug)
 	{
-		return $this->locationRepository->getLocationBySlug($slug);
+		return $this->locationRepository->getLocationDepartmentsByLocationSlug($slug);
 	}
 
 	public function departmentTeams($slug)

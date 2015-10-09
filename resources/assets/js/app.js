@@ -76,7 +76,6 @@ var DepartmentListing = Vue.extend({
         }
     },
     methods: {
-        fetchLocationDepartments:   require('./methods/fetchLocationDepartments'),
         fetchDepartments:           require('./methods/fetchDepartments'),
         sortBy:                     require('./methods/sortBy')
     },
@@ -85,7 +84,25 @@ var DepartmentListing = Vue.extend({
     },
 
     ready: function() {
-        this.fetchLocationDepartments();
+
+        var bounds = {};
+
+        if (this.location_slug != '') {
+            bounds = {
+                location: this.location_slug
+            };
+        }
+        //var location    = '';
+        //
+        //var bounds = {
+        //    location   : this.location_slug
+        //};
+
+        console.log('Bounds:');
+        console.log(bounds);
+
+        //this.fetchDepartments();
+        this.fetchDepartments(bounds);
     }
 });
 
@@ -154,13 +171,9 @@ var MemberListing = Vue.extend({
         var location    = '';
 
         var bounds = {
-            dept       : this.dept_slug,
-            location   : this.location_slug
+                dept       : this.dept_slug,
+                location   : this.location_slug
             };
-
-        console.log('-------------------');
-        console.log(bounds);
-        console.log('-------------------');
 
         this.fetchMembers(bounds);
         this.fetchDepartments();

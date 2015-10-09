@@ -72,7 +72,6 @@ var DepartmentListing = Vue.extend({
         };
     },
     methods: {
-        fetchLocationDepartments: require('./methods/fetchLocationDepartments'),
         fetchDepartments: require('./methods/fetchDepartments'),
         sortBy: require('./methods/sortBy')
     },
@@ -81,7 +80,25 @@ var DepartmentListing = Vue.extend({
     },
 
     ready: function ready() {
-        this.fetchLocationDepartments();
+
+        var bounds = {};
+
+        if (this.location_slug != '') {
+            bounds = {
+                location: this.location_slug
+            };
+        }
+        //var location    = '';
+        //
+        //var bounds = {
+        //    location   : this.location_slug
+        //};
+
+        console.log('Bounds:');
+        console.log(bounds);
+
+        //this.fetchDepartments();
+        this.fetchDepartments(bounds);
     }
 });
 
@@ -144,10 +161,6 @@ var MemberListing = Vue.extend({
             dept: this.dept_slug,
             location: this.location_slug
         };
-
-        console.log('-------------------');
-        console.log(bounds);
-        console.log('-------------------');
 
         this.fetchMembers(bounds);
         this.fetchDepartments();
@@ -231,7 +244,7 @@ new Vue({
     }
 });
 
-},{"./filters/dateFormat":72,"./filters/getAvatar":73,"./filters/nameFormat":74,"./methods/addLocation":75,"./methods/addMember":76,"./methods/fetchDepartment":77,"./methods/fetchDepartments":78,"./methods/fetchLocationDepartments":79,"./methods/fetchLocations":80,"./methods/fetchMember":81,"./methods/fetchMembers":82,"./methods/makeSlug":83,"./methods/sortBy":84,"moment":2,"vue":70,"vue-resource":4}],2:[function(require,module,exports){
+},{"./filters/dateFormat":72,"./filters/getAvatar":73,"./filters/nameFormat":74,"./methods/addLocation":75,"./methods/addMember":76,"./methods/fetchDepartment":77,"./methods/fetchDepartments":78,"./methods/fetchLocations":79,"./methods/fetchMember":80,"./methods/fetchMembers":81,"./methods/makeSlug":82,"./methods/sortBy":83,"moment":2,"vue":70,"vue-resource":4}],2:[function(require,module,exports){
 //! moment.js
 //! version : 2.10.3
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -13239,30 +13252,24 @@ module.exports = function (slug) {
 },{}],78:[function(require,module,exports){
 'use strict';
 
-module.exports = function () {
-    this.$http.get('/api/departments', function (departments) {
-        this.departments = departments;
-    });
-};
-
-},{}],79:[function(require,module,exports){
-'use strict';
-
-module.exports = function (slug) {
-
-    console.log('SLUG: ' + slug);
+module.exports = function (bounds) {
 
     var endpoint = '/api/departments';
-    if (slug != '' && typeof slug != 'undefined') {
-        endpoint = '/api/locations/' + slug + '/departments';
+
+    if (typeof bounds !== 'undefined') {
+        if (bounds.location != '') {
+            endpoint = '/api/locations/' + bounds.location + '/departments';
+        }
     }
+
+    console.log(endpoint);
 
     this.$http.get(endpoint, function (departments) {
         this.departments = departments;
     });
 };
 
-},{}],80:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 'use strict';
 
 module.exports = function () {
@@ -13271,7 +13278,7 @@ module.exports = function () {
     });
 };
 
-},{}],81:[function(require,module,exports){
+},{}],80:[function(require,module,exports){
 'use strict';
 
 module.exports = function (slug) {
@@ -13280,7 +13287,7 @@ module.exports = function (slug) {
     });
 };
 
-},{}],82:[function(require,module,exports){
+},{}],81:[function(require,module,exports){
 'use strict';
 
 module.exports = function (bounds) {
@@ -13289,26 +13296,19 @@ module.exports = function (bounds) {
 
     if (typeof bounds !== 'undefined') {
 
-        console.log('Have Member Bounds');
-        console.log(bounds);
-
         if (bounds.dept != '') {
             endpoint = '/api/departments/' + bounds.dept + '/team';
         } else if (bounds.location != '') {
             endpoint = '/api/locations/' + bounds.location + '/members';
         }
-    } else {
-        console.log('No Member Bounds');
     }
-
-    console.log('Member Endpoint : ' + endpoint);
 
     this.$http.get(endpoint, function (members) {
         this.members = members;
     });
 };
 
-},{}],83:[function(require,module,exports){
+},{}],82:[function(require,module,exports){
 'use strict';
 
 module.exports = function () {
@@ -13329,7 +13329,7 @@ module.exports = function () {
     //this.$http.post('/api/member/add', member);
 };
 
-},{}],84:[function(require,module,exports){
+},{}],83:[function(require,module,exports){
 "use strict";
 
 module.exports = function (sortKey) {

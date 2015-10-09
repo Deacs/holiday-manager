@@ -1,13 +1,21 @@
-module.exports = function(slug) {
+//module.exports = function() {
+//    this.$http.get('/api/departments', function(departments) {
+//        this.departments = departments;
+//    });
+//};
 
-    console.log('SLUG: '+slug);
+
+module.exports = function(bounds) {
 
     var endpoint = '/api/departments';
-    if (slug != '' && typeof(slug) != 'undefined') {
-        endpoint = '/api/locations/'+slug+'/departments';
+
+    if (typeof(bounds) !== 'undefined') {
+        if (bounds.location != '') {
+            endpoint = '/api/locations/'+bounds.location+'/departments';
+        }
     }
 
     this.$http.get(endpoint, function(departments) {
         this.departments = departments;
     });
-};
+}

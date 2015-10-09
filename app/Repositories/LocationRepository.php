@@ -6,7 +6,7 @@ class LocationRepository
 {
     public function getLocationBySlug($slug)
     {
-        return Location::where('slug', $slug)->with('departments')->firstOrFail();
+        return Location::where('slug', $slug)->with('departments')->with('departments.lead')->firstOrFail();
     }
 
     public function getAllLocations()
@@ -16,15 +16,25 @@ class LocationRepository
 
     public function getLocationDepartmentTeams($slug)
     {
-        return Location::where('slug', $slug)->with('departments.team')->firstOrFail();
+        return Location::where('slug', $slug)->with('departments.team')->get();
+    }
+
+    public function getLocationDepartmentsByLocationSlug($slug)
+    {
+        $location = $this->getLocationBySlug($slug);
+        return $location->departments;
     }
 
     /**
      * Return all users that are based at this Location
+     *
+     * @param $slug
+     * return collection
      */
     public function getLocationTeamMembers($slug)
     {
         $location = Location::where('slug', $slug)->firstOrFail();
+
         return $location->users()->get();
     }
 }

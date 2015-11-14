@@ -6,7 +6,7 @@
 
     <script id="department-listing" type="x-template">
 
-        <input type="text" v-model="search" placeholder="Start typing any of the fields below to search....">
+        <input type="text" v-model="search" name="department_search" id="department_search" placeholder="Start typing any of the fields below to search....">
         <table width="100%">
             <tr>
                 <th class="sort-field"

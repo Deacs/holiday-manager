@@ -18,8 +18,13 @@ elixir(function(mix) {
         'app/foundation/foundation.js',
         'app/foundation/foundation.topbar.js',
         'app/foundation/foundation.alert.js',
-        'app/foundation/foundation.reveal.js'
-    ], 'public/js/vendor.js'),
+        'app/foundation/foundation.reveal.js',
+        'libs/lity.js',
+    ], 'public/js/vendor.js')
+    .styles([
+        'libs/lity.css'
+    ], './public/css/libs.css'
+    ),
     mix.browserify('app.js'),
     mix.phpUnit()
 });

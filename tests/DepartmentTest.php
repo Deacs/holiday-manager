@@ -127,5 +127,81 @@ class DepartmentTest extends CrowdcubeTester
 
         $this->notSeeInDatabase('users', $data);
     }
+    
+    /**
+     * @test
+     */
+    public function viewing_department_index_displays_correct_departments()
+    {
+        Auth::loginUsingId(3);
 
+        $this->visit('/departments/')
+                ->see('Engineering')
+                ->see('Marketing')
+                ->see('Investments')
+                ->see('Product')
+                ->see('Completions')
+                ->see('Finance')
+                ->see('Legal')
+                ->see('Bonds')
+                ->see('Business Development')
+                ->see('Gateway');
+    }
+
+    /**
+     * @test
+     */
+    public function clicking_department_name_in_listing_opens_correct_department_page()
+    {
+        Auth::loginUsingId(3);
+
+        $this->visit('/departments')
+                ->click('Business Development')
+                ->onPage('/departments/business-development')
+                ->see('Business Development')
+                ->see('Department Lead')
+                ->see('Matt Cooper')
+                ->see('Team Members');
+    }
+
+    /**
+     * @test
+     * @group permissions
+     */
+    public function update_org_chart_option_not_shown_to_standard_user()
+    {
+        Auth::loginUsingId(3);
+
+        $this->visit('/departments/engineering')
+                ->dontSee('Update Organisational Chart');
+    }
+
+    /**
+     * @test
+     * @group permissions
+     */
+    public function update_org_chart_option_shown_to_department_lead()
+    {
+        Auth::loginUsingId(1);
+
+        $this->visit('departments/engineering')
+                ->see('Update Organisational Chart');
+    }
+
+    /**
+     * @test
+     */
+    public function typing_into_filter_minimises_available_results_correctly()
+    {
+        Auth::loginUsingId(3);
+
+        // There is a real issue with elements that are created by Vue JS templates
+        // It would appear that the crawler can't interact them - yet it can see the placeholder text
+
+//        $this->visit('/departments')
+//                ->see('Start typing any of the fields below to search....')
+//                ->type('mar', 'department_search');
+//                ->see('Marketing')
+//                ->dontSee('Engineering');
+    }
 }

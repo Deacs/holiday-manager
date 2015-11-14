@@ -42,6 +42,11 @@ class Department extends Model {
 		return $this->hasOne('App\User', 'id', 'lead_id');
 	}
 
+	public function org_charts()
+	{
+		return $this->hasMany('App\OrgChart');
+	}
+
 	public function scopeExeter($query)
 	{
 		return $query->where('location_id', Location::EXETER_ID);

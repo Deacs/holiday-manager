@@ -92,7 +92,7 @@ var DepartmentListing = Vue.extend({
                 location: this.location_slug
             };
         }
-        
+
         this.fetchDepartments(bounds);
     }
 });

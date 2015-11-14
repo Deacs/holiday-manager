@@ -9,7 +9,18 @@
     <div class="large-12 columns" role="content">
         <h4>{!! HTML::image($department->lead->getAvatarPath(30), $department->lead->fullName()) !!} Department Lead: <a href="{{ $department->lead->url }}" class="department-lead">{{ $department->lead->fullName() }}</a></h4>
 
-        <h5>Team Members</h5>
+        <h5>Organisational Chart</h5>
+        @foreach($department->org_charts as $org_chart)
+            <a href="/{!! $org_chart->path !!}" data-lity>
+                {!! HTML::image($org_chart->thumbnail_path, $department->name.' Organisation Chart') !!}
+            </a>
+        @endforeach
+
+        @if (Auth::user()->hasManageDepartmentPermission($department))
+            <h4>Update Organisational Chart</h4>
+
+            @include('department.update_org_chart')
+        @endif
 
         <script id="member-listing" type="x-template">
 
@@ -24,6 +35,8 @@
                 <hr />
 
             @endif
+
+            <h5>Team Members</h5>
 
             <input type="text" v-model="search">
             <table width="100%">
@@ -50,7 +63,6 @@
             </table>
 
         </script>
-
         <member_listing dept_slug="{{ $department->slug }}" dept_name="{{ $department->name }}"></member_listing>
 
     </div>

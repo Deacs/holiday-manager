@@ -10,6 +10,9 @@
         <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
         <link href="{{ asset('/css/foundation.css') }}" rel="stylesheet" />
         <link href="{{ asset('/css/crowdcube.css') }}" rel="stylesheet" />
+        <link href="{{ asset('/css/libs.css') }}" rel="stylesheet" />
+
+        @yield('styles')
 
         <!-- Fonts -->
         <link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>

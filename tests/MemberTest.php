@@ -85,7 +85,7 @@ class MemberTest extends CrowdcubeTester
 
         $this->visit('/member/rob-crowe/edit')
                 ->see('Edit Details')
-                ->type('Roberto', 'first_name')
+                //->type('Roberto', 'first_name')
                 ->submitForm('Update',
                     [
                         'first_name'    => 'Roberto',
@@ -111,7 +111,7 @@ class MemberTest extends CrowdcubeTester
 
         $this->visit('/member/rob-crowe/edit')
             ->see('Edit Details')
-            ->type('Roberto', 'first_name')
+            //->type('Roberto', 'first_name')
             ->submitForm('Update',
                 [
                     'first_name'    => 'Roberto',

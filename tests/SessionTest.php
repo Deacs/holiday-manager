@@ -3,7 +3,7 @@
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class SearchTest extends TestCase
+class SearchTest extends CrowdcubeTester
 {
 
     protected $baseUrl = 'http://caliente.dev';
@@ -17,7 +17,9 @@ class SearchTest extends TestCase
             ->see('Login')
             ->click('Login')
             ->type('david@crowdcube.com', 'email')
-            ->type('david', 'password');
+            ->type('david', 'password')
+            ->press('login_button');
+            //->onPage('/member/david-ives');
     }
 
     /**

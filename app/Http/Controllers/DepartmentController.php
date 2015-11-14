@@ -1,10 +1,12 @@
 <?php namespace App\Http\Controllers;
 
+use App\OrgChart;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Department as Department;
 use App\Http\Controllers\Controller;
 use App\Repositories\DepartmentRepository;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class DepartmentController extends Controller {
 
@@ -22,10 +24,7 @@ class DepartmentController extends Controller {
 	 */
 	public function index()
 	{
-//		$departments = Department::with('lead')->get();
-//		return $departments;
 		return view('department.index');
-//		return view('department.index')->with('departments', $departments);
 	}
 
 	public function listing()
@@ -55,7 +54,10 @@ class DepartmentController extends Controller {
 		return $this->departmentRepository->getDepartmentBySlug($slug);
 	}
 
-	public function manage($slug)
+	/**
+	 * Remove
+	 */
+	public function manage()
 	{
 		dd('Manage root for Department');
 	}
@@ -64,6 +66,48 @@ class DepartmentController extends Controller {
 	{
 		$department = Department::where('slug', $slug)->firstOrFail();
 		return $department->team;
+	}
+
+	/**
+	 * Add an new organisation chart to the department
+	 *
+	 * @param $slug
+	 * @param Request $request
+	 */
+	public function addOrgChart($slug, Request $request)
+	{
+		$department = Department::where('slug', $slug)->firstOrFail();
+		$file 		= $request->file('file');
+
+		// Validate the file type
+		$this->validate($request, [
+			'file' => 'required|mimes:jpg,jpeg,png,gif'
+		]);
+
+		$this->makeOrgChart($file, $department);
+	}
+
+	/**
+	 * Take an uploaded image and create a new Organisational Chart
+	 *
+	 * @param UploadedFile $file
+	 * @param Department $department
+	 */
+	protected function makeOrgChart(UploadedFile $file, Department $department)
+	{
+		$org_chart = OrgChart::fromFile($file, $department)->store($file);
+
+		$department->org_charts()->save($org_chart);
+	}
+
+	/**
+	 * Remove
+	 * @param $slug
+	 */
+	public function testOrgChart($slug)
+	{
+		$department = Department::where('slug', $slug)->firstOrFail();
+		dd($department->org_charts);
 	}
 
 }

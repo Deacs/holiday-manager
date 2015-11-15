@@ -5,12 +5,10 @@
         <meta id="token" name="token=" value="{!! csrf_token() !!}">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Holiday Manager</title>
+        <title>Crowdcube Staff Directory</title>
 
         <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
-        <link href="{{ asset('/css/foundation.css') }}" rel="stylesheet" />
-        <link href="{{ asset('/css/crowdcube.css') }}" rel="stylesheet" />
-        <link href="{{ asset('/css/libs.css') }}" rel="stylesheet" />
+        <link href="{{ asset('/css/foundation.css') }}" rel="stylesheet">
 
         @yield('styles')
 

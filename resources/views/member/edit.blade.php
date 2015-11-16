@@ -7,8 +7,6 @@
 
     </div>
 
-    <div class="row">
-
         <form method="POST" action="/member/{!! $member->slug !!}/edit">
 
             <input name="_token" type="hidden" value="{!! csrf_token() !!}"/>
@@ -31,16 +29,23 @@
                     <label>email address</label>
                     <input type="text" placeholder="jamie.doe@crowdcube.com" name="email" value="{!! $member->email !!}">
                 </div>
-                <div class="large-3 columns">
+                <div class="large-2 columns">
                     <label>Telephone</label>
                     <input type="text" placeholder="01392 123456" name="telephone" value="{!! $member->telephone !!}">
                 </div>
-                <div class="large-3 columns">
+                <div class="large-1 columns">
+                    <label>Extension</label>
+                    <input type="text" placeholder="123" name="extension" value="{!! $member->extension !!}">
+                </div>
+                <div class="large-2 columns">
+                    <label>Skype Name</label>
+                    <input type="text" placeholder="jamiedoe.crowdcube" name="skype_name" value="{!! $member->skype_name !!}">
+                </div>
+                <div class="large-2 columns">
                     <label>Location</label>
                     {!! Form::select('location_id', $locations, $member->location->id) !!}
-
                 </div>
-                <div class="large-3 columns">
+                <div class="large-2 columns">
                     <label>Department</label>
                     {!! Form::select('department_id', $departments, $member->department->id) !!}
                 </div>
@@ -48,8 +53,8 @@
                 <div class="large-12 columns">
                     <button class="small button" title="Update">Update</button>
                 </div>
-
             </div>
+
         </form>
 
     </div>

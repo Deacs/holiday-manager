@@ -8,7 +8,6 @@
         <title>Crowdcube Staff Directory</title>
 
         <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
-        <link href="{{ asset('/css/foundation.css') }}" rel="stylesheet">
 
         @yield('styles')
 

@@ -4,6 +4,11 @@
     <div class="row">
         <h4>Edit Details</h4>
     </div>
+
+    <div class="row">
+        <img src="@{{ member | getAvatar '200' }}">
+    </div>
+
     <div class="row">
         <form method="POST" action="/member/{!! $member->slug !!}/edit">
 

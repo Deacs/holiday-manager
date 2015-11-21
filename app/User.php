@@ -77,6 +77,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		return $this->belongsTo('App\Location', 'location_id', 'id');
 	}
 
+	public function avatar()
+	{
+		return $this->hasMany('App\Avatar');
+	}
+
 	/**
 	 * Concatenate the First and Last name values
 	 *
@@ -132,6 +137,24 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	}
 
 	/**
+	 * Retrieve the avatar for the user
+	 * This can either be an uploaded image, the gravatar linked to the email address
+	 * or something yet undecided, Google account for example.
+	 * If no result is returned from any option, we'll use a standard image.
+	 *
+	 * @param int $size
+	 * @return string
+	 */
+	public function getAvatarPath($size = 150)
+	{
+		// If we have a locally stored avatar, we'll use that
+		// If not,try Gravatar. This will also handle a default
+		$avatar = $this->avatar()->first();
+
+		return is_null($avatar) ? $this->getRemoteAvatarPath($size) : $avatar->path;
+	}
+
+	/**
 	 * Return path to the users's gravatar image
 	 * If none has been set, the default image path will be returned
 	 * A size can be specified if it is required to overwrite the default 200
@@ -140,7 +163,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 * @param int $size
 	 * @param string $default
 	 */
-	public function getAvatarPath($size = 150, $default = 'mm')
+	public function getRemoteAvatarPath($size = 150, $default = 'mm')
 	{
 		$str = md5(trim(strtolower($this->email)));
 
@@ -150,6 +173,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	public function getAvatarPathAttribute($size = 150, $default = 'mm')
 	{
 		$str = md5(trim(strtolower($this->email)));
+
+		return $this->getAvatarPath($size);
 
 		return 'http://www.gravatar.com/avatar/'.$str.'?d='.$default.'&s='.$size;
 	}

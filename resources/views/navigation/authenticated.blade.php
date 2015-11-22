@@ -29,4 +29,4 @@
         <li>{!! link_to_route('logout', 'Logout') !!}</li>
     </ul>
 </li>
-<li>{!! HTML::image(Auth::user()->getAvatarPath(45), Auth::user()->fullName()) !!}</li>
+<li>{!! HTML::image(Auth::user()->getAvatarThumbnailPath(45), Auth::user()->fullName(), ['width' => 45]) !!}</li>

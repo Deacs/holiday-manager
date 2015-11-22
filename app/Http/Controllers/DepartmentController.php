@@ -95,7 +95,7 @@ class DepartmentController extends Controller {
 	 */
 	protected function makeOrgChart(UploadedFile $file, Department $department)
 	{
-		$org_chart = OrgChart::fromFile($file, $department)->store($file);
+		$org_chart = OrgChart::fromFile($file, $department->slug)->store($file);
 
 		$department->org_charts()->save($org_chart);
 	}

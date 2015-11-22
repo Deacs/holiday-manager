@@ -22,6 +22,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	protected $appends = [
 		'avatar_path',
+		'avatar_thumbnail_path',
 		'url',
 		'department_name'
 	];
@@ -146,9 +147,29 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 */
 	public function getAvatarPath($size = 150)
 	{
-		$avatar = $this->avatar()->first();
+		$avatar = $this->localAvatar();
 
 		return is_null($avatar) ? $this->getRemoteAvatarPath($size) : $avatar->path;
+	}
+
+	/**
+	 * Retrieve the avatar thumbnail path for the user
+	 * This can either be a locally uploaded image,
+	 * or a remote service, such as Gravatar, linked to the email address.
+	 *
+	 * @param int $size
+	 * @return string
+	 */
+	public function getAvatarThumbnailPath($size = 50)
+	{
+		$avatar = $this->localAvatar();
+
+		return is_null($avatar) ? $this->getRemoteAvatarPath($size) : $avatar->thumbnail_path;
+	}
+
+	private function localAvatar()
+	{
+		return $this->avatar()->first();
 	}
 
 	/**
@@ -170,6 +191,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	public function getAvatarPathAttribute($size = 150, $default = 'mm')
 	{
 		return $this->getAvatarPath($size);
+	}
+
+	public function getAvatarThumbnailPathAttribute($size = 150, $default = 'mm')
+	{
+		return $this->getAvatarThumbnailPath($size);
 	}
 
 	public function getUrlAttribute()

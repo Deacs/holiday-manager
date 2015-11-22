@@ -7,7 +7,7 @@
     </div>
 
     <div class="large-12 columns" role="content">
-        <h4>{!! HTML::image($department->lead->getAvatarPath(30), $department->lead->fullName()) !!} Department Lead: <a href="{{ $department->lead->url }}" class="department-lead">{{ $department->lead->fullName() }}</a></h4>
+        <h4>{!! HTML::image($department->lead->getAvatarThumbnailPath(30), $department->lead->fullName(), ['width' =>30]) !!} Department Lead: <a href="{{ $department->lead->url }}" class="department-lead">{{ $department->lead->fullName() }}</a></h4>
 
         <h5>Organisational Chart</h5>
         @foreach($department->org_charts as $org_chart)

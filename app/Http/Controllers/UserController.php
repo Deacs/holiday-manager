@@ -185,14 +185,14 @@ class UserController extends Controller {
 	}
 
 	/**
-	 * Take an uploaded image and create a new Organisational Chart
+	 * Take an uploaded image and create a new avatar
 	 *
 	 * @param UploadedFile $file
-	 * @param Department $department
+	 * @param User $user
 	 */
 	protected function makeAvatar(UploadedFile $file, User $user)
 	{
-		$avatar = Avatar::fromFile($file, $user)->store($file);
+		$avatar = Avatar::fromFile($file, $user->slug)->store($file);
 
 		$user->avatar()->save($avatar);
 	}

@@ -35,7 +35,6 @@ class UserRepository
         $user->department_id    = $request['department_id'];
         $user->location_id      = $request['location_id'];
 
-
         return $user->save();
     }
 }

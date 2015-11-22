@@ -6,7 +6,7 @@
         <script id="member-profile" type="x-template">
 
             <div class="large-2 columns">
-                <img src="@{{ member | getAvatar '200' }}">
+                {!! HTML::image($member->getAvatarThumbnailPath(200), $member->fullName(), ['width' => 200]) !!}
             </div>
             <div class="large-6 columns">
                 <h2 v-text="member | nameFormat"></h2>

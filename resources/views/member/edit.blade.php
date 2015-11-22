@@ -8,7 +8,7 @@
     <div class="row">
 
         <div class="large-2 columns">
-            <img src="{!! $member->getAvatarPath(200) !!}">
+            {!! HTML::image($member->getAvatarThumbnailPath(200), $member->fullName(), ['width' => 200]) !!}
         </div>
 
         <div class="large-2 columns left">

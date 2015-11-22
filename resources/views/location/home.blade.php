@@ -41,7 +41,7 @@
                         | orderBy sortKey reverse"
                         >
                     <td><a href="@{{ department.url }}" v-text="department.name"></a></td>
-                    <td><img v-attr="src:department.lead | getAvatar '20'"> <a href="@{{ department.lead.url }}" v-text="department.lead | nameFormat"></a></td>
+                    <td><img v-attr="src:department.lead | getAvatar '20'" width="20"> <a href="@{{ department.lead.url }}" v-text="department.lead | nameFormat"></a></td>
                     <td><a href="mailto:@{{ department.lead.email }}" v-text="department.lead.email"></a></td>
                     <td v-text="department.lead.telephone"></td>
                     <td v-text="department.lead.extension"></td>
@@ -71,7 +71,7 @@
                         | filterBy search
                         | orderBy sortKey reverse"
                         >
-                    <td><img v-attr="src:member | getAvatar"> <a href="@{{ member.url }}" v-text="member | nameFormat"></a></td>
+                    <td><img v-attr="src:member | getAvatar" width="20px"> <a href="@{{ member.url }}" v-text="member | nameFormat"></a></td>
                     <td v-text="member.department_name"></td>
                     <td v-text="member.role"></td>
                     <td><a href="mailto:@{{ email }}" v-text="member.email"></a></td>

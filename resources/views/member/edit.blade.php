@@ -6,7 +6,16 @@
     </div>
 
     <div class="row">
-        <img src="@{{ member | getAvatar '200' }}">
+
+        <div class="large-2 columns">
+            <img src="{!! $member->getAvatarPath(200) !!}">
+        </div>
+
+        <div class="large-2 columns left">
+            <form method="POST" action="/departments/{{ $member->id }}/org-chart" id="member-avatar-upload" class="dropzone" style="height:40px;">
+                {{ csrf_field() }}
+            </form>
+        </div>
     </div>
 
     <div class="row">
@@ -60,4 +69,15 @@
 
     </div>
 
+@endsection
+
+@section('scripts')
+    <script>
+        Dropzone.options.memberAvatarUpload = {
+            paramName: "file",
+            maxFilesize: 2, // MB
+            maxFiles: 1, // Do not allow multiple uploads
+            dictDefaultMessage: 'Drag your new avatar here'
+        };
+    </script>
 @endsection

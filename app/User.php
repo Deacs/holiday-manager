@@ -137,18 +137,15 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	}
 
 	/**
-	 * Retrieve the avatar for the user
-	 * This can either be an uploaded image, the gravatar linked to the email address
-	 * or something yet undecided, Google account for example.
-	 * If no result is returned from any option, we'll use a standard image.
+	 * Retrieve the avatar path for the user
+	 * This can either be a locally uploaded image,
+	 * or a remote service, such as Gravatar, linked to the email address.
 	 *
 	 * @param int $size
 	 * @return string
 	 */
 	public function getAvatarPath($size = 150)
 	{
-		// If we have a locally stored avatar, we'll use that
-		// If not,try Gravatar. This will also handle a default
 		$avatar = $this->avatar()->first();
 
 		return is_null($avatar) ? $this->getRemoteAvatarPath($size) : $avatar->path;
@@ -172,11 +169,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	public function getAvatarPathAttribute($size = 150, $default = 'mm')
 	{
-		$str = md5(trim(strtolower($this->email)));
-
 		return $this->getAvatarPath($size);
-
-		return 'http://www.gravatar.com/avatar/'.$str.'?d='.$default.'&s='.$size;
 	}
 
 	public function getUrlAttribute()

@@ -27,6 +27,7 @@ elixir(function(mix) {
         'app/vendor/dropzone.css',
         'app/vendor/lity.css',
         'app/vendor/foundation.css',
+        'app/custom.css',
     ], './public/css/app.css'
     ),
     mix.browserify('app.js'),

@@ -12,3 +12,13 @@ th.active-field {
     background: #de770f;
     color: #333333;
 }
+
+/* Dropzone Overides */
+.dropzone {
+    padding: 10px 10px;
+    min-height: 140px;
+}
+
+.dropzone .dz-message {
+    margin: 1.75em 0;
+}

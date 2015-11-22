@@ -7924,4 +7924,29 @@ th.hide-for-touch {
 .fi-zoom-in:before { content: "\f219"; }
 .fi-zoom-out:before { content: "\f21a"; }
 
+.header-link {
+    background: url('/img/cc_logo.png') no-repeat;
+    padding-left: 45px;
+}
+
+th.sort-field {
+    background: #333333;
+    cursor: pointer;
+    color: #ffffff;
+}
+th.active-field {
+    background: #de770f;
+    color: #333333;
+}
+
+/* Dropzone Overides */
+.dropzone {
+    padding: 10px 10px;
+    min-height: 140px;
+}
+
+.dropzone .dz-message {
+    margin: 1.75em 0;
+}
+
 /*# sourceMappingURL=app.css.map */

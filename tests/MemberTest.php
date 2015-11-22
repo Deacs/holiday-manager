@@ -9,11 +9,9 @@ class MemberTest extends CrowdcubeTester
     protected $baseUrl = 'http://caliente.dev';
 
     /**
-     * A basic functional test example.
-     *
-     * @return void
+     * @test
      */
-    public function testBasicExample()
+    public function see_root_page()
     {
         $this->visit('/')
             ->see('Staff Directory');
@@ -85,7 +83,6 @@ class MemberTest extends CrowdcubeTester
 
         $this->visit('/member/rob-crowe/edit')
                 ->see('Edit Details')
-                //->type('Roberto', 'first_name')
                 ->submitForm('Update',
                     [
                         'first_name'    => 'Roberto',
@@ -110,22 +107,32 @@ class MemberTest extends CrowdcubeTester
         Auth::loginUsingId(15);
 
         $this->visit('/member/rob-crowe/edit')
-            ->see('Edit Details')
-            //->type('Roberto', 'first_name')
-            ->submitForm('Update',
-                [
-                    'first_name'    => 'Roberto',
-                    'last_name'     => 'Crowington',
-                ]
-            )
-            ->seeInDatabase('users',
-                [
-                    'first_name'    => 'Roberto',
-                    'last_name'     => 'Crowington',
-                    'email'         => 'rob@crowdcube.com',
-                    'slug'          => 'roberto-crowington',
-                ]
-            );
+                ->see('Edit Details')
+                ->submitForm('Update',
+                    [
+                        'first_name'    => 'Roberto',
+                        'last_name'     => 'Crowington',
+                    ]
+                )
+                ->seeInDatabase('users',
+                    [
+                        'first_name'    => 'Roberto',
+                        'last_name'     => 'Crowington',
+                        'email'         => 'rob@crowdcube.com',
+                        'slug'          => 'roberto-crowington',
+                    ]
+                );
+    }
+
+    /**
+     * @test
+     */
+    public function edit_avatar_option_is_available_to_profile_owner()
+    {
+        Auth::loginUsingId(2);
+
+        $this->visit('/member/rob-crowe/edit')
+                ->see('Drag your new avatar here');
     }
 
 }

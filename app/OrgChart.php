@@ -24,26 +24,26 @@ class OrgChart extends Model {
     }
 
     /**
-     * Take an uploaded file and associate it with the Department
+     * Take an uploaded file and associate it with the item
      *
      * @param UploadedFile $file
-     * @param Department $department
+     * @param string $slug
      */
-    public static function fromFile(UploadedFile $file, Department $department)
+    public static function fromFile(UploadedFile $file, $slug)
     {
-        return (new static)->saveAs($department->slug, $file->getClientOriginalExtension());
+        return (new static)->saveAs($slug, $file->getClientOriginalExtension());
     }
 
     /**
      * Set all of the required values for the new file
      *
-     * @param $departmentSlug
+     * @param $slug
      * @param $extension
      * @return $this
      */
-    public function saveAs($departmentSlug, $extension)
+    public function saveAs($slug, $extension)
     {
-        $this->name             = time() . '-' .$departmentSlug . '.' . $extension;
+        $this->name             = time() . '-' .$slug . '.' . $extension;
         $this->path             = sprintf("%s/%s", $this->baseDir, $this->name);
         $this->thumbnail_path   = sprintf("%s/tn-%s", $this->baseDir, $this->name);
 

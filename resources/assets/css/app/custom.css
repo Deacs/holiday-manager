@@ -17,8 +17,18 @@ th.active-field {
 .dropzone {
     padding: 10px 10px;
     min-height: 140px;
+    border: 0;
+    background: #c7ddef;
 }
 
 .dropzone .dz-message {
     margin: 1.75em 0;
+}
+
+.dropzone .dz-preview {
+    margin: 0;
+}
+
+.dropzone .dz-preview.dz-image-preview {
+    background: none;
 }

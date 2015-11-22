@@ -126,6 +126,13 @@ Route::group(['middleware' => 'auth', 'prefix' => 'member', 'as' => 'member.'], 
 			'uses' 	=> 'UserController@completeConfirmation'
 		]
 	);
+
+	post('{id}/avatar',
+		[
+			'as' 	=> 'avatar-upload',
+			'uses' 	=> 'UserController@uploadAvatar'
+		]
+	);
 });
 
 Route::group(['middleware' => 'auth', 'prefix' => 'locations', 'as' => 'location.'], function () {

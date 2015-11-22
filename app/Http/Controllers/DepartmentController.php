@@ -100,14 +100,4 @@ class DepartmentController extends Controller {
 		$department->org_charts()->save($org_chart);
 	}
 
-	/**
-	 * Remove
-	 * @param $slug
-	 */
-	public function testOrgChart($slug)
-	{
-		$department = Department::where('slug', $slug)->firstOrFail();
-		dd($department->org_charts);
-	}
-
 }

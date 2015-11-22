@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
 
+use App\Avatar;
 use App\User as User;
 use App\Http\Requests;
 use Laracasts\Flash\Flash;
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Repositories\UserRepository;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
+use Symfony\Component\HttpFoundation\File\UploadedFile as UploadedFile;
 
 class UserController extends Controller {
 
@@ -161,6 +163,38 @@ class UserController extends Controller {
 
 		Flash::error('Your account could not be confirmed');
 		return view('member.confirm');
+	}
+
+	/**
+	 * Add an avatar
+	 *
+	 * @param $id
+	 * @param Request $request
+	 */
+	public function uploadAvatar($id, Request $request)
+	{
+		$user = User::find($id);
+		$file = $request->file('file');
+
+		// Validate the file type
+		$this->validate($request, [
+			'file' => 'required|mimes:jpg,jpeg,png,gif'
+		]);
+
+		$this->makeAvatar($file, $user);
+	}
+
+	/**
+	 * Take an uploaded image and create a new Organisational Chart
+	 *
+	 * @param UploadedFile $file
+	 * @param Department $department
+	 */
+	protected function makeAvatar(UploadedFile $file, User $user)
+	{
+		$avatar = Avatar::fromFile($file, $user)->store($file);
+
+		$user->avatar()->save($avatar);
 	}
 
 }

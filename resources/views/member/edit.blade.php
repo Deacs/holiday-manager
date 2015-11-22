@@ -12,7 +12,7 @@
         </div>
 
         <div class="large-2 columns left">
-            <form method="POST" action="/departments/{{ $member->id }}/org-chart" id="member-avatar-upload" class="dropzone" style="height:40px;">
+            <form method="POST" action="/member/{{ $member->id }}/avatar" id="member-avatar-upload" class="dropzone" style="height:40px;">
                 {{ csrf_field() }}
             </form>
         </div>

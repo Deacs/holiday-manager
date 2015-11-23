@@ -80,7 +80,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	public function avatar()
 	{
-		return $this->hasMany('App\Avatar');
+		return $this->hasMany('App\Avatar')->orderBy('created_at', 'DESC');
 	}
 
 	/**
@@ -171,6 +171,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	{
 		return $this->avatar()->first();
 	}
+
+
+//	public function currentAvatar()
+//	{
+//		if (!is_null()) {
+//
+//		}
+//	}
 
 	/**
 	 * Return path to the users's gravatar image

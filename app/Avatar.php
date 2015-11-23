@@ -16,9 +16,9 @@ class Avatar extends Model
 
     protected $fillable = ['user_id', 'path', 'thumbnail_path'];
 
-    protected $baseDir = 'img/users/avatars';
+    //protected $name;
 
-    protected $name;
+    protected $baseDir = 'img/users/avatars';
 
     public function user()
     {

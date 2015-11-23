@@ -6,6 +6,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 trait FileUploadTrait {
 
+    protected $name;
+
     /**
      * Take an uploaded file and associate it with the item
      *
@@ -19,10 +21,9 @@ trait FileUploadTrait {
 
     /**
      * Set all of the required values for the new file
+     *
      * @param $slug
      * @param $extension
-     * @internal param $userSlug
-     *
      * @return $this
      */
     public function saveAs($slug, $extension)

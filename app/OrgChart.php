@@ -14,7 +14,7 @@ class OrgChart extends Model {
         'thumbnail_path',
     ];
 
-    protected $name;
+//    protected $name;
 
     protected $baseDir = 'img/departments/org-charts';
 

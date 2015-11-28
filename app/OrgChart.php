@@ -8,15 +8,19 @@ class OrgChart extends Model {
 
     protected $table = 'org_charts';
 
+    protected $baseDir = 'img/departments/org-charts';
+
+    protected $thumbnail_width = 1000;
+
+    protected $thumbnail_height;
+
+    protected $retain_aspect_ratio = true;
+
     protected $fillable = [
         'department_id',
         'path',
         'thumbnail_path',
     ];
-
-//    protected $name;
-
-    protected $baseDir = 'img/departments/org-charts';
 
     public function department()
     {

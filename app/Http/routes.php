@@ -74,13 +74,6 @@ Route::group(['middleware' => 'auth', 'prefix' => 'departments', 'as' => 'depart
 			'uses' 	=> 'DepartmentController@addOrgChart',
 		]
 	);
-
-	get('{slug}/org-chart',
-		[
-			'as' 	=> 'org-chart',
-			'uses' 	=> 'DepartmentController@testOrgChart'
-		]
-	);
 });
 
 Route::group(['middleware' => 'auth', 'prefix' => 'member', 'as' => 'member.'], function () {

@@ -14,9 +14,13 @@ class Avatar extends Model
      */
     protected $table = 'user_avatars';
 
-    protected $fillable = ['user_id', 'path', 'thumbnail_path'];
+    protected $thumbnail_width = 200;
 
-    //protected $name;
+    protected $thumbnail_height = 200;
+
+    protected $retain_aspect_ratio = false;
+
+    protected $fillable = ['user_id', 'path', 'thumbnail_path'];
 
     protected $baseDir = 'img/users/avatars';
 

@@ -1,7 +1,6 @@
 <?php namespace App;
 
 use Intervention\Image\Facades\Image;
-use Illuminate\Database\Eloquent\Model;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 trait FileUploadTrait {
@@ -20,10 +19,32 @@ trait FileUploadTrait {
     }
 
     /**
+     * Save the file to the FS
+     *
+     * @param UploadedFile $file
+     * @return $this
+     */
+    public function store(UploadedFile $file)
+    {
+        $file->move($this->baseDir, $this->name);
+
+        if ($this->retain_aspect_ratio) {
+            $this->makeConstrainedAspectRatioThumbnail();
+        }
+        else {
+            $this->makeThumbnail();
+        }
+
+
+        return $this;
+    }
+
+    /**
      * Set all of the required values for the new file
      *
      * @param $slug
      * @param $extension
+     *
      * @return $this
      */
     public function saveAs($slug, $extension)
@@ -36,27 +57,25 @@ trait FileUploadTrait {
     }
 
     /**
-     * Save the file to the FS
-     *
-     * @param UploadedFile $file
-     * @return $this
-     */
-    public function store(UploadedFile $file)
-    {
-        $file->move($this->baseDir, $this->name);
-
-        $this->makeThumbnail();
-
-        return $this;
-    }
-
-    /**
      * Make a thumbnail from the uploaded image
      */
     public function makeThumbnail()
     {
         Image::make($this->path)
-            ->fit(200)
-            ->save($this->thumbnail_path);
+            ->fit($this->thumbnail_height, $this->thumbnail_width, function ($constraint) {
+                $constraint->upsize();
+            })->save($this->thumbnail_path);
     }
+
+    /**
+     * Make a thumbnail with a constrained aspect ratio from the uploaded image
+     */
+    public function makeConstrainedAspectRatioThumbnail()
+    {
+        Image::make($this->path)
+            ->resize($this->thumbnail_height, $this->thumbnail_width, function ($constraint) {
+                $constraint->aspectRatio();
+            })->save($this->thumbnail_path);
+    }
+
 }

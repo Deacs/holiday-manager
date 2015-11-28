@@ -172,14 +172,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		return $this->avatar()->first();
 	}
 
-
-//	public function currentAvatar()
-//	{
-//		if (!is_null()) {
-//
-//		}
-//	}
-
 	/**
 	 * Return path to the users's gravatar image
 	 * If none has been set, the default image path will be returned

@@ -9,12 +9,16 @@
     <div class="large-12 columns" role="content">
         <h4>{!! HTML::image($department->lead->getAvatarThumbnailPath(30), $department->lead->fullName(), ['width' =>30]) !!} Department Lead: <a href="{{ $department->lead->url }}" class="department-lead">{{ $department->lead->fullName() }}</a></h4>
 
-        <h5>Organisational Chart</h5>
-        @foreach($department->org_charts as $org_chart)
-            <a href="/{!! $org_chart->path !!}" data-lity>
-                {!! HTML::image($org_chart->thumbnail_path, $department->name.' Organisation Chart') !!}
+        @if ($department->hasOrgChart())
+            <h5>Organisational Chart</h5>
+            <a href="/{!! $department->getOrgChart()->path !!}" data-lity>
+                {!! HTML::image($department->getOrgChart()->thumbnail_path, $department->name.' Organisation Chart') !!}
             </a>
-        @endforeach
+        @else
+            <div data-alert="" class="alert-box alert radius alert">
+                No Organisational Chart available
+            </div>
+        @endif
 
         @if (Auth::user()->hasManageDepartmentPermission($department))
             <h4>Update Organisational Chart</h4>

@@ -44,7 +44,7 @@ class Department extends Model {
 
 	public function org_charts()
 	{
-		return $this->hasMany('App\OrgChart');
+		return $this->hasMany('App\OrgChart')->orderBy('created_at', 'DESC');
 	}
 
 	public function scopeExeter($query)
@@ -75,5 +75,26 @@ class Department extends Model {
 	public function getUrlAttribute()
 	{
 		return '/departments/'.$this->slug;
+	}
+
+	/**
+	 * Has an Organisational Chart been uploaded for this Department
+	 *
+	 * @return boolean
+	 */
+	public function hasOrgChart()
+	{
+		return !is_null($this->org_charts()->first());
+	}
+
+	/**
+	 * Return the Organisational Chart for this Department
+	 *
+	 * @return string
+	 */
+	public function getOrgChart()
+	{
+		return $this->org_charts()->first();
+
 	}
 }

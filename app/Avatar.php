@@ -29,4 +29,15 @@ class Avatar extends Model
         return $this->belongsTo('App\User');
     }
 
+    /**
+     * The img directory name cannot begin with a slash
+     * Ensure the returned string has the required formatting
+     *
+     * @return string
+     */
+    public function formattedPath()
+    {
+        return strpos($this->thumbnail_path, '/', 0) ? '/' . $this->thumbnail_path : $this->thumbnail_path;
+    }
+
 }

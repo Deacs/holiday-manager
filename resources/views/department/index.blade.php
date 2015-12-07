@@ -21,7 +21,7 @@
                         | orderBy sortKey reverse"
                     >
                 <td><a href="@{{ department.url }}" v-text="department.name"></a></td>
-                <td><img v-attr="src:department.lead | getAvatar '20'"> <a href="@{{ department.lead.url }}" v-text="department.lead | nameFormat"></a></td>
+                <td><img v-attr="src:department.lead | getAvatar 30, width:30"> <a href="@{{ department.lead.url }}" v-text="department.lead | nameFormat"></a></td>
                 <td><a href="mailto:@{{ department.lead.email }}" v-text="department.lead.email"></a></td>
                 <td v-text="department.lead.telephone"></td>
                 <td v-text="department.lead.extension"></td>

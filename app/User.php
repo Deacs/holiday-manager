@@ -80,7 +80,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	public function avatar()
 	{
-		return $this->hasMany('App\Avatar')->orderBy('created_at', 'DESC');
+		return $this->hasMany('App\Avatar');
 	}
 
 	/**
@@ -164,12 +164,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	{
 		$avatar = $this->localAvatar();
 
-		return is_null($avatar) ? $this->getRemoteAvatarPath($size) : $avatar->thumbnail_path;
+		return is_null($avatar) ? $this->getRemoteAvatarPath($size) : $avatar->formattedPath();
 	}
 
 	private function localAvatar()
 	{
-		return $this->avatar()->first();
+		return $this->avatar()->latest()->first();
 	}
 
 	/**

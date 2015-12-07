@@ -35,7 +35,6 @@ trait FileUploadTrait {
             $this->makeThumbnail();
         }
 
-
         return $this;
     }
 

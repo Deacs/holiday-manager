@@ -44,7 +44,7 @@ class Department extends Model {
 
 	public function org_charts()
 	{
-		return $this->hasMany('App\OrgChart')->orderBy('created_at', 'DESC');
+		return $this->hasMany('App\OrgChart');
 	}
 
 	public function scopeExeter($query)
@@ -94,7 +94,7 @@ class Department extends Model {
 	 */
 	public function getOrgChart()
 	{
-		return $this->org_charts()->first();
+		return $this->org_charts()->latest()->first();
 
 	}
 }

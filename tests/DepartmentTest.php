@@ -57,7 +57,7 @@ class DepartmentTest extends CrowdcubeTester
     }
 
     /**
-     * @not_test
+     * @test
      */
     public function add_new_member_form_displayed_to_super_user()
     {
@@ -190,6 +190,7 @@ class DepartmentTest extends CrowdcubeTester
 
     /**
      * @test
+     * @group vue
      */
     public function typing_into_filter_minimises_available_results_correctly()
     {
@@ -200,7 +201,7 @@ class DepartmentTest extends CrowdcubeTester
 
 //        $this->visit('/departments')
 //                ->see('Start typing any of the fields below to search....')
-//                ->type('mar', 'department_search');
+//                ->type('mar', 'department_search')
 //                ->see('Marketing')
 //                ->dontSee('Engineering');
     }

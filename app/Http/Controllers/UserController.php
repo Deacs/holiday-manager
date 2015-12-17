@@ -197,4 +197,23 @@ class UserController extends Controller {
 		$user->avatar()->save($avatar);
 	}
 
+	/**
+	 * Can the user edit the details of the member
+	 *
+	 * @param User $user_slug
+	 * @param User $member_slug
+	 * @return boolean
+	 */
+	public function canEditMember($member_slug, $user_slug)
+	{
+		$user 	= $this->userRepository->getUserBySlug($user_slug);
+		$member = $this->userRepository->getUserBySlug($member_slug);
+
+		//dd($user);
+
+		$canEdit = $user->id == $member->id || $user->hasEditUserPermissions($member);
+
+		return json_encode($canEdit);
+	}
+
 }

@@ -71,6 +71,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'departments', 'as' => 'depart
 	post('{slug}/org-chart',
 		[
 			'as' 	=> 'update-org-chart',
+
 			'uses' 	=> 'DepartmentController@addOrgChart',
 		]
 	);
@@ -221,6 +222,13 @@ Route::group(['prefix' => 'api', 'as' => 'api.'], function () {
 		[
 			'as' 	=> 'member.show',
 			'uses' 	=> 'UserController@profile',
+		]
+	);
+
+	get('member/{user_slug}/can-edit/{member_slug}',
+		[
+			'as' 	=> 'member.can-edit',
+			'uses' 	=> 'UserController@canEditMember'
 		]
 	);
 

@@ -125,6 +125,17 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	}
 
 	/**
+	 * Does this user have the permissions to edit the details of the passed User
+	 * @param User $member
+	 *
+	 * @return bool
+	 */
+	public function hasEditUserPermissions(User $member)
+	{
+		return $this->hasManageDepartmentPermission($member->department);
+	}
+
+	/**
 	 * Can this User manage Departments
 	 * Generally they will be a Department Lead but this may be extended to allow Team Leads to deputise
 	 * There is possibly a Super User that can manage in the absence of relevant Department Lead

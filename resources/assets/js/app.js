@@ -1,5 +1,11 @@
-var Vue     = require('vue');
-var Moment  = require('moment');
+var Vue             = require('vue');
+var Moment          = require('moment');
+var VueAsyncData    = require('vue-async-data');
+
+Vue.use(VueAsyncData);
+
+import LogoHolder       from './components/LogoHolder.vue';
+import MemberProfile    from './components/MemberProfile.vue';
 
 Vue.use(require('vue-resource'));
 
@@ -27,28 +33,28 @@ var departmentProfile = Vue.extend({
     }
 });
 
-var MemberProfile = Vue.extend({
-
-    template: '#member-profile',
-
-    props: ['slug'],
-
-    data: function() {
-        return {
-            slug:       '',
-            member:     '',
-            members:    []
-        }
-    },
-
-    methods: {
-        fetchMember: require('./methods/fetchMember')
-    },
-
-    ready: function() {
-        this.fetchMember(this.slug);
-    }
-});
+//var MemberProfile = Vue.extend({
+//
+//    template: '#member-profile',
+//
+//    props: ['slug'],
+//
+//    data: function() {
+//        return {
+//            slug:       '',
+//            member:     '',
+//            members:    []
+//        }
+//    },
+//
+//    methods: {
+//        fetchMember: require('./methods/fetchMember')
+//    },
+//
+//    ready: function() {
+//        this.fetchMember(this.slug);
+//    }
+//});
 
 var DepartmentListing = Vue.extend({
 
@@ -211,6 +217,11 @@ Vue.component('add_location', AddLocation);
 new Vue({
 
     el: '#app',
+
+    components: {
+        MemberProfile,
+        LogoHolder
+    },
 
     data: {
         displayflash:       false,

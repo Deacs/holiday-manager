@@ -22,7 +22,7 @@ class AuthServiceProvider extends ServiceProvider
         $gate->define('edit-member', function ($user, $member) {
 
             // They either own the profile, are the lead of the user's dept or a super user
-            if ($user->isSuperUser() || $user->isDepartmentLead($member->department) || $user->id === $member->id) {
+            if ($user->id === $member->id || $user->hasEditUserPermissions($member)) {
                 return true;
             }
 

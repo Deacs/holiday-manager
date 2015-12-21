@@ -238,6 +238,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 		$this->save();
 	}
+	// Deprecated from below
 
 	/**
 	 * Place the holiday Request
@@ -245,14 +246,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 * @return bool
 	 * @param HolidayRequest $holiday_request
 	 */
-	public function addHolidayRequest(HolidayRequest $holiday_request)
-	{
-		if ($this->validateHolidayRequest()) {
-			return $holiday_request->place();
-		}
-
-		return false;
-	}
+//	public function addHolidayRequest(HolidayRequest $holiday_request)
+//	{
+//		if ($this->validateHolidayRequest()) {
+//			return $holiday_request->place();
+//		}
+//
+//		return false;
+//	}
 
 	/**
 	 * Cancel an existing holiday request
@@ -261,42 +262,42 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 * @return bool
 	 * @param HolidayRequest $holiday_request
 	 */
-	public function cancelHolidayRequest(HolidayRequest $holiday_request)
-	{
-		return $holiday_request->cancel();
-	}
+//	public function cancelHolidayRequest(HolidayRequest $holiday_request)
+//	{
+//		return $holiday_request->cancel();
+//	}
 
 	/**
 	 * If no allowance has been specified, use the Company default
 	 *
 	 * @return int|mixed
 	 */
-	public function getAnnualHolidayAllowance()
-	{
-		if ( ! empty($this->annual_holiday_allowance))
-		{
-			return $this->annual_holiday_allowance;
-		}
-
-		return $this->default_annual_holiday_alowance;
-	}
+//	public function getAnnualHolidayAllowance()
+//	{
+//		if ( ! empty($this->annual_holiday_allowance))
+//		{
+//			return $this->annual_holiday_allowance;
+//		}
+//
+//		return $this->default_annual_holiday_alowance;
+//	}
 
 	/**
 	 * Create a summary of balances of all holiday statuses
 	 *
 	 * @return array
 	 */
-	public function getHolidayBalanceSummary()
-	{
-		return [
-			'Annual Allowance'  => $this->getAnnualHolidayAllowance(),
-			'Completed Holiday' => $this->completedHolidayBalance(),
-			'Active Holiday'    => $this->activeHolidayBalance(),
-			'Pending Requests'  => $this->pendingHolidayBalance(),
-			'Approved Requests' => $this->approvedHolidayBalance(),
-			'Available Balance' => $this->availableHolidayAllowance(),
-		];
-	}
+//	public function getHolidayBalanceSummary()
+//	{
+//		return [
+//			'Annual Allowance'  => $this->getAnnualHolidayAllowance(),
+//			'Completed Holiday' => $this->completedHolidayBalance(),
+//			'Active Holiday'    => $this->activeHolidayBalance(),
+//			'Pending Requests'  => $this->pendingHolidayBalance(),
+//			'Approved Requests' => $this->approvedHolidayBalance(),
+//			'Available Balance' => $this->availableHolidayAllowance(),
+//		];
+//	}
 
 	/**
 	 * How many days holiday are already accounted for
@@ -304,61 +305,61 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 *
 	 * @return mixed
 	 */
-	public function unavailableHolidayBalance()
-	{
-		return ($this->pendingHolidayBalance() + $this->approvedHolidayBalance() + $this->activeHolidayBalance() + $this->completedHolidayBalance());
-	}
+//	public function unavailableHolidayBalance()
+//	{
+//		return ($this->pendingHolidayBalance() + $this->approvedHolidayBalance() + $this->activeHolidayBalance() + $this->completedHolidayBalance());
+//	}
 
 	/**
 	 * How many days holiday are still available
 	 *
 	 * @return mixed
 	 */
-	public function availableHolidayAllowance()
-	{
-		return $this->getAnnualHolidayAllowance() - $this->unavailableHolidayBalance();
-	}
+//	public function availableHolidayAllowance()
+//	{
+//		return $this->getAnnualHolidayAllowance() - $this->unavailableHolidayBalance();
+//	}
 
-	public function pendingHolidayBalance()
-	{
-		// @TODO Ensure that returned requests are for the current year
-		return $this->pending_holiday_balance;
-	}
+//	public function pendingHolidayBalance()
+//	{
+//		// @TODO Ensure that returned requests are for the current year
+//		return $this->pending_holiday_balance;
+//	}
 
-	public function approvedHolidayBalance()
-	{
-		return $this->approved_holiday_balance;
-	}
+//	public function approvedHolidayBalance()
+//	{
+//		return $this->approved_holiday_balance;
+//	}
 
-	public function declinedHolidayBalance()
-	{
-		return 0;
-	}
+//	public function declinedHolidayBalance()
+//	{
+//		return 0;
+//	}
 
-	public function activeHolidayBalance()
-	{
-		return $this->active_holiday_balance;
-	}
+//	public function activeHolidayBalance()
+//	{
+//		return $this->active_holiday_balance;
+//	}
 
-	public function cancelledHolidayBalance()
-	{
-		return 0;
-	}
+//	public function cancelledHolidayBalance()
+//	{
+//		return 0;
+//	}
 
-	public function completedHolidayBalance()
-	{
-		return $this->completed_holiday_balance;
-	}
+//	public function completedHolidayBalance()
+//	{
+//		return $this->completed_holiday_balance;
+//	}
 
 	/**
 	 * Is there an approved Holiday Request recorded for this user today
 	 *
 	 * @return bool
 	 */
-	public function onApprovedLeave()
-	{
-		return false;
-	}
+//	public function onApprovedLeave()
+//	{
+//		return false;
+//	}
 
 	/**
 	 * Does this user have any approved holiday requests
@@ -366,10 +367,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 * x
 	 * @return bool
 	 */
-	public function hasApprovedHoliday()
-	{
-		return $this->approvedHolidayBalance() > 0;
-	}
+//	public function hasApprovedHoliday()
+//	{
+//		return $this->approvedHolidayBalance() > 0;
+//	}
 
 	/**
 	 * Validate a Holiday Request
@@ -377,17 +378,17 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 * @throws Exception
 	 * @return bool
 	 */
-	private function validateHolidayRequest()
-	{
-		switch (true) {
-			// Does this user have any holiday allowance left
-			case $this->availableHolidayAllowance() <= 0:
-				throw new Exception('Your Holiday Request could not be placed. Your Annual Holiday Allowance has been taken');
-				break;
-			default:
-				return true;
-		}
-	}
+//	private function validateHolidayRequest()
+//	{
+//		switch (true) {
+//			// Does this user have any holiday allowance left
+//			case $this->availableHolidayAllowance() <= 0:
+//				throw new Exception('Your Holiday Request could not be placed. Your Annual Holiday Allowance has been taken');
+//				break;
+//			default:
+//				return true;
+//		}
+//	}
 
 	/**
 	 * Can this User manage Holiday Requests
@@ -397,10 +398,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 * @return bool
 	 * @param Department $department
 	 */
-	public function hasManageHolidayRequestPermission(Department $department = null)
-	{
-		return $this->isSuperUser() || $this->isDepartmentLead($department);
-	}
+//	public function hasManageHolidayRequestPermission(Department $department = null)
+//	{
+//		return $this->isSuperUser() || $this->isDepartmentLead($department);
+//	}
 
 	/**
 	 * Can this user view Team Holiday Summaries
@@ -409,15 +410,15 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 * @return bool
 	 * @param Department $department
 	 */
-	public function viewDepartmentHolidaySummary(Department $department)
-	{
-		if ( ! $this->hasManageHolidayRequestPermission($department)) {
-			throw new Exception('Only Team Leads can view Holiday summaries');
-		}
-
-		$holiday_request = new HolidayRequest();
-
-		return $holiday_request->getDepartmentSummary($department);
-	}
+//	public function viewDepartmentHolidaySummary(Department $department)
+//	{
+//		if ( ! $this->hasManageHolidayRequestPermission($department)) {
+//			throw new Exception('Only Team Leads can view Holiday summaries');
+//		}
+//
+//		$holiday_request = new HolidayRequest();
+//
+//		return $holiday_request->getDepartmentSummary($department);
+//	}
 
 }

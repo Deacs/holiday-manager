@@ -209,9 +209,8 @@ class UserController extends Controller {
 		$user 	= $this->userRepository->getUserBySlug($user_slug);
 		$member = $this->userRepository->getUserBySlug($member_slug);
 
-		//dd($user);
-
-		$canEdit = $user->id == $member->id || $user->hasEditUserPermissions($member);
+		//$canEdit = $user->id == $member->id || $user->hasEditUserPermissions($member);
+		$canEdit = $user->hasEditUserPermissions($member);
 
 		return json_encode($canEdit);
 	}

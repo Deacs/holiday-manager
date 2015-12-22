@@ -1,7 +1,8 @@
 <?php
 
-use App\Department;
 use App\User;
+use App\Department;
+use Illuminate\Support\Str;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -9,8 +10,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class UserTest extends CrowdcubeTester
 {
 
-    //protected $baseUrl = 'http://caliente.dev';
-
+    // -- Formatting
     /**
      * @test
      * @group unit
@@ -25,6 +25,21 @@ class UserTest extends CrowdcubeTester
 
         $this->assertEquals('Tom Collins', $fullName);
     }
+
+    /**
+     * @test
+     * @group unit
+     */
+    public function correctly_formatted_slug_returned_from_slug_creator()
+    {
+        $user = new User();
+        $user->first_name = 'Tom';
+        $user->last_name = 'Collins';
+
+        $this->assertEquals('tom-collins', $user->createSlug());
+    }
+
+    // -- Status
 
     /**
      * @test
@@ -118,6 +133,8 @@ class UserTest extends CrowdcubeTester
         $this->assertTrue($user->isSuperUser());
     }
 
+    // -- Permissions
+
     /**
      * @test
      * @group unit
@@ -185,11 +202,10 @@ class UserTest extends CrowdcubeTester
         $user = new User();
         $user->id = 1;
 
-//        $department = new Department();
         $user->department = (new Department);
         $member = $user;
 
-        $this->assertFalse($user->hasEditUserPermissions($member));
+        $this->assertTrue($user->hasEditUserPermissions($member));
     }
 
 }

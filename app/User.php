@@ -1,6 +1,7 @@
 <?php namespace App;
 
 use App\HolidayRequest;
+use Illuminate\Support\Str;
 use Laracasts\Flash\Flash;
 use \Exception as Exception;
 use Illuminate\Auth\Authenticatable;
@@ -126,12 +127,17 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	/**
 	 * Does this user have the permissions to edit the details of the passed User
-	 * @param User $member
+	 * This could be the actual user performing the test
 	 *
+	 * @param User $member
 	 * @return bool
 	 */
 	public function hasEditUserPermissions(User $member)
 	{
+		if ($this->id == $member->id) {
+			return true;
+		}
+
 		return $this->hasManageDepartmentPermission($member->department);
 	}
 
@@ -222,6 +228,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	public function sendConfirmationRequestEmail()
 	{
 		var_dump('Send a mail containing the token : '.$this->confirmation_token);
+	}
+
+	public function createSlug()
+	{
+		return Str::slug(join([$this->first_name, $this->last_name], ' '));
 	}
 
 	/**

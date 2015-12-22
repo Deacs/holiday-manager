@@ -26,6 +26,10 @@ class UserObserver {
         $this->createSlug($model);
     }
 
+    /**
+     * TODO
+     * Use slugify as function
+     */
     private function createSlug($model)
     {
         $model->slug = strtolower(join('-', [$model->first_name, $model->last_name]));

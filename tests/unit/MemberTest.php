@@ -2,10 +2,10 @@
 
 use App\User;
 use App\Department;
-use Illuminate\Support\Str;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Str;
 
 class UserTest extends CrowdcubeTester
 {
@@ -39,7 +39,7 @@ class UserTest extends CrowdcubeTester
         $this->assertEquals('tom-collins', $user->createSlug());
     }
 
-    // -- Status
+    // -- Account Status
 
     /**
      * @test
@@ -107,6 +107,22 @@ class UserTest extends CrowdcubeTester
         $user_department->id = 2;
         $user->department = $user_department;
 
+        $this->assertFalse($user->leadDepartment($department));
+    }
+
+    /**
+     * @test
+     * @group unit
+     */
+    public function true_is_returned_when_requesting_lead_department_for_department_lead()
+    {
+        $user = new User();
+        $department = new Department();
+        $user->department = $department;
+
+        $department->lead_id = $user->id;
+
+        $this->assertEquals($department, $user->leadDepartment());
     }
 
     /**
@@ -206,6 +222,41 @@ class UserTest extends CrowdcubeTester
         $member = $user;
 
         $this->assertTrue($user->hasEditUserPermissions($member));
+    }
+
+    // -- Miscellaneous
+
+    /**
+     * @test
+     * @group unit
+     */
+    public function correctly_formatted_url_returned_from_get_url_attribute()
+    {
+        $user = new User();
+        $user->first_name = 'Tom';
+        $user->last_name = 'Collins';
+
+        $user->slug = $user->createSlug();
+
+        $this->assertEquals('/member/tom-collins', $user->getUrlAttribute());
+    }
+
+    /**
+     * @test
+     * @group unit
+     */
+    public function correct_department_name_returned_from_get_department_name_attribute()
+    {
+        $user = new User();
+
+        $deptName = 'My Department';
+
+        $department = new Department();
+        $department->name = $deptName;
+
+        $user->department = $department;
+
+        $this->assertEquals($deptName, $user->getDepartmentNameAttribute());
     }
 
 }

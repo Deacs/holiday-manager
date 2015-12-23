@@ -1,5 +1,7 @@
 <?php namespace App\Observers;
 
+use Illuminate\Support\Str;
+
 class UserObserver {
 
     /**
@@ -32,7 +34,7 @@ class UserObserver {
      */
     private function createSlug($model)
     {
-        $model->slug = strtolower(join('-', [$model->first_name, $model->last_name]));
+        $model->slug = Str::slug(join([$model->first_name, $model->last_name], ' '));
         $model->password = bcrypt($model->slug . microtime());
     }
 

@@ -14399,13 +14399,17 @@ module.exports = Watcher
 },{"./batcher":19,"./config":25,"./observer/dep":59,"./parsers/expression":63,"./util":74,"_process":2}],79:[function(require,module,exports){
 'use strict';
 
-var _LogoHolder = require('./components/LogoHolder.vue');
+var _MemberListing = require('./components/MemberListing.vue');
 
-var _LogoHolder2 = _interopRequireDefault(_LogoHolder);
+var _MemberListing2 = _interopRequireDefault(_MemberListing);
 
 var _MemberProfile = require('./components/MemberProfile.vue');
 
 var _MemberProfile2 = _interopRequireDefault(_MemberProfile);
+
+var _DepartmentListing = require('./components/DepartmentListing.vue');
+
+var _DepartmentListing2 = _interopRequireDefault(_DepartmentListing);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -14419,199 +14423,14 @@ Vue.use(require('vue-resource'));
 
 Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('value');
 
-var departmentProfile = Vue.extend({
-
-    template: '#department_profile',
-
-    props: ['slug'],
-
-    data: function data() {
-        return {
-            slug: '',
-            department: ''
-        };
-    },
-
-    methods: {
-        fetchDepartment: require('./methods/fetchDepartment')
-    },
-
-    ready: function ready() {
-        this.fetchDepartment(this.slug);
-    }
-});
-
-//var MemberProfile = Vue.extend({
-//
-//    template: '#member-profile',
-//
-//    props: ['slug'],
-//
-//    data: function() {
-//        return {
-//            slug:       '',
-//            member:     '',
-//            members:    []
-//        }
-//    },
-//
-//    methods: {
-//        fetchMember: require('./methods/fetchMember')
-//    },
-//
-//    ready: function() {
-//        this.fetchMember(this.slug);
-//    }
-//});
-
-var DepartmentListing = Vue.extend({
-
-    template: '#department-listing',
-
-    props: ['flashdata', 'displayflash', 'location_slug'],
-
-    data: function data() {
-
-        return {
-            departmentColumns: [{ field: 'name', title: 'Name' }, { field: 'lead.last_name', title: 'Lead' }, { field: 'lead.email', title: 'email' }, { field: 'lead.telephone', title: 'Telephone' }, { field: 'lead.extension', title: 'Extension' }, { field: 'lead.skype_name', title: 'Skype' }],
-            location_slug: '',
-            departments: [],
-            members: [],
-            sortKey: '',
-            reverse: false,
-            search: ''
-        };
-    },
-    methods: {
-        fetchDepartments: require('./methods/fetchDepartments'),
-        sortBy: require('./methods/sortBy')
-    },
-    filters: {
-        nameFormat: require('./filters/nameFormat')
-    },
-
-    ready: function ready() {
-
-        var bounds = {};
-
-        if (this.location_slug != '') {
-            bounds = {
-                location: this.location_slug
-            };
-        }
-
-        this.fetchDepartments(bounds);
-    }
-});
-
-var MemberListing = Vue.extend({
-
-    template: '#member-listing',
-
-    props: ['dept_name', 'dept_slug', 'location_slug', 'flashdata', 'displayflash'],
-
-    data: function data() {
-
-        return {
-            memberColumns: [{ field: 'last_name', title: 'Name' }, { field: 'department_name', title: 'Department' }, { field: 'role', title: 'Role' }, { field: 'email', title: 'email' }, { field: 'telephone', title: 'Telephone' }, { field: 'extension', title: 'Extension' }, { field: 'skype_name', title: 'Skype' }],
-            dept_slug: '',
-            dept_name: '',
-            location_slug: '',
-            departments: [],
-            locations: [],
-            members: [],
-            sortKey: '',
-            reverse: false,
-            search: '',
-            newMember: {
-                first_name: '',
-                last_name: '',
-                slug: '',
-                role: '',
-                email: '',
-                telephone: null,
-                extension: null,
-                skype_name: null,
-                department_id: '',
-                department_name: '',
-                location_id: '',
-                created_at: Moment()
-            },
-            flashdata: {
-                'level': '',
-                'message': ''
-            },
-            displayflash: false
-        };
-    },
-
-    methods: {
-        fetchDepartments: require('./methods/fetchDepartments'),
-        fetchLocations: require('./methods/fetchLocations'),
-        fetchMembers: require('./methods/fetchMembers'),
-        addNewMember: require('./methods/addMember'),
-        sortBy: require('./methods/sortBy'),
-        makeSlug: require('./methods/makeSlug')
-    },
-
-    ready: function ready() {
-
-        var dept = '';
-        var location = '';
-
-        var bounds = {
-            dept: this.dept_slug,
-            location: this.location_slug
-        };
-
-        this.fetchMembers(bounds);
-        this.fetchDepartments();
-        this.fetchLocations();
-    }
-});
-
-var AddLocation = Vue.extend({
-
-    template: '#add-location',
-
-    data: function data() {
-
-        return {
-            newLocation: {
-                name: '',
-                address: '',
-                telephone: null,
-                lat: '',
-                lon: '',
-                created_at: Moment()
-            },
-            flashdata: {
-                'level': '',
-                'message': 'Standard'
-            },
-            displayflash: true
-        };
-    },
-
-    methods: {
-        addLocation: require('./methods/addLocation')
-    }
-
-});
-
-Vue.component('department_profile', departmentProfile);
-Vue.component('member_profile', _MemberProfile2.default);
-Vue.component('member_listing', MemberListing);
-Vue.component('department_listing', DepartmentListing);
-Vue.component('add_location', AddLocation);
-
 new Vue({
 
     el: '#app',
 
     components: {
         MemberProfile: _MemberProfile2.default,
-        LogoHolder: _LogoHolder2.default
+        MemberListing: _MemberListing2.default,
+        DepartmentListing: _DepartmentListing2.default
     },
 
     data: {
@@ -14651,7 +14470,7 @@ new Vue({
     }
 });
 
-},{"./components/LogoHolder.vue":80,"./components/MemberProfile.vue":81,"./filters/dateFormat":82,"./filters/getAvatar":83,"./filters/nameFormat":84,"./methods/addLocation":85,"./methods/addMember":86,"./methods/fetchDepartment":87,"./methods/fetchDepartments":88,"./methods/fetchLocations":89,"./methods/fetchMembers":91,"./methods/makeSlug":93,"./methods/sortBy":94,"moment":1,"vue":77,"vue-async-data":3,"vue-resource":6}],80:[function(require,module,exports){
+},{"./components/DepartmentListing.vue":80,"./components/MemberListing.vue":81,"./components/MemberProfile.vue":82,"./filters/dateFormat":83,"./filters/getAvatar":84,"./filters/nameFormat":85,"./methods/fetchDepartments":87,"./methods/fetchLocations":88,"moment":1,"vue":77,"vue-async-data":3,"vue-resource":6}],80:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -14659,29 +14478,137 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = {
 
-    props: ['type'],
+    props: ['flashdata', 'displayflash', 'location_slug'],
 
     data: function data() {
 
         return {
-            show: true
+            departmentColumns: [{ field: 'name', title: 'Name' }, { field: 'lead.last_name', title: 'Lead' }, { field: 'lead.email', title: 'email' }, { field: 'lead.telephone', title: 'Telephone' }, { field: 'lead.extension', title: 'Extension' }, { field: 'lead.skype_name', title: 'Skype' }],
+            location_slug: '',
+            departments: [],
+            members: [],
+            sortKey: '',
+            reverse: false,
+            search: ''
         };
+    },
+    methods: {
+        fetchDepartments: require('../methods/fetchDepartments'),
+        sortBy: require('../methods/sortBy')
+    },
+    filters: {
+        nameFormat: require('../filters/nameFormat')
+    },
+
+    ready: function ready() {
+
+        var bounds = {};
+
+        if (this.location_slug != '') {
+            bounds = {
+                location: this.location_slug
+            };
+        }
+
+        this.fetchDepartments(bounds);
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <h3>My Logo Component</h3>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\n    <h3>Departments</h3>\n\n    <input type=\"text\" v-model=\"search\" placeholder=\"Start typing any of the fields below to search....\">\n    <table width=\"100%\">\n        <tbody><tr>\n            <th class=\"sort-field\" v-repeat=\"column: departmentColumns\" v-on=\"click: sortBy(column.field)\" v-class=\"active-field: sortKey==column.field\">\n                {{ column.title }}\n            </th>\n        </tr>\n        <tr v-repeat=\"department: departments\n                | filterBy search\n                | orderBy sortKey reverse\">\n            <td><a href=\"{{ department.url }}\" v-text=\"department.name\"></a></td>\n            <td><img v-attr=\"src:department.lead | getAvatar '20'\" width=\"20\"> <a href=\"{{ department.lead.url }}\" v-text=\"department.lead | nameFormat\"></a></td>\n                <td><a href=\"mailto:{{ department.lead.email }}\" v-text=\"department.lead.email\"></a></td>\n                <td v-text=\"department.lead.telephone\"></td>\n                <td v-text=\"department.lead.extension\"></td>\n                <td v-text=\"department.lead.skype_name\"></td>\n\n            </tr>\n        </tbody></table>\n\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/crowdcube/caliente/resources/assets/js/components/LogoHolder.vue"
+  var id = "/crowdcube/caliente/resources/assets/js/components/DepartmentListing.vue"
   if (!module.hot.data) {
     hotAPI.createRecord(id, module.exports)
   } else {
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"vue":77,"vue-hot-reload-api":4}],81:[function(require,module,exports){
+},{"../filters/nameFormat":85,"../methods/fetchDepartments":87,"../methods/sortBy":93,"vue":77,"vue-hot-reload-api":4}],81:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+
+    props: ['dept_name', 'dept_slug', 'location_slug', 'flashdata', 'displayflash'],
+
+    data: function data() {
+
+        return {
+            memberColumns: [{ field: 'last_name', title: 'Name' }, { field: 'department_name', title: 'Department' }, { field: 'role', title: 'Role' }, { field: 'email', title: 'email' }, { field: 'telephone', title: 'Telephone' }, { field: 'extension', title: 'Extension' }, { field: 'skype_name', title: 'Skype' }],
+            dept_slug: '',
+            dept_name: '',
+            location_slug: '',
+            departments: [],
+            locations: [],
+            members: [],
+            sortKey: '',
+            reverse: false,
+            search: '',
+            newMember: {
+                first_name: '',
+                last_name: '',
+                slug: '',
+                role: '',
+                email: '',
+                telephone: null,
+                extension: null,
+                skype_name: null,
+                department_id: '',
+                department_name: '',
+                location_id: ''
+            },
+            flashdata: {
+                'level': '',
+                'message': ''
+            },
+
+            displayflash: false
+        };
+    },
+
+    methods: {
+        fetchDepartments: require('../methods/fetchDepartments'),
+        fetchLocations: require('../methods/fetchLocations'),
+        fetchMembers: require('../methods/fetchMembers'),
+        addNewMember: require('../methods/addMember'),
+        sortBy: require('../methods/sortBy'),
+        makeSlug: require('../methods/makeSlug')
+    },
+
+    ready: function ready() {
+
+        var dept = '';
+        var location = '';
+
+        var bounds = {
+            dept: this.dept_slug,
+            location: this.location_slug
+        };
+
+        this.fetchMembers(bounds);
+        this.fetchDepartments();
+        this.fetchLocations();
+    }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\n    <h3>Team Members</h3>\n\n    <input type=\"text\" v-model=\"search\">\n        <table width=\"100%\">\n            <tbody><tr>\n                <th class=\"sort-field\" v-repeat=\"column: memberColumns\" v-on=\"click: sortBy(column.field)\" v-class=\"active-field: sortKey==column.field\">\n                    {{ column.title }}\n                </th>\n            </tr>\n            <tr v-repeat=\"member: members\n                        | filterBy search\n                        | orderBy sortKey reverse\">\n                <td><img v-attr=\"src:member | getAvatar '20'\" width=\"20\"> <a href=\"{{ member.url }}\" v-text=\"member | nameFormat\"></a></td>\n                    <td v-text=\"member.department_name\"></td>\n                    <td v-text=\"member.role\"></td>\n                    <td><a href=\"mailto:{{ email }}\" v-text=\"member.email\"></a></td>\n                    <td v-text=\"member.telephone\"></td>\n                    <td v-text=\"member.extension\"></td>\n                    <td v-text=\"member.skype_name\"></td>\n                </tr>\n            </tbody></table>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  var id = "/crowdcube/caliente/resources/assets/js/components/MemberListing.vue"
+  if (!module.hot.data) {
+    hotAPI.createRecord(id, module.exports)
+  } else {
+    hotAPI.update(id, module.exports, module.exports.template)
+  }
+})()}
+},{"../methods/addMember":86,"../methods/fetchDepartments":87,"../methods/fetchLocations":88,"../methods/fetchMembers":90,"../methods/makeSlug":92,"../methods/sortBy":93,"vue":77,"vue-hot-reload-api":4}],82:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -14710,7 +14637,7 @@ exports.default = {
         this.fetchMember(this.member_slug);
 
         this.$http.get('/api/member/' + this.member_slug + '/can-edit/' + this.user_slug, function (data, status, request) {
-            console.log(data);
+            //console.log(data);
             this.$set('canEdit', data);
         }).error(function (data, status, request) {
             // handle error
@@ -14731,7 +14658,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"../methods/fetchMember":90,"../methods/hasEditMemberPermissions":92,"vue":77,"vue-hot-reload-api":4}],82:[function(require,module,exports){
+},{"../methods/fetchMember":89,"../methods/hasEditMemberPermissions":91,"vue":77,"vue-hot-reload-api":4}],83:[function(require,module,exports){
 "use strict";
 
 module.exports = function (ymd, type) {
@@ -14743,7 +14670,7 @@ module.exports = function (ymd, type) {
     return Moment(ymd).format("DD/MM/YYYY");
 };
 
-},{}],83:[function(require,module,exports){
+},{}],84:[function(require,module,exports){
 "use strict";
 
 module.exports = function (user, size) {
@@ -14758,65 +14685,11 @@ module.exports = function (user, size) {
     return user.avatar_thumbnail_path.replace(/s=[0-9]?/, 's=' + size);
 };
 
-},{}],84:[function(require,module,exports){
+},{}],85:[function(require,module,exports){
 'use strict';
 
 module.exports = function (user) {
     return user.first_name + ' ' + user.last_name;
-};
-
-},{}],85:[function(require,module,exports){
-'use strict';
-
-module.exports = function (e) {
-
-    e.preventDefault();
-
-    var location = this.newLocation;
-
-    console.log(location);
-
-    this.$http.post('/api/locations/add', location, function (data) {
-
-        console.log('*********************');
-        console.log(location);
-        console.log(data);
-        console.log('*********************');
-
-        this.flashdata = {
-            level: 'success',
-            message: 'Location successfully added'
-        };
-
-        // Close the modal
-
-        // Push the newly created location to the array
-    }).error(function (data, status) {
-
-        // Each field that has failed validation needs
-        // to highlight the relevant input field
-        for (var key in data) {
-            if (data.hasOwnProperty(key)) {
-                var obj = data[key];
-                for (var prop in obj) {
-                    // important check that this is objects own property
-                    // not from prototype prop inherited
-                    if (obj.hasOwnProperty(prop)) {
-                        console.log(prop + " = " + key + " >> " + obj[prop]);
-                    }
-                }
-            }
-        }
-
-        this.flashdata = {
-            level: 'alert',
-            message: 'Location could not be added'
-        };
-
-        //this.updateFlash(true, 'success', 'from function');
-    });
-
-    this.displayflash = true;
 };
 
 },{}],86:[function(require,module,exports){
@@ -14869,15 +14742,6 @@ module.exports = function (e) {
 },{}],87:[function(require,module,exports){
 'use strict';
 
-module.exports = function (slug) {
-    this.$http.get('/api/departments/' + slug, function (department) {
-        this.department = department;
-    });
-};
-
-},{}],88:[function(require,module,exports){
-'use strict';
-
 module.exports = function (bounds) {
 
     var endpoint = '/api/departments';
@@ -14893,7 +14757,7 @@ module.exports = function (bounds) {
     });
 };
 
-},{}],89:[function(require,module,exports){
+},{}],88:[function(require,module,exports){
 'use strict';
 
 module.exports = function () {
@@ -14902,7 +14766,7 @@ module.exports = function () {
     });
 };
 
-},{}],90:[function(require,module,exports){
+},{}],89:[function(require,module,exports){
 'use strict';
 
 module.exports = function (slug) {
@@ -14911,7 +14775,7 @@ module.exports = function (slug) {
     });
 };
 
-},{}],91:[function(require,module,exports){
+},{}],90:[function(require,module,exports){
 'use strict';
 
 module.exports = function (bounds) {
@@ -14932,7 +14796,7 @@ module.exports = function (bounds) {
     });
 };
 
-},{}],92:[function(require,module,exports){
+},{}],91:[function(require,module,exports){
 'use strict';
 
 module.exports = function (user_slug, member_slug, cb) {
@@ -14959,7 +14823,7 @@ module.exports = function (user_slug, member_slug, cb) {
     return false;
 };
 
-},{}],93:[function(require,module,exports){
+},{}],92:[function(require,module,exports){
 'use strict';
 
 module.exports = function () {
@@ -14980,7 +14844,7 @@ module.exports = function () {
     //this.$http.post('/api/member/add', member);
 };
 
-},{}],94:[function(require,module,exports){
+},{}],93:[function(require,module,exports){
 "use strict";
 
 module.exports = function (sortKey) {

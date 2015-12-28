@@ -2,9 +2,11 @@
 
 @section('content')
 
+    <h1>Add new Location</h1>
+
     @can('add-locations')
 
-        <h1>Add new Location</h1>
+    <add-location></add-location>
 
         <form method="POST" action="/locations/add">
             <input type="hidden" name="_token" value="{!! csrf_token() !!}">
@@ -101,7 +103,7 @@
         function loadScript() {
             var script = document.createElement("script");
             script.type = "text/javascript";
-            script.src = "http://maps.google.com/maps/api/js?sensor=false&callback=initialize";
+            script.src = "http://maps.google.com/maps/api/js?callback=initialize";
             document.body.appendChild(script);
         }
 

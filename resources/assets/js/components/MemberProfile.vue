@@ -30,7 +30,7 @@
             'member_slug'
         ],
 
-        data: function() {
+        data() {
             return {
                 member_slug:    '',
                 user_slug:      '',
@@ -49,7 +49,7 @@
             this.fetchMember(this.member_slug);
 
             this.$http.get('/api/member/'+this.member_slug+'/can-edit/'+this.user_slug, function (data, status, request) {
-                console.log(data);
+                //console.log(data);
                 this.$set('canEdit', data);
             }).error(function (data, status, request) {
                 // handle error

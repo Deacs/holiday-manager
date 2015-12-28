@@ -160,8 +160,7 @@ class DepartmentTest extends CrowdcubeTester
                 ->onPage('/departments/business-development')
                 ->see('Business Development')
                 ->see('Department Lead')
-                ->see('Matt Cooper')
-                ->see('Team Members');
+                ->see('Matt Cooper');
     }
 
     /**

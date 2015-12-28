@@ -26,48 +26,19 @@
             @include('department.update_org_chart')
         @endif
 
-        <script id="member-listing" type="x-template">
-
-            @if (Auth::user()->hasManageDepartmentPermission($department))
+        @if (Auth::user()->hasManageDepartmentPermission($department))
 
             <h4>Add New Team Member</h4>
 
-                @include('notifications.result')
+            @include('notifications.result')
 
-                @include('department.add_user')
+            @include('department.add_user')
 
-                <hr />
+            <hr />
 
-            @endif
+        @endif
 
-            <h5>Team Members</h5>
-
-            <input type="text" v-model="search">
-            <table width="100%">
-                <tr>
-                    <th class="sort-field"
-                        v-repeat="column: memberColumns"
-                        v-on="click: sortBy(column.field)"
-                        v-class="active-field: sortKey==column.field">
-                        @{{ column.title }}
-                    </th>
-                </tr>
-                <tr v-repeat="member: members
-                        | filterBy search
-                        | orderBy sortKey reverse"
-                        >
-                    <td><img v-attr="src:member | getAvatar '20'" width="20"> <a href="@{{ member.url }}" v-text="member | nameFormat"></a></td>
-                    <td v-text="member.department_name"></td>
-                    <td v-text="member.role"></td>
-                    <td><a href="mailto:@{{ email }}" v-text="member.email"></a></td>
-                    <td v-text="member.telephone"></td>
-                    <td v-text="member.extension"></td>
-                    <td v-text="member.skype_name"></td>
-                </tr>
-            </table>
-
-        </script>
-        <member_listing dept_slug="{{ $department->slug }}" dept_name="{{ $department->name }}"></member_listing>
+        <member-listing dept_slug="{{ $department->slug }}" dept_name="{{ $department->name }}"></member-listing>
 
     </div>
 

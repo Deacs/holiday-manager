@@ -1,5 +1,7 @@
 <?php namespace App\Observers;
 
+use Illuminate\Support\Str;
+
 class LocationObserver {
 
     /**
@@ -9,7 +11,7 @@ class LocationObserver {
      */
     public function creating($model)
     {
-        $model->slug = strtolower(str_replace(' ', '-', $model->name));
+        $model->slug = Str::slug($model->name);
     }
 
 }

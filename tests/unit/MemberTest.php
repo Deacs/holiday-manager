@@ -2,12 +2,8 @@
 
 use App\User;
 use App\Department;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Str;
 
-class UserTest extends CrowdcubeTester
+class MemberUnitTest extends CrowdcubeTester
 {
 
     // -- Formatting

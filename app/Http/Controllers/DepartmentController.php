@@ -27,6 +27,14 @@ class DepartmentController extends Controller {
 		return view('department.index');
 	}
 
+	/**
+	 *
+	 */
+	public function create()
+	{
+		return 'You passed Middleware!';
+	}
+
 	public function listing()
 	{
 		return Department::with('lead')->get();

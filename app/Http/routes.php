@@ -53,6 +53,14 @@ Route::group(['middleware' => 'auth', 'prefix' => 'departments', 'as' => 'depart
 		]
 	);
 
+	get('add',
+		[
+			'middleware' 	=> 'superuser',
+			'as' 			=> 'department.create',
+			'uses' 			=> 'DepartmentController@create'
+		]
+	);
+
 	get('{slug}',
 		[
 			'as' 	=> 'home',
@@ -71,7 +79,6 @@ Route::group(['middleware' => 'auth', 'prefix' => 'departments', 'as' => 'depart
 	post('{slug}/org-chart',
 		[
 			'as' 	=> 'update-org-chart',
-
 			'uses' 	=> 'DepartmentController@addOrgChart',
 		]
 	);

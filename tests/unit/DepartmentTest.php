@@ -1,7 +1,7 @@
 <?php
 
-use App\OrgChart;
 use App\User;
+use App\OrgChart;
 use App\Department;
 use Illuminate\Support\Str;
 

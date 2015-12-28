@@ -7,6 +7,8 @@ class Department extends Model {
 
 	protected $table = 'departments';
 
+	protected $name;
+
 	protected $appends = [
 		'url'
 	];

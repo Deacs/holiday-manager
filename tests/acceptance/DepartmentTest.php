@@ -197,7 +197,7 @@ class DepartmentTest extends CrowdcubeTester
         Auth::loginUsingId(3);
 
         // There is a real issue with elements that are created by Vue JS templates
-        // It would appear that the crawler can't interact them - yet it can see the placeholder text
+        // It would appear that the crawler can't interact with them - yet it can see the placeholder text
 
 //        $this->visit('/departments')
 //                ->see('Start typing any of the fields below to search....')

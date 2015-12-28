@@ -12,15 +12,6 @@ class DepartmentUnitTest extends CrowdcubeTester
      * @test
      * @group unit
      */
-    public function no_test()
-    {
-        $this->assertEquals(1,1);
-    }
-
-    /**
-     * @test
-     * @group unit
-     */
     public function correctly_formatted_url_returned_from_get_url_attribute()
     {
         $department = new Department();

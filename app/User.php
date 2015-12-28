@@ -2,8 +2,6 @@
 
 use App\HolidayRequest;
 use Illuminate\Support\Str;
-use Laracasts\Flash\Flash;
-use \Exception as Exception;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -55,17 +53,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		'skype_name',
 		'department_id',
 		'location_id',
-		'super_user',
-		'annual_holiday_allowance'
+		'super_user'
 	];
 
-	public $default_annual_holiday_alowance = 25;
-	public $active_holiday_balance 			= 0;
-	public $pending_holiday_balance 		= 0;
-	public $approved_holiday_balance 		= 0;
-	public $completed_holiday_balance 		= 0;
-	public $available_holiday_balance 		= 0;
-	public $unavailable_holiday_balance 	= 0;
 	public $avatarPathAttribute;
 
 	// Relationships

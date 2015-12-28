@@ -19,5 +19,4 @@ class LocationUnitTest extends CrowdcubeTester
 
         $this->assertEquals('/locations/'.$slug, $location->getUrlAttribute());
     }
-
 }

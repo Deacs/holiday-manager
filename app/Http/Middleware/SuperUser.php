@@ -11,17 +11,6 @@ use Illuminate\Support\Facades\Auth;
 class SuperUser {
 
     /**
-     * Create a new filter instance.
-     *
-     * @param Department $department
-     * @internal param Guard $auth
-     */
-//    public function __construct(Department $department)
-//    {
-//        $this->department = $department;
-//    }
-
-    /**
      * Handle an incoming request.
      * @return mixed
      * @param  \Illuminate\Http\Request $request

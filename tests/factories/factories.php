@@ -16,7 +16,6 @@ $factory('App\User', [
     'department_id'             => 'factory:App\Department',
     'location_id'               => 'factory:App\Location',
     'super_user'                => 0,
-    'annual_holiday_allowance'  => 25,
     'confirmed'                 => 1
 ]);
 
@@ -32,7 +31,6 @@ $factory('App\User', 'super_user', [
     'department_id'             => 'factory:App\Department',
     'location_id'               => 'factory:App\Location',
     'super_user'                => 1,
-    'annual_holiday_allowance'  => 25,
     'confirmed'                 => 1
 ]);
 
@@ -48,7 +46,6 @@ $factory('App\User', 'new_user', [
     'department_id'             => 'factory:App\Department',
     'location_id'               => 'factory:App\Location',
     'super_user'                => 1,
-    'annual_holiday_allowance'  => 25,
     'confirmed'                 => 0,
     'confirmation_token'        => $faker->randomElement(32)
 ]);
@@ -64,3 +61,12 @@ $factory('App\Location', [
     'telephone' => $faker->phoneNumber
 ]);
 
+$factory('App\Avatar', [
+    'user_id'   => 'factory:App\User',
+    'path'      => file($sourceDir = '/img/users/avatars', $targetDir = 'img/users/avatars')
+]);
+
+$factory('App\OrgChart', [
+    'department_id' => 'factory:App\Department',
+    'path'          => file($sourceDir = '/tmp', $targetDir = '/tmp')
+]);

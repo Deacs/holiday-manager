@@ -213,6 +213,15 @@ class DepartmentTest extends CrowdcubeTester
 
     /**
      * @test
+     * @group unit
+     */
+    public function correct_data_is_stored_after_creating_new_location()
+    {
+        Auth::loginUsingId(15);
+    }
+
+    /**
+     * @test
      * @group vue
      */
     public function typing_into_filter_minimises_available_results_correctly()

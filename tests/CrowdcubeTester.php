@@ -8,8 +8,8 @@ class CrowdcubeTester extends TestCase {
     {
         parent::setUp();
 
-        Artisan::call('migrate:reset');
-        Artisan::call('migrate');
+        Artisan::call('migrate:refresh');
+//        Artisan::call('migrate');
         Artisan::call('db:seed');
     }
 

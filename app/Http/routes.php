@@ -44,46 +44,6 @@ get('logout',
 	]
 );
 
-Route::group(['middleware' => 'auth', 'prefix' => 'departments', 'as' => 'department.'], function () {
-
-	get('/',
-		[
-			'as' 	=> 'index',
-			'uses' 	=> 'DepartmentController@index'
-		]
-	);
-
-	get('add',
-		[
-			'middleware' 	=> 'superuser',
-			'as' 			=> 'department.create',
-			'uses' 			=> 'DepartmentController@create'
-		]
-	);
-
-	get('{slug}',
-		[
-			'as' 	=> 'home',
-			'uses' 	=> 'DepartmentController@show'
-		]
-	);
-
-	get('{slug}/manage',
-		[
-			'middleware' 	=> 'lead',
-			'as' 			=> 'manage',
-			'uses' 			=> 'DepartmentController@manage'
-		]
-	);
-
-	post('{slug}/org-chart',
-		[
-			'as' 	=> 'update-org-chart',
-			'uses' 	=> 'DepartmentController@addOrgChart',
-		]
-	);
-});
-
 Route::group(['middleware' => 'auth', 'prefix' => 'member', 'as' => 'member.'], function () {
 
 	get('{slug}',
@@ -140,6 +100,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'locations', 'as' => 'location
 
 	get('add',
 		[
+			'middleware'	=> 'superuser',
 			'as' 			=> 'location.create',
 			'uses' 			=> 'LocationController@create',
 		]
@@ -147,6 +108,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'locations', 'as' => 'location
 
 	post('add',
 		[
+			'middleware'	=> 'superuser',
 			'as' 			=> 'add',
 			'uses' 			=> 'LocationController@store',
 		]
@@ -156,6 +118,45 @@ Route::group(['middleware' => 'auth', 'prefix' => 'locations', 'as' => 'location
 		[
 			'as' 	=> 'home',
 			'uses' 	=> 'LocationController@show'
+		]
+	);
+});
+
+Route::group(['middleware' => 'auth', 'prefix' => 'departments', 'as' => 'department.'], function () {
+
+	get('/',
+		[
+			'as' 	=> 'index',
+			'uses' 	=> 'DepartmentController@index'
+		]
+	);
+
+	get('add',
+		[
+			'as' 	=> 'department.create',
+			'uses' 	=> 'DepartmentController@create'
+		]
+	);
+
+	get('{slug}',
+		[
+			'as' 	=> 'home',
+			'uses' 	=> 'DepartmentController@show'
+		]
+	);
+
+	get('{slug}/manage',
+		[
+			'middleware' 	=> 'lead',
+			'as' 			=> 'manage',
+			'uses' 			=> 'DepartmentController@manage'
+		]
+	);
+
+	post('{slug}/org-chart',
+		[
+			'as' 	=> 'update-org-chart',
+			'uses' 	=> 'DepartmentController@addOrgChart',
 		]
 	);
 });

@@ -21,12 +21,12 @@ class LocationTest extends CrowdcubeTester
     /**
      * @test
      */
-    public function standard_user_attempting_to_view_add_location_screen_receives_unauthorised_response()
+    public function standard_user_attempting_to_view_add_location_screen_is_redirected_to_login()
     {
         Auth::loginUsingId(2);
 
         $this->visit('/locations/add')
-                ->see('Only Super Users are permitted to add new Locations');
+                ->onPage('/login');
     }
 
     /**

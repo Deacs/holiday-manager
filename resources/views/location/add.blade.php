@@ -26,7 +26,7 @@
             <input type="text" name="lon" id="loc_lon" style="width:45%;" class="right" />
             <div class="large-12 columns" id="map_canvas" style="height:400px;">MAP DIV</div>
             <div class="large-12 columns">
-                <button class="button round success right">Add Location</button>
+                <button class="button round success right" id="add-location">Add Location</button>
             </div>
         </form>
 

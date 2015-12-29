@@ -22,8 +22,8 @@
                 <div class="large-2 left"><label for="loc_telephone">Telephone</label></div>
                 <div class="large-10 right"><input type="tel" id="loc_telephone" name="telephone" placeholder="01392 123456"></div>
             </div>
-            <input type="text" name="lat" id="loc_lat" style="width:45%;" class="left" />
-            <input type="text" name="lon" id="loc_lon" style="width:45%;" class="right" />
+            <input type="hidden" name="lat" id="loc_lat" />
+            <input type="hidden" name="lon" id="loc_lon" />
             <div class="large-12 columns" id="map_canvas" style="height:400px;">MAP DIV</div>
             <div class="large-12 columns">
                 <button class="button round success right" id="add-location">Add Location</button>

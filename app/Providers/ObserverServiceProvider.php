@@ -1,9 +1,11 @@
 <?php namespace App\Providers;
 
+use App\Department;
 use App\User;
 use App\Location;
 use App\Observers\UserObserver;
 use App\Observers\LocationObserver;
+use App\Observers\DepartmentObserver;
 use Illuminate\Support\ServiceProvider;
 
 class ObserverServiceProvider extends ServiceProvider
@@ -18,6 +20,7 @@ class ObserverServiceProvider extends ServiceProvider
     {
         User::observe( new UserObserver );
         Location::observe( new LocationObserver );
+        Department::observe( new DepartmentObserver );
     }
 
     /**

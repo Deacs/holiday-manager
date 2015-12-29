@@ -4,6 +4,7 @@ use App\OrgChart;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Department as Department;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
 use App\Repositories\DepartmentRepository;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -33,6 +34,30 @@ class DepartmentController extends Controller {
 	public function create()
 	{
 		return 'You passed Middleware!';
+	}
+
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @param Request $request
+	 * @return bool
+	 */
+	public function store(Request $request)
+	{
+		if (Gate::denies('add-locations')) {
+			abort(403);
+		}
+
+		$this->validate($request, [
+			'name' 			=> 'required|unique:departments',
+			'lead_id' 		=> 'required|integer',
+			'location_id' 	=> 'required|integer',
+		]);
+
+		// Slug is generated within the LocationObserver
+		$department = Department::create($request->all());
+
+		return redirect('/departments/'.$department->slug);
 	}
 
 	public function listing()

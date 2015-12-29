@@ -78,7 +78,7 @@ class LocationController extends Controller
 			'lon' 			=> 'required|numeric',
 		]);
 
-		// Slug is generated within the UserObserver
+		// Slug is generated within the LocationObserver
 		$location = Location::create($request->all());
 
 		return redirect('/locations/'.$location->slug);

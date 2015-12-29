@@ -21,7 +21,7 @@ class LocationTest extends CrowdcubeTester
     /**
      * @test
      */
-    public function standard_user_attempting_to_view_add_location_screen_is_redirected_to_login()
+    public function non_super_user_attempting_to_view_add_location_screen_is_redirected_to_login()
     {
         Auth::loginUsingId(2);
 
@@ -51,7 +51,7 @@ class LocationTest extends CrowdcubeTester
 
         $this->withoutMiddleware();
 
-        $data =[
+        $data = [
             'name'      => 'Test Office',
             'address'   => 'Test Rd, Test, Test TE1 4ST',
             'telephone' => '01803 123456',

@@ -9,8 +9,6 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class DepartmentTest extends CrowdcubeTester
 {
 
-//    use DatabaseMigrations;
-
     protected $baseUrl = 'http://caliente.dev';
 
     /**
@@ -24,6 +22,7 @@ class DepartmentTest extends CrowdcubeTester
 
     /**
      * @test
+     * @group routing
      */
     public function viewing_engineering_route_displays_correct_page()
     {
@@ -35,6 +34,7 @@ class DepartmentTest extends CrowdcubeTester
 
     /**
      * @test
+     * @group routing
      */
     public function clicking_department_lead_name_opens_correct_profile_page()
     {
@@ -47,6 +47,7 @@ class DepartmentTest extends CrowdcubeTester
 
     /**
      * @test
+     * @group permissions
      */
     public function add_new_member_form_displayed_to_team_lead()
     {
@@ -58,6 +59,7 @@ class DepartmentTest extends CrowdcubeTester
 
     /**
      * @test
+     * @group permissions
      */
     public function add_new_member_form_displayed_to_super_user()
     {
@@ -69,6 +71,7 @@ class DepartmentTest extends CrowdcubeTester
 
     /**
      * @test
+     * @group permissions
      */
     public function add_new_member_form_not_displayed_to_standard_user()
     {
@@ -80,6 +83,7 @@ class DepartmentTest extends CrowdcubeTester
 
     /**
      * @test
+     * @group persistence
      */
     public function adding_new_department_member_results_in_correct_data_being_persisted()
     {
@@ -109,6 +113,7 @@ class DepartmentTest extends CrowdcubeTester
 
     /**
      * @test
+     * @group persistence
      */
     public function attempting_to_add_department_member_missing_required_fields_prevents_persistence()
     {
@@ -185,6 +190,78 @@ class DepartmentTest extends CrowdcubeTester
 
         $this->visit('departments/engineering')
                 ->see('Update Organisational Chart');
+    }
+
+    /**
+     * @test
+     * @group permissions
+     */
+    public function non_super_user_attempting_to_view_add_department_screen_is_redirected_to_login()
+    {
+        Auth::loginUsingId(2);
+
+        $this->visit('/departments/add')
+            ->onPage('/login');
+    }
+
+    /**
+     * @test
+     * @group permissions
+     */
+    public function non_super_user_attempting_to_add_new_department_receives_unauthorised_response()
+    {
+        Auth::loginUsingId(2);
+
+        $this->withoutMiddleware();
+
+        $this->post('/departments/add')
+                ->assertResponseStatus(403);
+    }
+
+    /**
+     * @test
+     * @group permissions
+     */
+    public function super_user_adding_new_location_results_in_correct_data_being_persisted()
+    {
+        Auth::loginUsingId(15);
+
+        $this->withoutMiddleware();
+
+        $data = [
+            'name'          => 'Test Department',
+            'lead_id'       => 1,
+            'location_id'   => 2,
+        ];
+
+        $this->call('POST', '/departments/add', $data);
+
+        $this->assertResponseStatus(302);
+
+        $this->seeInDatabase('departments', $data);
+
+        // A slug should have been automatically generated
+        $this->seeInDatabase('departments', ['slug' => 'test-department']);
+    }
+
+    /**
+     * @test
+     * @group persistence
+     */
+    public function attempting_to_add_department_missing_required_fields_prevents_persistence()
+    {
+        $this->withoutMiddleware();
+
+        $data = [
+            'name'          => 'Test Department',
+            'location_id'   => 2,
+        ];
+
+        $this->call('POST', '/member/add', $data);
+
+        $this->assertResponseStatus(302);
+
+        $this->notSeeInDatabase('departments', $data);
     }
 
     /**

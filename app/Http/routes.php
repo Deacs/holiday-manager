@@ -133,8 +133,17 @@ Route::group(['middleware' => 'auth', 'prefix' => 'departments', 'as' => 'depart
 
 	get('add',
 		[
-			'as' 	=> 'department.create',
-			'uses' 	=> 'DepartmentController@create'
+			'middleware' 	=> 'superuser',
+			'as' 			=> 'department.create',
+			'uses' 			=> 'DepartmentController@create'
+		]
+	);
+
+	post('add',
+		[
+			'middleware'	=> 'superuser',
+			'as' 			=> 'add',
+			'uses' 			=> 'DepartmentController@store',
 		]
 	);
 

@@ -2,6 +2,7 @@
 
 use App\User;
 use Carbon\Carbon;
+use App\Department;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -13,6 +14,7 @@ class DepartmentTest extends CrowdcubeTester
 
     /**
      * @test
+     * @group permissions
      */
     public function anonymous_users_are_redirected_to_login_when_requesting_engineering_route()
     {
@@ -149,8 +151,7 @@ class DepartmentTest extends CrowdcubeTester
                 ->see('Finance')
                 ->see('Legal')
                 ->see('Bonds')
-                ->see('Business Development')
-                ->see('Gateway');
+                ->see('Business Development');
     }
 
     /**
@@ -252,16 +253,62 @@ class DepartmentTest extends CrowdcubeTester
     {
         $this->withoutMiddleware();
 
+        Auth::loginUsingId(15);
+
         $data = [
             'name'          => 'Test Department',
             'location_id'   => 2,
         ];
 
-        $this->call('POST', '/member/add', $data);
+        $this->call('POST', '/departments/add', $data);
 
         $this->assertResponseStatus(302);
 
         $this->notSeeInDatabase('departments', $data);
+    }
+
+    /**
+     * @test
+     * @group validation
+     */
+    public function persistence_is_prevented_when_attempting_to_add_department_with_an_already_existing_name()
+    {
+        // Set up a new Department to ensure the name is not unique
+        $department = new Department;
+
+        $department->name           = 'Test Department';
+        $department->location_id    = 1;
+        $department->lead_id        = 2;
+
+        $department->save();
+
+        $this->withoutMiddleware();
+
+        Auth::loginUsingId(15);
+
+        $data = [
+            'name'          => 'Test Department',
+            'location_id'   => 3,
+            'lead_id'       => 4,
+        ];
+
+        $this->call('POST', '/departments/add', $data);
+
+        $this->assertResponseStatus(302);
+
+        $this->notSeeInDatabase('departments', $data);
+    }
+    
+    /**
+     * @test
+     * @group dom
+     */
+    public function add_department_form_renders_correct_fields()
+    {
+        Auth::loginUsingId(15);
+
+        $this->visit('/departments/add')
+                ->see('Add new Department');
     }
 
     /**

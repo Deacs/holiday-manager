@@ -16,7 +16,8 @@ class Department extends Model {
 	protected $fillable = [
 		'name',
 		'slug',
-		'location_id'
+		'location_id',
+		'lead_id'
 	];
 
 	const ENGINEERING 			= 1;

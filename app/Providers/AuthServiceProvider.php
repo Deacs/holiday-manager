@@ -33,5 +33,10 @@ class AuthServiceProvider extends ServiceProvider
         $gate->define('add-locations', function ($user) {
             return $user->isSuperUser();
         });
+
+        // Can the current user add new Departments
+        $gate->define('add-departments', function ($user) {
+            return $user->isSuperUser();
+        });
     }
 }

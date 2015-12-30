@@ -1,7 +1,7 @@
 <?php namespace App\Http\ViewComposers;
 
-use Illuminate\Contracts\View\View;
 use App\Location as Location;
+use Illuminate\Contracts\View\View;
 
 class LocationsSelect {
 
@@ -13,7 +13,7 @@ class LocationsSelect {
      */
     public function compose(View $view)
     {
-        $locations = Location::all()->lists('name', 'id');
+        $locations = Location::all()->lists('name', 'id')->toArray();
         $view->with('locations', $locations);
     }
 

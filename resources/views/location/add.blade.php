@@ -6,8 +6,6 @@
 
     @can('add-locations')
 
-    <add-location></add-location>
-
         <form method="POST" action="/locations/add">
             <input type="hidden" name="_token" value="{!! csrf_token() !!}">
             <div class="large-12 columns">

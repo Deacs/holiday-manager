@@ -1,7 +1,9 @@
 <?php namespace App\Http\Controllers;
 
+use App\Location;
 use App\OrgChart;
 use App\Http\Requests;
+use App\User;
 use Illuminate\Http\Request;
 use App\Department as Department;
 use Illuminate\Support\Facades\Gate;
@@ -29,11 +31,13 @@ class DepartmentController extends Controller {
 	}
 
 	/**
-	 *
+	 * Display fro to create new resource
 	 */
 	public function create()
 	{
-		return 'You passed Middleware!';
+		// TODO a view composer exists to create the select options
+		return view('department.add')->with('users', User::all());
+		//return view('department.add')->with('locations', Location::all())->with('users', User::all());
 	}
 
 	/**
@@ -44,7 +48,7 @@ class DepartmentController extends Controller {
 	 */
 	public function store(Request $request)
 	{
-		if (Gate::denies('add-locations')) {
+		if (Gate::denies('add-departments')) {
 			abort(403);
 		}
 

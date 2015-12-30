@@ -13,7 +13,7 @@ class DepartmentsSelect {
      */
     public function compose(View $view)
     {
-        $departments = Department::all()->lists('name', 'id');
+        $departments = Department::all()->lists('name', 'id')->toArray();
         $view->with('departments', $departments);
     }
 

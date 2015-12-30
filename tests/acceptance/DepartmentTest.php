@@ -298,7 +298,7 @@ class DepartmentTest extends CrowdcubeTester
 
         $this->notSeeInDatabase('departments', $data);
     }
-    
+
     /**
      * @test
      * @group dom

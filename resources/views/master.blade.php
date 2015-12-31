@@ -1,6 +1,5 @@
 @include('partials._header')
 @include('navigation.header')
-@include('flash::message')
 @include('notifications.result')
 @include('partials.errors._form-errors')
 

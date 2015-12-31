@@ -153,7 +153,6 @@ return [
 		 */
 		'Nwidart\DbExporter\DbExportHandlerServiceProvider',
 		'Collective\Html\HtmlServiceProvider',
-		'Laracasts\Flash\FlashServiceProvider',
 		'Intervention\Image\ImageServiceProvider',
 	],
 
@@ -206,7 +205,6 @@ return [
 
 		'Form' 		=> 'Collective\Html\FormFacade',
 		'HTML' 		=> 'Collective\Html\HtmlFacade',
-		'Flash' 	=> 'Laracasts\Flash\Flash',
 		'Image'		=> 'Intervention\Image\Facades\Images::class'
 
 	],

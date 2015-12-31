@@ -13,12 +13,14 @@ elixir(function(mix) {
         'app/foundation/foundation.reveal.js',
         'app/vendor/dropzone.js',
         'app/vendor/lity.js',
+        'app/vendor/sweetalert-dev.js',
     ], 'public/js/vendor.js')
     .styles([
         'app/vendor/normalize.css',
         'app/vendor/dropzone.css',
         'app/vendor/lity.css',
         'app/vendor/foundation.css',
+        'app/vendor/sweetalert.css',
         'app/custom.css',
     ], './public/css/app.css'
     ),

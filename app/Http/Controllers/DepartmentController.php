@@ -31,13 +31,12 @@ class DepartmentController extends Controller {
 	}
 
 	/**
-	 * Display fro to create new resource
+	 * Display form to create new resource
 	 */
 	public function create()
 	{
-		// TODO a view composer exists to create the select options
+		flash()->overlay('Success!', 'New Department created', 'success', 'Got it, thanks!');
 		return view('department.add')->with('users', User::all());
-		//return view('department.add')->with('locations', Location::all())->with('users', User::all());
 	}
 
 	/**
@@ -60,6 +59,8 @@ class DepartmentController extends Controller {
 
 		// Slug is generated within the LocationObserver
 		$department = Department::create($request->all());
+
+		flash()->success('Success!', 'New Department created');
 
 		return redirect('/departments/'.$department->slug);
 	}

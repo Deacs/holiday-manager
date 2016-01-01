@@ -19,7 +19,7 @@ class DepartmentTest extends CrowdcubeTester
     public function anonymous_users_are_redirected_to_login_when_requesting_engineering_route()
     {
         $this->visit('/departments/engineering')
-                ->onPage('/login');
+                ->seePageIs('/login');
     }
 
     /**
@@ -44,7 +44,7 @@ class DepartmentTest extends CrowdcubeTester
 
         $this->visit('/departments/engineering')
                 ->click('David Ives') // Element actually has a class of , .department-lead
-                ->onPage('/member/david-ives');
+                ->seePageIs('/member/david-ives');
     }
 
     /**
@@ -163,7 +163,7 @@ class DepartmentTest extends CrowdcubeTester
 
         $this->visit('/departments')
                 ->click('Business Development')
-                ->onPage('/departments/business-development')
+                ->seePageIs('/departments/business-development')
                 ->see('Business Development')
                 ->see('Department Lead')
                 ->see('Matt Cooper');
@@ -202,7 +202,7 @@ class DepartmentTest extends CrowdcubeTester
         Auth::loginUsingId(2);
 
         $this->visit('/departments/add')
-            ->onPage('/login');
+            ->seePageIs('/login');
     }
 
     /**

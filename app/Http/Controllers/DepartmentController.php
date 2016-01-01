@@ -35,7 +35,6 @@ class DepartmentController extends Controller {
 	 */
 	public function create()
 	{
-		flash()->overlay('Success!', 'New Department created', 'success', 'Got it, thanks!');
 		return view('department.add')->with('users', User::all());
 	}
 
@@ -60,7 +59,7 @@ class DepartmentController extends Controller {
 		// Slug is generated within the LocationObserver
 		$department = Department::create($request->all());
 
-		flash()->success('Success!', 'New Department created');
+		flash()->success('Success!', $department->name.' created');
 
 		return redirect('/departments/'.$department->slug);
 	}

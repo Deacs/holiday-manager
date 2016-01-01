@@ -36,14 +36,19 @@ class LoginController extends Controller {
 		}
 
 		// Check for a user with the received email address but not confirmed
-		$confirmed_user = User::where('email', $request->input('email'))->where('confirmed', 1)->first();
-		if ( ! $confirmed_user) {
-			Flash::error('Account has not been confirmed. Please check your email for confirmation details.');
+		//$confirmed_user = User::where('email', $request->input('email'))->where('confirmed', 1)->first();
+		$user = User::where('email', $request->input('email'))->first();
+
+		// Mismatch on email and/or password
+		if ( ! $user) {
+			flash()->error('Error', 'Entered email or password incorrect. Please try again.');
 			return redirect()->back();
 		}
 
-		// Mismatch on email and/or password
-		Flash::error('Entered email or password incorrect. Please try again');
+		// Have a email password match but not a confirmed account
+		if (! $user->isConfirmed()) {
+			flash()->error('Error', 'Account has not been confirmed. Please check your email for confirmation details.');
+		}
 
 		return redirect()->back();
 	}

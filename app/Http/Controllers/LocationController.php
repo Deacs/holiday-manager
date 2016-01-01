@@ -81,6 +81,9 @@ class LocationController extends Controller
 		// Slug is generated within the LocationObserver
 		$location = Location::create($request->all());
 
+		flash()->success('Success!', $location->name.' created');
+//		flash()->overlay('Success!', $location->name.' created', 'success', 'Got it, thanks!');
+
 		return redirect('/locations/'.$location->slug);
 	}
 

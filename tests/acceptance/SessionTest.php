@@ -18,8 +18,8 @@ class SearchTest extends CrowdcubeTester
             ->click('Login')
             ->type('david@crowdcube.com', 'email')
             ->type('david', 'password')
-            ->press('login_button');
-            //->onPage('/member/david-ives');
+            ->press('login_button')
+            ->seePageIs('/');
     }
 
     /**
@@ -28,6 +28,6 @@ class SearchTest extends CrowdcubeTester
     public function anonymous_users_are_redirected_to_login_when_visiting_content_pages()
     {
         $this->visit('/departments/engineering')
-                ->onPage('/login');
+                ->seePageIs('/login');
     }
 }

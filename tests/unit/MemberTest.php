@@ -255,4 +255,17 @@ class MemberUnitTest extends CrowdcubeTester
         $this->assertEquals($deptName, $user->getDepartmentNameAttribute());
     }
 
+    /**
+     * @test
+     * @group unit
+     */
+    public function true_returned_when_checking_is_confirmed_on_confirmed_user()
+    {
+        $user = new User();
+
+        $user->confirmed = 0;
+
+        $this->assertFalse($user->isConfirmed());
+    }
+
 }

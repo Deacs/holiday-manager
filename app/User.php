@@ -85,6 +85,16 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	}
 
 	/**
+	 * Is this a confirmed account
+	 *
+	 * @return bool
+	 */
+	public function isConfirmed()
+	{
+		return boolval($this->confirmed);
+	}
+
+	/**
 	 * Is this user a Department Lead
 	 *
 	 * @return bool
@@ -95,6 +105,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		return $department->lead_id == $this->id;
 	}
 
+	/**
+	 * If this user is the lead of their primary Department, return that Department object
+	 *
+	 * @return bool|mixed
+	 */
 	public function leadDepartment()
 	{
 		if ($this->isDepartmentLead($this->department)) {

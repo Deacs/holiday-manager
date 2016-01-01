@@ -77,7 +77,8 @@ class UserController extends Controller {
 		}
 
 		if ($this->userRepository->update($user, $request)) {
-			Flash::success('Update Successful');
+
+			flash()->success('Success', 'Update Successful');
 			return redirect('member/'.$user->slug);
 		}
 

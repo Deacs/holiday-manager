@@ -15,7 +15,7 @@ class LocationTest extends CrowdcubeTester
     public function anonymous_users_are_redirected_to_login_when_requesting_location_route()
     {
         $this->visit('/locations/exeter')
-            ->onPage('/login');
+            ->seePageIs('/login');
     }
 
     /**
@@ -26,7 +26,7 @@ class LocationTest extends CrowdcubeTester
         Auth::loginUsingId(2);
 
         $this->visit('/locations/add')
-                ->onPage('/login');
+                ->seePageIs('/login');
     }
 
     /**

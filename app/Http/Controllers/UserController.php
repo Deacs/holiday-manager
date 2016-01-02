@@ -3,7 +3,6 @@
 use App\Avatar;
 use App\User as User;
 use App\Http\Requests;
-use Laracasts\Flash\Flash;
 use App\Mailers\AppMailer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -82,7 +81,7 @@ class UserController extends Controller {
 			return redirect('member/'.$user->slug);
 		}
 
-		Flash::error('Update Failed');
+		flash()->error('Error', 'Update failed');
 
 		Redirect::back();
 	}
@@ -138,7 +137,7 @@ class UserController extends Controller {
 		$user->password = bcrypt($request->get('password'));
 		$user->confirmAccount();
 
-		Flash::success('Account Successfully Confirmed');
+		flash()->success('Success', 'Account Successfully Confirmed');
 		Auth::login($user);
 
 		return redirect('member/'.$user->slug);
@@ -162,7 +161,7 @@ class UserController extends Controller {
 			return view('member.complete-confirmation')->with('user_id', $user->id);
 		}
 
-		Flash::error('Your account could not be confirmed');
+		flash()->error('Error', 'Your account could not be confirmed');
 		return view('member.confirm');
 	}
 
@@ -210,7 +209,6 @@ class UserController extends Controller {
 		$user 	= $this->userRepository->getUserBySlug($user_slug);
 		$member = $this->userRepository->getUserBySlug($member_slug);
 
-		//$canEdit = $user->id == $member->id || $user->hasEditUserPermissions($member);
 		$canEdit = $user->hasEditUserPermissions($member);
 
 		return json_encode($canEdit);

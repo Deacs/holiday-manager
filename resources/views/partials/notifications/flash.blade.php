@@ -20,3 +20,17 @@
         });
     </script>
 @endif
+
+@if (count($errors) > 0)
+    <script>
+        var error_str = '{{ errorOverlay($errors) }}';
+
+        swal({
+            title: "Validation Error",
+            text: error_str.replace(/\|/g, '<br/>'),
+            type: "error",
+            confirmButtonText: "OK",
+            html: true
+        });
+    </script>
+@endif

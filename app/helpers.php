@@ -10,3 +10,12 @@ function flash($title = null, $message = null)
 
     return $flash->info($title, $message);
 }
+
+function errorOverlay($errors)
+{
+    return implode('|', $errors->all());
+//    foreach($errors->all() as $error) {
+//
+//    }
+//    return '<b>Attention</b> here we go!';
+}

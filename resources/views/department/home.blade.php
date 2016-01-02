@@ -30,8 +30,6 @@
 
             <h4>Add New Team Member</h4>
 
-            @include('notifications.result')
-
             @include('department.add_user')
 
             <hr />

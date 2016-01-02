@@ -1,9 +1,9 @@
 <?php namespace App\Http\Controllers;
 
+use App\User;
 use App\Location;
 use App\OrgChart;
 use App\Http\Requests;
-use App\User;
 use Illuminate\Http\Request;
 use App\Department as Department;
 use Illuminate\Support\Facades\Gate;

@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
-use Laracasts\Flash\Flash;
 
 class LoginController extends Controller {
 
@@ -62,7 +61,7 @@ class LoginController extends Controller {
 	{
 		Auth::logout();
 
-		Flash::success('Successfully logged out');
+		flash()->success('Success', 'Successfully logged out');
 
 		return redirect()->route('login.home');
 	}

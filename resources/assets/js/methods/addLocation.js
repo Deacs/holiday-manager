@@ -4,19 +4,7 @@ module.exports = function(e) {
 
     var location = this.newLocation;
 
-    console.log(location);
-
     this.$http.post('/api/locations/add', location, function(data) {
-
-        console.log('*********************');
-        console.log(location);
-        console.log(data);
-        console.log('*********************');
-
-        this.flashdata = {
-            level:      'success',
-            message:    'Location successfully added'
-        };
 
         // Close the modal
 
@@ -39,14 +27,5 @@ module.exports = function(e) {
             }
         }
 
-        this.flashdata = {
-            level:      'alert',
-            message:    'Location could not be added'
-        };
-
-        //this.updateFlash(true, 'success', 'from function');
-
     });
-
-    this.displayflash = true;
 }

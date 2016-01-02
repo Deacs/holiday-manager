@@ -22,44 +22,27 @@ class LoginController extends Controller {
 	/**
 	 * Handle an authentication attempt.
 	 *
-	 * @return Response
 	 * @param Request $request
 	 * @internal param $email
 	 * @internal param $password
+	 * @return Response
 	 */
 	public function authenticate(Request $request)
 	{
-		// Confirmed account which matches passed credentials
 		if (Auth::attempt($this->getCredentials($request))) {
 			return redirect()->intended('member/'.Auth::user()->slug);
 		}
 		else {
 			$confirmed_user = User::where('email', $request->input('email'))->where('confirmed', 1)->first();
 
+			flash()->error('Error', 'Entered email or password incorrect. Please try again.');
+
 			if (! $confirmed_user) {
 				flash()->error('Error', 'Account has not been confirmed. Please check your email for confirmation details.');
-				return redirect()->back();
 			}
-			flash()->error('Error', 'Entered email or password incorrect. Please try again.');
+
 			return redirect()->back();
 		}
-
-		// Check for a user with the received email address but not confirmed
-		//$confirmed_user = User::where('email', $request->input('email'))->where('confirmed', 1)->first();
-		$user = User::where('email', $request->input('email'))->first();
-
-		// Mismatch on email and/or password
-		if ( ! $user) {
-			flash()->error('Error', 'Entered email or password incorrect. Please try again.');
-			return redirect()->back();
-		}
-
-		// Have a email password match but not a confirmed account
-		if (! $user->isConfirmed()) {
-			flash()->error('Error', 'Account has not been confirmed. Please check your email for confirmation details.');
-		}
-
-		return redirect()->back();
 	}
 
 	/**

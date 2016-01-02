@@ -14434,28 +14434,18 @@ new Vue({
     },
 
     data: {
-        displayflash: false,
         defaultDate: '',
         holidayRequests: [],
         locations: [],
         departments: [],
         haveHistory: false,
-
-        flashdata: {
-            'level': '',
-            'message': ''
-        }
+        showOrgChartUpdate: false
     },
 
     methods: {
         fetchLocations: require('./methods/fetchLocations'),
         fetchDepartments: require('./methods/fetchDepartments'),
-
-        updateFlash: function updateFlash(vis, level, msg) {
-            this.displayflash = vis;
-            this.flashdata.level = level;
-            this.flashdata.msg = msg;
-        }
+        toggleOrgChartPanel: require('./methods/toggleOrgChartPanel')
     },
 
     filters: {
@@ -14470,7 +14460,7 @@ new Vue({
     }
 });
 
-},{"./components/DepartmentListing.vue":80,"./components/MemberListing.vue":81,"./components/MemberProfile.vue":82,"./filters/dateFormat":83,"./filters/getAvatar":84,"./filters/nameFormat":85,"./methods/fetchDepartments":87,"./methods/fetchLocations":88,"moment":1,"vue":77,"vue-async-data":3,"vue-resource":6}],80:[function(require,module,exports){
+},{"./components/DepartmentListing.vue":80,"./components/MemberListing.vue":81,"./components/MemberProfile.vue":82,"./filters/dateFormat":83,"./filters/getAvatar":84,"./filters/nameFormat":85,"./methods/fetchDepartments":87,"./methods/fetchLocations":88,"./methods/toggleOrgChartPanel":94,"moment":1,"vue":77,"vue-async-data":3,"vue-resource":6}],80:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -14850,6 +14840,16 @@ module.exports = function () {
 module.exports = function (sortKey) {
     this.reverse = sortKey == this.sortKey ? !this.reverse : false;
     this.sortKey = sortKey;
+};
+
+},{}],94:[function(require,module,exports){
+"use strict";
+
+module.exports = function () {
+
+    this.showOrgChartUpdate = !this.showOrgChartUpdate;
+
+    console.log(this.showOrgChartUpdate);
 };
 
 },{}]},{},[79]);

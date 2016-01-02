@@ -23,28 +23,18 @@ new Vue({
     },
 
     data: {
-        displayflash:       false,
         defaultDate:        '',
         holidayRequests:    [],
         locations:          [],
         departments:        [],
         haveHistory:        false,
-
-        flashdata: {
-            'level':    '',
-            'message':  ''
-        }
+        showOrgChartUpdate: false
     },
 
     methods: {
-        fetchLocations:     require('./methods/fetchLocations'),
-        fetchDepartments:   require('./methods/fetchDepartments'),
-
-        updateFlash: function(vis, level, msg) {
-            this.displayflash       = vis;
-            this.flashdata.level    = level;
-            this.flashdata.msg      = msg;
-        }
+        fetchLocations:         require('./methods/fetchLocations'),
+        fetchDepartments:       require('./methods/fetchDepartments'),
+        toggleOrgChartPanel:    require('./methods/toggleOrgChartPanel')
     },
 
     filters : {

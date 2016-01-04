@@ -1,5 +1,7 @@
 <form method="POST" v-on="submit: addNewMember">
 
+    <input type="hidden" name="_token" value="{!! csrf_token() !!}">
+
     <div class="row panel radius">
         <div class="large-4 columns">
             <label>First Name</label>

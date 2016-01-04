@@ -2,6 +2,8 @@ module.exports = function(e) {
 
     e.preventDefault();
 
+    console.log('Adding Member');
+
     var member = this.newMember;
 
     this.$http.post('/api/member/add', member, function(data) {
@@ -19,7 +21,7 @@ module.exports = function(e) {
 
     }).error(function (data, status) {
 
-            // Each field that has failed validation needs
+        // Each field that has failed validation needs
         // to highlight the relevant input field
         for (var key in data) {
             if (data.hasOwnProperty(key)) {
@@ -34,12 +36,5 @@ module.exports = function(e) {
             }
         }
 
-        this.flashdata = {
-            level:      'alert',
-            message:    'User could not be added'
-        };
-
     });
-
-    this.displayflash = true;
 }

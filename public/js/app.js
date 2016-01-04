@@ -14439,13 +14439,15 @@ new Vue({
         locations: [],
         departments: [],
         haveHistory: false,
-        showOrgChartUpdate: false
+        showOrgChartUpdate: false,
+        showAddNewMember: false
     },
 
     methods: {
         fetchLocations: require('./methods/fetchLocations'),
         fetchDepartments: require('./methods/fetchDepartments'),
-        toggleOrgChartPanel: require('./methods/toggleOrgChartPanel')
+        toggleOrgChartPanel: require('./methods/toggleOrgChartPanel'),
+        toggleNewMemberPanel: require('./methods/toggleNewMemberPanel')
     },
 
     filters: {
@@ -14460,7 +14462,7 @@ new Vue({
     }
 });
 
-},{"./components/DepartmentListing.vue":80,"./components/MemberListing.vue":81,"./components/MemberProfile.vue":82,"./filters/dateFormat":83,"./filters/getAvatar":84,"./filters/nameFormat":85,"./methods/fetchDepartments":87,"./methods/fetchLocations":88,"./methods/toggleOrgChartPanel":94,"moment":1,"vue":77,"vue-async-data":3,"vue-resource":6}],80:[function(require,module,exports){
+},{"./components/DepartmentListing.vue":80,"./components/MemberListing.vue":81,"./components/MemberProfile.vue":82,"./filters/dateFormat":83,"./filters/getAvatar":84,"./filters/nameFormat":85,"./methods/fetchDepartments":87,"./methods/fetchLocations":88,"./methods/toggleNewMemberPanel":94,"./methods/toggleOrgChartPanel":95,"moment":1,"vue":77,"vue-async-data":3,"vue-resource":6}],80:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -14586,7 +14588,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\n    <h3>Team Members</h3>\n\n    <input type=\"text\" v-model=\"search\">\n        <table width=\"100%\">\n            <tbody><tr>\n                <th class=\"sort-field\" v-repeat=\"column: memberColumns\" v-on=\"click: sortBy(column.field)\" v-class=\"active-field: sortKey==column.field\">\n                    {{ column.title }}\n                </th>\n            </tr>\n            <tr v-repeat=\"member: members\n                        | filterBy search\n                        | orderBy sortKey reverse\">\n                <td><img v-attr=\"src:member | getAvatar '20'\" width=\"20\"> <a href=\"{{ member.url }}\" v-text=\"member | nameFormat\"></a></td>\n                    <td v-text=\"member.department_name\"></td>\n                    <td v-text=\"member.role\"></td>\n                    <td><a href=\"mailto:{{ email }}\" v-text=\"member.email\"></a></td>\n                    <td v-text=\"member.telephone\"></td>\n                    <td v-text=\"member.extension\"></td>\n                    <td v-text=\"member.skype_name\"></td>\n                </tr>\n            </tbody></table>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\n    <input type=\"text\" v-model=\"search\">\n        <table width=\"100%\">\n            <tbody><tr>\n                <th class=\"sort-field\" v-repeat=\"column: memberColumns\" v-on=\"click: sortBy(column.field)\" v-class=\"active-field: sortKey==column.field\">\n                    {{ column.title }}\n                </th>\n            </tr>\n            <tr v-repeat=\"member: members\n                        | filterBy search\n                        | orderBy sortKey reverse\">\n                <td><img v-attr=\"src:member | getAvatar '20'\" width=\"20\"> <a href=\"{{ member.url }}\" v-text=\"member | nameFormat\"></a></td>\n                    <td v-text=\"member.department_name\"></td>\n                    <td v-text=\"member.role\"></td>\n                    <td><a href=\"mailto:{{ email }}\" v-text=\"member.email\"></a></td>\n                    <td v-text=\"member.telephone\"></td>\n                    <td v-text=\"member.extension\"></td>\n                    <td v-text=\"member.skype_name\"></td>\n                </tr>\n            </tbody></table>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -14668,18 +14670,28 @@ module.exports = function (user, size) {
         size = 40;
     }
 
-    if (typeof user.avatar_thumbnail_path == "undefined") {
-        return '/img/avatar.jpg';
+    if (user != null) {
+
+        if (typeof user.avatar_thumbnail_path == "undefined") {
+            return '/img/avatar.jpg';
+        }
+
+        return user.avatar_thumbnail_path.replace(/s=[0-9]?/, 's=' + size);
     }
 
-    return user.avatar_thumbnail_path.replace(/s=[0-9]?/, 's=' + size);
+    return '/img/avatar.jpg';
 };
 
 },{}],85:[function(require,module,exports){
 'use strict';
 
 module.exports = function (user) {
-    return user.first_name + ' ' + user.last_name;
+
+    if (user != null) {
+        return user.first_name + ' ' + user.last_name;
+    }
+
+    return 'Unknown User';
 };
 
 },{}],86:[function(require,module,exports){
@@ -14688,6 +14700,8 @@ module.exports = function (user) {
 module.exports = function (e) {
 
     e.preventDefault();
+
+    console.log('Adding Member');
 
     var member = this.newMember;
 
@@ -14719,14 +14733,7 @@ module.exports = function (e) {
                 }
             }
         }
-
-        this.flashdata = {
-            level: 'alert',
-            message: 'User could not be added'
-        };
     });
-
-    this.displayflash = true;
 };
 
 },{}],87:[function(require,module,exports){
@@ -14743,6 +14750,13 @@ module.exports = function (bounds) {
     }
 
     this.$http.get(endpoint, function (departments) {
+
+        //console.log('Fetching Departments');
+        //
+        //console.log(endpoint);
+        //
+        //console.log(departments);
+
         this.departments = departments;
     });
 };
@@ -14846,10 +14860,14 @@ module.exports = function (sortKey) {
 "use strict";
 
 module.exports = function () {
+    this.showAddNewMember = !this.showAddNewMember;
+};
 
+},{}],95:[function(require,module,exports){
+"use strict";
+
+module.exports = function () {
     this.showOrgChartUpdate = !this.showOrgChartUpdate;
-
-    console.log(this.showOrgChartUpdate);
 };
 
 },{}]},{},[79]);

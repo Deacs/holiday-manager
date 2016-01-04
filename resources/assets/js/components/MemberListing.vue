@@ -1,7 +1,5 @@
 <template>
 
-    <h3>Team Members</h3>
-
     <input type="text" v-model="search">
         <table width="100%">
             <tr>

@@ -22,6 +22,16 @@
 
     <div class="large-12 columns">
 
+        <h3 class="left">Departments</h3>
+
+        @if(Auth::user()->isSuperUser())
+            <button class="button small right" v-on="click:toggleNewMemberPanel">Add New Department</button>
+        @endif
+
+    </div>
+
+    <div class="large-12 columns">
+
         <department-listing location_slug="{{ $location->slug }}"></department-listing>
 
         <member-listing location_slug="{{ $location->slug }}"></member-listing>

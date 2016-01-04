@@ -112,4 +112,16 @@ class LocationTest extends CrowdcubeTester
                 ->see('Engineering');
     }
 
+    /**
+     * @test
+     * @group permissions
+     */
+    public function add_new_department_button_shown_to_super_user()
+    {
+        Auth::loginUsingId(15);
+
+        $this->visit('/locations/exeter')
+                ->see('Add New Department');
+    }
+
 }

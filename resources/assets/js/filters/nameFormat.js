@@ -1,3 +1,9 @@
 module.exports = function(user) {
-    return user.first_name+' '+user.last_name;
+
+    if (user != null) {
+        return user.first_name+' '+user.last_name;
+    }
+
+    return 'Unknown User';
+
 }

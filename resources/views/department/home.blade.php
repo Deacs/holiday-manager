@@ -30,20 +30,25 @@
             </a>
         </div>
     @else
-        <div data-alert="" class="alert-box alert radius alert">
+        <div data-alert="" class="large-12 columns alert-box alert radius alert">
             No Organisational Chart available
         </div>
     @endif
 
     <div class="large-12 columns">
+
+        <h4 class="left">Team Members</h4>
         @if (Auth::user()->hasManageDepartmentPermission($department))
 
-            <h4>Add New Team Member</h4>
+            <button class="button small right" v-on="click:toggleNewMemberPanel">Add New Team Member</button>
 
-            @include('department.add_user')
+            <div class="large-12 columns" v-show="showAddNewMember">
+                @include('department.add_user')
+            </div>
 
         @endif
     </div>
+
     <div class="large-12 columns">
         <member-listing dept_slug="{{ $department->slug }}" dept_name="{{ $department->name }}"></member-listing>
     </div>

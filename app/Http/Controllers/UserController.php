@@ -107,6 +107,8 @@ class UserController extends Controller {
 		// Slug, initial password and confirmation token are generated within the UserObserver
 		$user = User::create($request->all());
 
+		flash()->success('Success', 'Member Created');
+
 		// Email a confirmation link to the newly created user
 		$mailer->sendConfirmationRequestEmail($user);
 

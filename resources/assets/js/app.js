@@ -28,13 +28,15 @@ new Vue({
         locations:          [],
         departments:        [],
         haveHistory:        false,
-        showOrgChartUpdate: false
+        showOrgChartUpdate: false,
+        showAddNewMember:   false
     },
 
     methods: {
         fetchLocations:         require('./methods/fetchLocations'),
         fetchDepartments:       require('./methods/fetchDepartments'),
-        toggleOrgChartPanel:    require('./methods/toggleOrgChartPanel')
+        toggleOrgChartPanel:    require('./methods/toggleOrgChartPanel'),
+        toggleNewMemberPanel:   require('./methods/toggleNewMemberPanel')
     },
 
     filters : {

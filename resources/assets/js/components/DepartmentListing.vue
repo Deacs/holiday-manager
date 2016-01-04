@@ -1,7 +1,5 @@
 <template>
 
-    <h3>Departments</h3>
-
     <input type="text" v-model="search" placeholder="Start typing any of the fields below to search....">
     <table width="100%">
         <tr>

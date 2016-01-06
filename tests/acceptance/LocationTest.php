@@ -1,5 +1,8 @@
 <?php
 
+use App\User;
+use App\Location;
+use App\Department;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -7,23 +10,31 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class LocationTest extends CrowdcubeTester
 {
 
+    use DatabaseTransactions;
+
     protected $baseUrl = 'http://caliente.dev';
 
     /**
      * @test
+     * @group location
+     * @group permissions
      */
     public function anonymous_users_are_redirected_to_login_when_requesting_location_route()
     {
-        $this->visit('/locations/exeter')
+        $location = factory(Location::class)->create();
+
+        $this->visit($location->url)
             ->seePageIs('/login');
     }
 
     /**
      * @test
+     * @group location
+     * @group permissions
      */
     public function non_super_user_attempting_to_view_add_location_screen_is_redirected_to_login()
     {
-        Auth::loginUsingId(2);
+        $this->createUserAndLogin();
 
         $this->visit('/locations/add')
                 ->seePageIs('/login');
@@ -31,10 +42,12 @@ class LocationTest extends CrowdcubeTester
 
     /**
      * @test
+     * @group location
+     * @group permissions
      */
     public function non_super_user_attempting_to_add_new_location_receives_unauthorised_response()
     {
-        Auth::loginUsingId(2);
+        $this->createUserAndLogin();
 
         $this->withoutMiddleware();
 
@@ -44,10 +57,12 @@ class LocationTest extends CrowdcubeTester
 
     /**
      * @test
+     * @group location
+     * @group persistence
      */
     public function super_user_adding_new_location_results_in_correct_data_being_persisted()
     {
-        Auth::loginUsingId(15);
+        $this->createUserAndLogin(1);
 
         $this->withoutMiddleware();
 
@@ -71,10 +86,12 @@ class LocationTest extends CrowdcubeTester
 
     /**
      * @test
+     * @group location
+     * @group validation
      */
     public function attempting_to_add_location_missing_required_fields_prevents_persistence()
     {
-        Auth::loginUsingId(15);
+        $this->createUserAndLogin(1);
 
         $this->withoutMiddleware();
 
@@ -95,10 +112,13 @@ class LocationTest extends CrowdcubeTester
 
     /**
      * @test
+     * @group location
+     * @group dom
+     * @group persistence
      */
     public function location_page_displays_correct_data()
     {
-        Auth::loginUsingId(2);
+        $this->createUserAndLogin();
 
         /* @TODO This needs to use CSS selectors */
         $this->visit('/locations/exeter')
@@ -114,14 +134,32 @@ class LocationTest extends CrowdcubeTester
 
     /**
      * @test
+     * @group location
      * @group permissions
      */
     public function add_new_department_button_shown_to_super_user()
     {
-        Auth::loginUsingId(15);
+        $this->createUserAndLogin(1);
 
-        $this->visit('/locations/exeter')
+        $location = factory(Location::class)->create(['name' => 'Test Location']);
+
+        $this->visit('/locations/test-location')
                 ->see('Add New Department');
+    }
+
+    /**
+     * @test
+     * @group location
+     * @group permissions
+     */
+    public function add_new_department_button_not_shown_to_non_super_user()
+    {
+        $this->createUserAndLogin();
+
+        $location = factory(Location::class)->create(['name' => 'Test Location']);
+
+        $this->visit('/locations/test-location')
+            ->dontSee('Add New Department');
     }
 
 }

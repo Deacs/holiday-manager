@@ -9,86 +9,116 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class DepartmentTest extends CrowdcubeTester
 {
+    use DatabaseTransactions;
 
     protected $baseUrl = 'http://caliente.dev';
 
     /**
      * @test
+     * @group department
      * @group permissions
      */
     public function anonymous_users_are_redirected_to_login_when_requesting_engineering_route()
     {
-        $this->visit('/departments/engineering')
+        $department = factory(Department::class)->create();
+
+        $this->visit($department->url)
                 ->seePageIs('/login');
     }
 
     /**
      * @test
+     * @group department
      * @group routing
      */
-    public function viewing_engineering_route_displays_correct_page()
+    public function viewing_department_route_displays_correct_page()
     {
-        Auth::loginUsingId(6);
+        $department = factory(Department::class)->create(['lead_id' => 1]);
+        $lead       = factory(User::class)->create(['id' => $department->lead_id, 'department_id' => $department->id]);
 
-        $this->visit('/departments/engineering')
-                ->see('Engineering');
+        $this->createUserAndLogin();
+
+        $this->visit($department->url)
+                ->see($department->name);
     }
 
     /**
      * @test
+     * @group department
      * @group routing
      */
     public function clicking_department_lead_name_opens_correct_profile_page()
     {
-        Auth::loginUsingId(2);
+        $department = factory(Department::class)->create(['lead_id' => 1]);
+        $lead       = factory(User::class)->create(['id' => $department->lead_id, 'department_id' => $department->id]);
 
-        $this->visit('/departments/engineering')
-                ->click('David Ives') // Element actually has a class of , .department-lead
-                ->seePageIs('/member/david-ives');
+        $this->createUserAndLogin();
+
+        $this->visit($department->url)
+                ->click('department-lead')
+                ->seePageIs($lead->url);
     }
 
     /**
      * @test
+     * @group department
      * @group permissions
      */
     public function add_new_member_form_displayed_to_team_lead()
     {
-        Auth::loginUsingId(1);
+        $department = factory(Department::class)->create(['lead_id' => 1]);
+        $user       = factory(User::class)->create(['id' => $department->lead_id, 'department_id' => $department->id]);
 
-        $this->visit('/departments/engineering')
+        Auth::loginUsingId($user->id);
+
+        $this->visit($department->url)
                 ->see('Add New Team Member');
     }
 
     /**
      * @test
+     * @group department
      * @group permissions
      */
     public function add_new_member_form_displayed_to_super_user()
     {
-        Auth::loginUsingId(15);
+        $department = factory(Department::class)->create(['lead_id' => 1]);
+        $user       = factory(User::class)->create(['id' => $department->lead_id, 'department_id' => $department->id]);
 
-        $this->visit('/departments/investments')
+        $this->createUserAndLogin(1);
+
+        $this->visit($department->url)
                 ->see('Add New Team Member');
     }
 
     /**
      * @test
+     * @group department
      * @group permissions
      */
     public function add_new_member_form_not_displayed_to_standard_user()
     {
-        Auth::loginUsingId(2);
+        $department = factory(Department::class)->create(['lead_id' => 1]);
+        $user       = factory(User::class)->create(['id' => $department->lead_id, 'department_id' => $department->id]);
 
-        $this->visit('/departments/investments')
+        $this->createUserAndLogin();
+
+        $this->visit($department->url)
                 ->dontSee('Add New Team Member');
     }
 
     /**
      * @test
+     * @group department
      * @group persistence
      */
     public function adding_new_department_member_results_in_correct_data_being_persisted()
     {
+        $department = factory(Department::class)->create(['id' => 1, 'lead_id' => 1]);
+        $user       = factory(User::class)->create(['id' => $department->lead_id, 'department_id' => $department->id]);
+
+        Auth::loginUsingId($user->id);
+
         $this->withoutMiddleware();
 
         $data = [
@@ -100,7 +130,7 @@ class DepartmentTest extends CrowdcubeTester
             'telephone'     => '987654321',
             'extension'     => '123',
             'location_id'   => '1',
-            'department_id' => '1',
+            'department_id' => $department->id,
         ];
 
         $this->call('POST', '/member/add', $data);
@@ -115,6 +145,7 @@ class DepartmentTest extends CrowdcubeTester
 
     /**
      * @test
+     * @group department
      * @group persistence
      */
     public function attempting_to_add_department_member_missing_required_fields_prevents_persistence()
@@ -136,30 +167,34 @@ class DepartmentTest extends CrowdcubeTester
     }
     
     /**
-     * @test
+     * @vue_test
+     * @group vue_department
+     * @TODO use factories
      */
     public function viewing_department_index_displays_correct_departments()
     {
-        Auth::loginUsingId(3);
+        $departments = factory(Department::class, 4)->create();
+
+        $this->createUserAndLogin();
 
         $this->visit('/departments/')
-                ->see('Engineering')
-                ->see('Marketing')
-                ->see('Investments')
-                ->see('Product')
-                ->see('Completions')
-                ->see('Finance')
-                ->see('Legal')
-                ->see('Bonds')
-                ->see('Business Development');
+                ->see($departments[0])
+                ->see($departments[1])
+                ->see($departments[2])
+                ->see($departments[3]);
     }
 
     /**
-     * @test
+     * @vue_test
+     * @group vue_department
+     * @group vue_dom
      */
     public function clicking_department_name_in_listing_opens_correct_department_page()
     {
-        Auth::loginUsingId(3);
+        // Vue generated list - cannot test
+        $departments = factory(Department::class, 4)->create();
+
+        $this->createUserAndLogin();
 
         $this->visit('/departments')
                 ->click('Business Development')
@@ -171,35 +206,47 @@ class DepartmentTest extends CrowdcubeTester
 
     /**
      * @test
+     * @group department
      * @group permissions
      */
     public function update_org_chart_option_not_shown_to_standard_user()
     {
-        Auth::loginUsingId(3);
+        $department = factory(Department::class)->create(['lead_id' => 1]);
+        $user       = factory(User::class)->create(['id' => $department->lead_id, 'department_id' => $department->id]);
 
-        $this->visit('/departments/engineering')
+        $this->createUserAndLogin();
+
+        $this->visit($department->url)
                 ->dontSee('Update Organisational Chart');
     }
 
     /**
      * @test
+     * @group department
      * @group permissions
      */
     public function update_org_chart_option_shown_to_department_lead()
     {
-        Auth::loginUsingId(1);
+        $department = factory(Department::class)->create(['lead_id' => 1]);
+        $user       = factory(User::class)->create(['id' => $department->lead_id, 'department_id' => $department->id]);
 
-        $this->visit('departments/engineering')
+        Auth::loginUsingId($user->id);
+
+        $this->visit($department->url)
                 ->see('Update Organisational Chart');
     }
 
     /**
      * @test
+     * @group department
      * @group permissions
      */
     public function non_super_user_attempting_to_view_add_department_screen_is_redirected_to_login()
     {
-        Auth::loginUsingId(2);
+        $department = factory(Department::class)->create(['lead_id' => 1]);
+        $user       = factory(User::class)->create(['id' => $department->lead_id, 'department_id' => $department->id]);
+
+        $this->createUserAndLogin();
 
         $this->visit('/departments/add')
             ->seePageIs('/login');
@@ -207,11 +254,15 @@ class DepartmentTest extends CrowdcubeTester
 
     /**
      * @test
+     * @group department
      * @group permissions
      */
     public function non_super_user_attempting_to_add_new_department_receives_unauthorised_response()
     {
-        Auth::loginUsingId(2);
+        $department = factory(Department::class)->create(['lead_id' => 1]);
+        $user       = factory(User::class)->create(['id' => $department->lead_id, 'department_id' => $department->id]);
+
+        $this->createUserAndLogin();
 
         $this->withoutMiddleware();
 
@@ -221,11 +272,15 @@ class DepartmentTest extends CrowdcubeTester
 
     /**
      * @test
+     * @group department
      * @group permissions
      */
     public function super_user_adding_new_location_results_in_correct_data_being_persisted()
     {
-        Auth::loginUsingId(15);
+        $department = factory(Department::class)->create();
+        $user       = factory(User::class)->create(['department_id' => $department->id]);
+
+        $this->createUserAndLogin(1);
 
         $this->withoutMiddleware();
 
@@ -247,13 +302,14 @@ class DepartmentTest extends CrowdcubeTester
 
     /**
      * @test
+     * @group department
      * @group persistence
      */
     public function attempting_to_add_department_missing_required_fields_prevents_persistence()
     {
-        $this->withoutMiddleware();
+        $this->createUserAndLogin(1);
 
-        Auth::loginUsingId(15);
+        $this->withoutMiddleware();
 
         $data = [
             'name'          => 'Test Department',
@@ -269,22 +325,16 @@ class DepartmentTest extends CrowdcubeTester
 
     /**
      * @test
+     * @group department
      * @group validation
      */
     public function persistence_is_prevented_when_attempting_to_add_department_with_an_already_existing_name()
     {
-        // Set up a new Department to ensure the name is not unique
-        $department = new Department;
+        $department = factory(Department::class)->create(['name' => 'Test Department', 'location_id' => 1, 'lead_id' => 2]);
 
-        $department->name           = 'Test Department';
-        $department->location_id    = 1;
-        $department->lead_id        = 2;
-
-        $department->save();
+        $this->createUserAndLogin(1);
 
         $this->withoutMiddleware();
-
-        Auth::loginUsingId(15);
 
         $data = [
             'name'          => 'Test Department',
@@ -301,11 +351,12 @@ class DepartmentTest extends CrowdcubeTester
 
     /**
      * @test
+     * @group department
      * @group dom
      */
     public function add_department_form_renders_correct_fields()
     {
-        Auth::loginUsingId(15);
+        $this->createUserAndLogin(1);
 
         $this->visit('/departments/add')
                 ->see('Add new Department');

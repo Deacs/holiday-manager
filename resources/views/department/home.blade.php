@@ -7,7 +7,7 @@
     </div>
 
     <div class="large-12 columns" role="content">
-        <h4>{!! HTML::image($department->lead->getAvatarThumbnailPath(30), $department->lead->fullName(), ['width' =>30]) !!} Department Lead: <a href="{{ $department->lead->url }}" class="department-lead">{{ $department->lead->fullName() }}</a></h4>
+        <h4>{!! HTML::image($department->lead->getAvatarThumbnailPath(30), $department->lead->fullName(), ['width' =>30]) !!} Department Lead: <a href="{{ $department->lead->url }}" id="department-lead">{{ $department->lead->fullName() }}</a></h4>
     </div>
 
     <div class="large-12 columns">

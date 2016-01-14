@@ -336,7 +336,7 @@ class DepartmentTest extends CrowdcubeTester
      */
     public function persistence_is_prevented_when_attempting_to_add_department_with_an_already_existing_name()
     {
-        $department = factory(Department::class)->create(['name' => 'Test Department', 'location_id' => 1, 'lead_id' => 2]);
+        factory(Department::class)->create(['name' => 'Test Department', 'location_id' => 1, 'lead_id' => 2]);
 
         $user = $this->createSuperUser();
 
@@ -358,7 +358,7 @@ class DepartmentTest extends CrowdcubeTester
     }
 
     /**
-     * @test
+     * @vue_test
      * @group department
      * @group dom
      */
@@ -371,7 +371,7 @@ class DepartmentTest extends CrowdcubeTester
     }
 
     /**
-     * @test
+     * @vue_test
      * @group vue
      */
     public function typing_into_filter_minimises_available_results_correctly()

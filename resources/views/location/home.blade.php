@@ -24,9 +24,13 @@
 
         <h3 class="left">Departments</h3>
 
-        @if(Auth::user()->isSuperUser())
-            <button class="button small right" v-on="click:toggleNewMemberPanel">Add New Department</button>
-        @endif
+        @can('add-departments')
+            <button class="button small right" v-on="click:toggleNewDepartmentPanel">Add New Department</button>
+
+            <div class="large-12 columns" v-show="showAddNewDepartment">
+                @include('department.add_new')
+            </div>
+        @endcan
 
     </div>
 

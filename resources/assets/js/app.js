@@ -23,20 +23,22 @@ new Vue({
     },
 
     data: {
-        defaultDate:        '',
-        holidayRequests:    [],
-        locations:          [],
-        departments:        [],
-        haveHistory:        false,
-        showOrgChartUpdate: false,
-        showAddNewMember:   false
+        defaultDate:            '',
+        holidayRequests:        [],
+        locations:              [],
+        departments:            [],
+        haveHistory:            false,
+        showOrgChartUpdate:     false,
+        showAddNewMember:       false,
+        showAddNewDepartment:   false
     },
 
     methods: {
-        fetchLocations:         require('./methods/fetchLocations'),
-        fetchDepartments:       require('./methods/fetchDepartments'),
-        toggleOrgChartPanel:    require('./methods/toggleOrgChartPanel'),
-        toggleNewMemberPanel:   require('./methods/toggleNewMemberPanel')
+        fetchLocations:             require('./methods/fetchLocations'),
+        fetchDepartments:           require('./methods/fetchDepartments'),
+        toggleOrgChartPanel:        require('./methods/toggleOrgChartPanel'),
+        toggleNewMemberPanel:       require('./methods/toggleNewMemberPanel'),
+        toggleNewDepartmentPanel:   require('./methods/toggleNewDepartmentPanel'),
     },
 
     filters : {

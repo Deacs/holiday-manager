@@ -14440,14 +14440,16 @@ new Vue({
         departments: [],
         haveHistory: false,
         showOrgChartUpdate: false,
-        showAddNewMember: false
+        showAddNewMember: false,
+        showAddNewDepartment: false
     },
 
     methods: {
         fetchLocations: require('./methods/fetchLocations'),
         fetchDepartments: require('./methods/fetchDepartments'),
         toggleOrgChartPanel: require('./methods/toggleOrgChartPanel'),
-        toggleNewMemberPanel: require('./methods/toggleNewMemberPanel')
+        toggleNewMemberPanel: require('./methods/toggleNewMemberPanel'),
+        toggleNewDepartmentPanel: require('./methods/toggleNewDepartmentPanel')
     },
 
     filters: {
@@ -14462,7 +14464,7 @@ new Vue({
     }
 });
 
-},{"./components/DepartmentListing.vue":80,"./components/MemberListing.vue":81,"./components/MemberProfile.vue":82,"./filters/dateFormat":83,"./filters/getAvatar":84,"./filters/nameFormat":85,"./methods/fetchDepartments":87,"./methods/fetchLocations":88,"./methods/toggleNewMemberPanel":94,"./methods/toggleOrgChartPanel":95,"moment":1,"vue":77,"vue-async-data":3,"vue-resource":6}],80:[function(require,module,exports){
+},{"./components/DepartmentListing.vue":80,"./components/MemberListing.vue":81,"./components/MemberProfile.vue":82,"./filters/dateFormat":83,"./filters/getAvatar":84,"./filters/nameFormat":85,"./methods/fetchDepartments":87,"./methods/fetchLocations":88,"./methods/toggleNewDepartmentPanel":94,"./methods/toggleNewMemberPanel":95,"./methods/toggleOrgChartPanel":96,"moment":1,"vue":77,"vue-async-data":3,"vue-resource":6}],80:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -14860,10 +14862,17 @@ module.exports = function (sortKey) {
 "use strict";
 
 module.exports = function () {
-    this.showAddNewMember = !this.showAddNewMember;
+    this.showAddNewDepartment = !this.showAddNewDepartment;
 };
 
 },{}],95:[function(require,module,exports){
+"use strict";
+
+module.exports = function () {
+    this.showAddNewMember = !this.showAddNewMember;
+};
+
+},{}],96:[function(require,module,exports){
 "use strict";
 
 module.exports = function () {

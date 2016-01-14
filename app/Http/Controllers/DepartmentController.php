@@ -35,7 +35,7 @@ class DepartmentController extends Controller {
 	 */
 	public function create()
 	{
-		return view('department.add')->with('users', User::all());
+		return view('department.create')->with('users', User::all());
 	}
 
 	/**

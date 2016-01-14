@@ -28,6 +28,8 @@ class ComposerServiceProvider extends ServiceProvider {
 		$this->app->make('view')->composer('member.edit', 'App\Http\ViewComposers\DepartmentsSelect');
 		$this->app->make('view')->composer('department.add', 'App\Http\ViewComposers\LocationsSelect');
 		$this->app->make('view')->composer('department.add', 'App\Http\ViewComposers\MembersSelect');
+		$this->app->make('view')->composer('department.add_new_form', 'App\Http\ViewComposers\LocationsSelect');
+		$this->app->make('view')->composer('department.add_new_form', 'App\Http\ViewComposers\MembersSelect');
 
 		$this->app->make('view')->composer('beta', 'App\Http\ViewComposers\LocationsSelect');
 		$this->app->make('view')->composer('beta', 'App\Http\ViewComposers\DepartmentsSelect');

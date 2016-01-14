@@ -6,7 +6,7 @@
             <select id="location_id" name="location_id">
                 <option>Please select a Location</option>
                 @foreach($locations as $id => $location)
-                    <option value="{{ $id }}">{!! $location !!}</option>
+                <option value="{{ $id }}">{!! $location !!}</option>
                 @endforeach
             </select>
         </div>
@@ -14,7 +14,7 @@
             <select id="lead_id" name="lead_id">
                 <option>Please select a Department Lead</option>
                 @foreach($members as $id => $member)
-                    <option value="{{ $id }}">{!! $member !!}</option>
+                <option value="{{ $id }}">{!! $member !!}</option>
                 @endforeach
             </select>
         </div>

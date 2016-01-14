@@ -28,7 +28,7 @@
             <button class="button small right" v-on="click:toggleNewDepartmentPanel">Add New Department</button>
 
             <div class="large-12 columns" v-show="showAddNewDepartment">
-                @include('department.add_new')
+                @include('department.add')
             </div>
         @endcan
 

@@ -69,7 +69,7 @@ class DepartmentTest extends CrowdcubeTester
         $department = factory(Department::class)->create(['lead_id' => 1]);
         $user       = factory(User::class)->create(['id' => $department->lead_id, 'department_id' => $department->id]);
 
-        Auth::loginUsingId($user->id);
+        $this->actingAs($user);
 
         $this->visit($department->url)
                 ->see('Add New Team Member');
@@ -85,7 +85,7 @@ class DepartmentTest extends CrowdcubeTester
         $department = factory(Department::class)->create(['lead_id' => 1]);
         $user       = factory(User::class)->create(['id' => $department->lead_id, 'department_id' => $department->id]);
 
-        $this->createUserAndLogin(1);
+        $this->actingAs($user);
 
         $this->visit($department->url)
                 ->see('Add New Team Member');
@@ -99,9 +99,10 @@ class DepartmentTest extends CrowdcubeTester
     public function add_new_member_form_not_displayed_to_standard_user()
     {
         $department = factory(Department::class)->create(['lead_id' => 1]);
-        $user       = factory(User::class)->create(['id' => $department->lead_id, 'department_id' => $department->id]);
+        $deptLead   = factory(User::class)->create(['id' => $department->lead_id, 'department_id' => $department->id]);
+        $user       = factory(User::class)->create(['department_id' => $department->id]);
 
-        $this->createUserAndLogin();
+        $this->actingAs($user);
 
         $this->visit($department->url)
                 ->dontSee('Add New Team Member');
@@ -117,7 +118,7 @@ class DepartmentTest extends CrowdcubeTester
         $department = factory(Department::class)->create(['id' => 1, 'lead_id' => 1]);
         $user       = factory(User::class)->create(['id' => $department->lead_id, 'department_id' => $department->id]);
 
-        Auth::loginUsingId($user->id);
+        $this->actingAs($user);
 
         $this->withoutMiddleware();
 
@@ -175,7 +176,11 @@ class DepartmentTest extends CrowdcubeTester
     {
         $departments = factory(Department::class, 4)->create();
 
-        $this->createUserAndLogin();
+        $user = $this->createUser();
+
+        $this->actingAs($user);
+
+//        $this->createUserAndLogin();
 
         $this->visit('/departments/')
                 ->see($departments[0])
@@ -211,10 +216,10 @@ class DepartmentTest extends CrowdcubeTester
      */
     public function update_org_chart_option_not_shown_to_standard_user()
     {
-        $department = factory(Department::class)->create(['lead_id' => 1]);
-        $user       = factory(User::class)->create(['id' => $department->lead_id, 'department_id' => $department->id]);
+        $department = $this->createDepartmentAndLead();
+        $user       = $this->createUser();
 
-        $this->createUserAndLogin();
+        $this->actingAs($user);
 
         $this->visit($department->url)
                 ->dontSee('Update Organisational Chart');
@@ -230,7 +235,7 @@ class DepartmentTest extends CrowdcubeTester
         $department = factory(Department::class)->create(['lead_id' => 1]);
         $user       = factory(User::class)->create(['id' => $department->lead_id, 'department_id' => $department->id]);
 
-        Auth::loginUsingId($user->id);
+        $this->actingAs($department->lead);
 
         $this->visit($department->url)
                 ->see('Update Organisational Chart');
@@ -243,10 +248,10 @@ class DepartmentTest extends CrowdcubeTester
      */
     public function non_super_user_attempting_to_view_add_department_screen_is_redirected_to_login()
     {
-        $department = factory(Department::class)->create(['lead_id' => 1]);
-        $user       = factory(User::class)->create(['id' => $department->lead_id, 'department_id' => $department->id]);
+        $department = $this->createDepartmentAndLead();
+        $user       = $this->createUser();
 
-        $this->createUserAndLogin();
+        $this->actingAs($user);
 
         $this->visit('/departments/add')
             ->seePageIs('/login');
@@ -259,10 +264,10 @@ class DepartmentTest extends CrowdcubeTester
      */
     public function non_super_user_attempting_to_add_new_department_receives_unauthorised_response()
     {
-        $department = factory(Department::class)->create(['lead_id' => 1]);
-        $user       = factory(User::class)->create(['id' => $department->lead_id, 'department_id' => $department->id]);
+        $department = $this->createDepartmentAndLead();
+        $user       = $this->createUser();
 
-        $this->createUserAndLogin();
+        $this->actingAs($user);
 
         $this->withoutMiddleware();
 
@@ -277,10 +282,9 @@ class DepartmentTest extends CrowdcubeTester
      */
     public function super_user_adding_new_location_results_in_correct_data_being_persisted()
     {
-        $department = factory(Department::class)->create();
-        $user       = factory(User::class)->create(['department_id' => $department->id]);
+        $user = $this->createSuperUser();
 
-        $this->createUserAndLogin(1);
+        $this->actingAs($user);
 
         $this->withoutMiddleware();
 
@@ -307,7 +311,9 @@ class DepartmentTest extends CrowdcubeTester
      */
     public function attempting_to_add_department_missing_required_fields_prevents_persistence()
     {
-        $this->createUserAndLogin(1);
+        $user = $this->createSuperUser();
+
+        $this->actingAs($user);
 
         $this->withoutMiddleware();
 
@@ -332,7 +338,9 @@ class DepartmentTest extends CrowdcubeTester
     {
         $department = factory(Department::class)->create(['name' => 'Test Department', 'location_id' => 1, 'lead_id' => 2]);
 
-        $this->createUserAndLogin(1);
+        $user = $this->createSuperUser();
+
+        $this->actingAs($user);
 
         $this->withoutMiddleware();
 

@@ -7,7 +7,6 @@ use Illuminate\Support\Str;
 
 class DepartmentUnitTest extends CrowdcubeTester
 {
-
     /**
      * @test
      * @group unit
@@ -62,12 +61,9 @@ class DepartmentUnitTest extends CrowdcubeTester
      */
     public function correct_user_id_is_returned_when_requesting_lead()
     {
-        $department = new Department();
-        $user = new User();
-        $user->id = 4;
+        $user       = factory(User::class)->create(['id' => 5]);
+        $department = factory(Department::class)->create(['lead_id' => $user->id]);
 
-        $department->lead_id = $user->id;
-
-        $this->assertEquals(4, $department->lead->id);
+        $this->assertEquals($user->id, $department->lead->id);
     }
 }

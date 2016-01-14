@@ -21,7 +21,7 @@ class MemberTest extends CrowdcubeTester
     }
 
     /**
-     * @not_test
+     * @vue_test
      */
     public function edit_option_is_shown_to_standard_user_when_viewing_own_user_profile()
     {
@@ -33,17 +33,18 @@ class MemberTest extends CrowdcubeTester
     }
 
     /**
-     * @not_test
+     * @vue_test
+     * @group vue_permissions
      */
     public function standard_user_can_open_edit_user_screen_to_update_own_details()
     {
-        Auth::loginUsingId(2);
+        $user = $this->createUserAndLogin();
 
         // Issues with checking DOM for elements created with VueJS
-        $this->visit('/member/rob-crowe')
+        $this->visit($user->url)
                 ->see('EDIT USER')
                 ->click('EDIT USER')
-                ->onPage('/member/rob-crowe/edit');
+                ->onPage($user->url.'/edit');
     }
 
     /**
@@ -94,8 +95,8 @@ class MemberTest extends CrowdcubeTester
     }
 
     /**
-     * @test
-     * @group user
+     * @vue_test
+     * @group vue_user
      */
     public function department_lead_can_edit_user_details_for_members_of_their_own_team()
     {

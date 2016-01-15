@@ -11,7 +11,7 @@ class UsersTableSeeder extends Seeder {
     public function run()
     {
         $users = [
-            ['David', 'Ives', 'david-ives', 'CTO', 'david@crowdcube.com', '$2y$10$oDQvYOdt5TysJtI2ylTU.uBo8FAnAUiP2SyfbPOGn52YlH0K78lIu', '01392 348473', 118, 'david.crowdcube', 1, 1, 0, 1, NULL, 'NEyvgHptR2vgkgmX0bQw1AyuTBuCZsEE5rLXfb8ZfrSau5JrdoyrSkkhPDax', '0000-00-00 00:00:00', '2015-06-22 21:58:48'],
+            ['David', 'Ives', 'david-ives', 'CTO', 'david@crowdcube.com', '$2y$10$zLy5FZbaSejvRE7NbIxjwe098nirGClXxPtz7JcaSbc4BMcmtFr0y', '01392 348473', 118, 'david.crowdcube', 1, 1, 0, 1, NULL, 'NEyvgHptR2vgkgmX0bQw1AyuTBuCZsEE5rLXfb8ZfrSau5JrdoyrSkkhPDax', '0000-00-00 00:00:00', '2015-06-22 21:58:48'],
 	        ['Rob', 'Crowe', 'rob-crowe', 'Head of Engineering', 'rob@crowdcube.com', '$2y$10$0Yprz9gmvfb6vqvVsUF14eqC007zvFXG2.zDpgyfwJPRONogVXsxK', NULL, NULL, NULL, 1, 1, 0, 1, NULL, '', '0000-00-00 00:00:00', '2015-05-19 15:40:57'],
             ['Ben', 'Christine', 'ben-christine', 'Design Lead', 'ben@crowdcube.com', '$2y$10$W/bIKNrkJuHKRH6bgJyH1.sngcbNVkI5CFe9KW2QLxUO6mcEEYN3G', NULL, NULL, 'crowdcubeben', 1, 1, 0, 1, NULL, '', '0000-00-00 00:00:00', '2015-05-19 15:40:57'],
 	        ['Luke', 'Lang', 'luke-lang', 'CMO', 'luke@crowdcube.com', '$2y$10$gezO.vwZCCDH2s1FLrbzN.DXJxw.mlUpyo5fHzmV5ymu7JjJ8U1Hm', '01392 348461', 107, 'luke-lang', 2, 1, 0, 1, NULL, '', '0000-00-00 00:00:00', '2015-05-19 15:40:58'],

@@ -91,7 +91,9 @@ class LocationTest extends CrowdcubeTester
      */
     public function attempting_to_add_location_missing_required_fields_prevents_persistence()
     {
-        $this->createUserAndLogin(1);
+        $user = $this->createSuperUser();
+
+        $this->actingAs($user);
 
         $this->withoutMiddleware();
 
@@ -105,7 +107,7 @@ class LocationTest extends CrowdcubeTester
 
         $this->assertResponseStatus(302);
 
-        $this->getExpectedException('foo');
+        //$this->getExpectedException('foo');
 
         $this->notSeeInDatabase('locations', ['name' => 'Test Office']);
     }
@@ -120,16 +122,18 @@ class LocationTest extends CrowdcubeTester
     {
         $this->createUserAndLogin();
 
+        $location = factory(App\Location::class)->create();
+
         /* @TODO This needs to use CSS selectors */
-        $this->visit('/locations/exeter')
-                ->see('Exeter')
-                ->see('Innovation Centre')
-                ->see('Rennes Drive')
-                ->see('Exeter')
-                ->see('EX4 4RN')
-                ->see('01392 241319')
-                ->see('Departments')
-                ->see('Engineering');
+        $this->visit($location->url)
+                ->see($location->name)
+//                ->see($location->address)
+//                ->see('Rennes Drive')
+//                ->see('Exeter')
+//                ->see('EX4 4RN')
+                ->see($location->telephone);
+//                ->see('Departments')
+//                ->see('Engineering');
     }
 
     /**
@@ -141,9 +145,9 @@ class LocationTest extends CrowdcubeTester
     {
         $this->createUserAndLogin(1);
 
-        $location = factory(Location::class)->create(['name' => 'Test Location']);
+        $location = factory(Location::class)->create();
 
-        $this->visit('/locations/test-location')
+        $this->visit($location->url)
                 ->see('Add New Department');
     }
 
@@ -156,9 +160,9 @@ class LocationTest extends CrowdcubeTester
     {
         $this->createUserAndLogin();
 
-        $location = factory(Location::class)->create(['name' => 'Test Location']);
+        $location = factory(Location::class)->create();
 
-        $this->visit('/locations/test-location')
+        $this->visit($location->url)
             ->dontSee('Add New Department');
     }
 

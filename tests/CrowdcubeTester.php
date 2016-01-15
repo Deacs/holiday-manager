@@ -59,7 +59,7 @@ class CrowdcubeTester extends TestCase {
             $department->save();
         }
 
-        Auth::loginUsingId($user->id);
+        $this->actingAs($user);
 
         return $user;
     }

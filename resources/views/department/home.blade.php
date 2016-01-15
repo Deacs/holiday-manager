@@ -38,7 +38,7 @@
     <div class="large-12 columns">
 
         <h4 class="left">Team Members</h4>
-        @if (Auth::user()->hasManageDepartmentPermission($department))
+        @can('add-departments')
 
             <button class="button small right" v-on="click:toggleNewMemberPanel">Add New Team Member</button>
 

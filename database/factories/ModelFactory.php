@@ -27,8 +27,8 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'telephone'                 => $faker->phoneNumber,
         'extension'                 => $faker->phoneNumber,
         'skype_name'                => 'crowdcube.'.$faker->firstNameMale,
-        'department_id'             => 'factory:App\Department',
-        'location_id'               => 'factory:App\Location',
+        'department_id'             => factory(App\Department::class)->create()->id,
+        'location_id'               => factory(App\Location::class)->create()->id,
         'super_user'                => 0,
         'confirmed'                 => 1
     ];
@@ -43,9 +43,9 @@ $factory->defineAs(App\User::class, 'new_user', function (Faker\Generator $faker
         'email'                     => $faker->email,
         'telephone'                 => $faker->phoneNumber,
         'extension'                 => $faker->phoneNumber,
-        'skype_name'                => 'crowdcube.'.$faker->firstNameMale,
-        'department_id'             => 'factory:App\Department',
-        'location_id'               => 'factory:App\Location',
+        'skype_name'                => 'company.'.$faker->firstNameMale,
+        'department_id'             => factory(App\Department::class)->create()->id,
+        'location_id'               => factory(App\Location::class)->create()->id,
         'super_user'                => 1,
         'confirmed'                 => 0,
         'confirmation_token'        => $faker->randomElement(32)
@@ -72,14 +72,14 @@ $factory->define(App\Location::class, function (Faker\Generator $faker) {
 
 $factory->define(App\Avatar::class, function (Faker\Generator $faker) {
     return [
-        'user_id'   => 'factory:App\User',
+        'user_id'   => factory(App\User::class)->create()->id,
         'path'      => file($sourceDir = '/img/users/avatars', $targetDir = 'img/users/avatars')
     ];
 });
 
 $factory->define(App\OrgChart::class, function (Faker\Generator $faker) {
     return [
-        'department_id' => 'factory:App\Department',
+        'department_id' => factory(App\Department::class)->create()->id,
         'path'          => file($sourceDir = '/tmp', $targetDir = '/tmp')
     ];
 });

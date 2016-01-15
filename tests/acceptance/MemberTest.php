@@ -12,7 +12,7 @@ class MemberTest extends CrowdcubeTester
 
     /**
      * @test
-     * @group user_test
+     * @group user
      */
     public function see_root_page()
     {
@@ -25,10 +25,10 @@ class MemberTest extends CrowdcubeTester
      */
     public function edit_option_is_shown_to_standard_user_when_viewing_own_user_profile()
     {
-        Auth::loginUsingId(2);
+        $user = $this->createUserAndLogin();
 
         // Issues with checking DOM for elements created with VueJS
-        $this->visit('/member/rob-crowe');
+        $this->visit($user->url);
         $this->see('EDIT USER');
     }
 
@@ -64,7 +64,7 @@ class MemberTest extends CrowdcubeTester
 
     /**
      * @test
-     * @group user_test
+     * @group user
      */
     public function department_lead_attempting_to_view_edit_details_screen_for_another_user_receives_200_response()
     {
@@ -72,7 +72,7 @@ class MemberTest extends CrowdcubeTester
         $user       = factory(User::class)->create(['id' => $department->lead_id, 'department_id' => $department->id]);
         $userTwo    = factory(User::class)->create(['department_id' => $department->id]);
 
-        Auth::loginUsingId($user->id);
+        $this->actingAs($user);
 
         $this->get($userTwo->url.'/edit')
                 ->assertResponseOk();
@@ -80,7 +80,7 @@ class MemberTest extends CrowdcubeTester
 
     /**
      * @test
-     * @group user_test
+     * @group user
      */
     public function super_user_attempting_to_view_edit_details_screen_for_another_user_receives_200_response()
     {
@@ -88,7 +88,7 @@ class MemberTest extends CrowdcubeTester
         $user       = factory(User::class)->create(['super_user' => 1, 'department_id' => $department->id]);
         $userTwo    = factory(User::class)->create(['department_id' => $department->id]);
 
-        Auth::loginUsingId($user->id);
+        $this->ActingAs($user);
 
         $this->get($userTwo->url.'/edit')
                 ->assertResponseOk();
@@ -130,22 +130,39 @@ class MemberTest extends CrowdcubeTester
      */
     public function super_user_can_edit_user_details_of_any_member()
     {
-        Auth::loginUsingId(15);
+        $user = $this->createUser();
 
-        $this->visit('/member/rob-crowe/edit')
+        $superUser = $this->createSuperUser();
+        $this->actingAs($superUser);
+
+        $updated = [
+            'first_name'    => $user->first_name.'_updated',
+            'last_name'     => $user->last_name.'_updated',
+        ];
+
+        $this->seeInDatabase('users',
+            [
+                'first_name'    => $user->first_name,
+                'last_name'     => $user->last_name,
+                'email'         => $user->email,
+                'slug'          => $user->slug,
+            ]
+        );
+
+        $this->visit($user->url.'/edit')
                 ->see('Edit Details')
                 ->submitForm('Update',
                     [
-                        'first_name'    => 'Roberto',
-                        'last_name'     => 'Crowington',
+                        'first_name'    => $updated['first_name'],
+                        'last_name'     => $updated['last_name'],
                     ]
                 )
                 ->seeInDatabase('users',
                     [
-                        'first_name'    => 'Roberto',
-                        'last_name'     => 'Crowington',
-                        'email'         => 'rob@crowdcube.com',
-                        'slug'          => 'roberto-crowington',
+                        'first_name'    => $updated['first_name'],
+                        'last_name'     => $updated['last_name'],
+                        'email'         => $user->email,
+                        'slug'          => Str::slug(join([$updated['first_name'], $updated['last_name']], ' ')),
                     ]
                 );
     }
@@ -156,8 +173,6 @@ class MemberTest extends CrowdcubeTester
      */
     public function edit_avatar_option_is_available_to_profile_owner()
     {
-        Auth::loginUsingId(2);
-
         $user = $this->createUserAndLogin();
 
         $this->visit($user->url.'/edit')

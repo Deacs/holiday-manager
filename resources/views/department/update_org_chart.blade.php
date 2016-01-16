@@ -19,9 +19,8 @@
                         timer: 2000,
                         showConfirmButton: false
                     });
-
+                    // -- TODO
                     // Close the upload panel
-
                     // Update with new image
                 });
             }

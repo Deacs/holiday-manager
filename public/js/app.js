@@ -14528,7 +14528,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = {
 
-    props: ['dept_name', 'dept_slug', 'location_slug', 'flashdata', 'displayflash'],
+    props: ['dept_name', 'dept_slug', 'location_slug', 'flashdata'],
 
     data: function data() {
 
@@ -14554,11 +14554,8 @@ exports.default = {
                 skype_name: null,
                 department_id: '',
                 department_name: '',
+                department_url: '',
                 location_id: ''
-            },
-            flashdata: {
-                'level': '',
-                'message': ''
             },
 
             displayflash: false
@@ -14590,7 +14587,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\n    <input type=\"text\" v-model=\"search\">\n        <table width=\"100%\">\n            <tbody><tr>\n                <th class=\"sort-field\" v-repeat=\"column: memberColumns\" v-on=\"click: sortBy(column.field)\" v-class=\"active-field: sortKey==column.field\">\n                    {{ column.title }}\n                </th>\n            </tr>\n            <tr v-repeat=\"member: members\n                        | filterBy search\n                        | orderBy sortKey reverse\">\n                <td><img v-attr=\"src:member | getAvatar '20'\" width=\"20\"> <a href=\"{{ member.url }}\" v-text=\"member | nameFormat\"></a></td>\n                    <td v-text=\"member.department_name\"></td>\n                    <td v-text=\"member.role\"></td>\n                    <td><a href=\"mailto:{{ email }}\" v-text=\"member.email\"></a></td>\n                    <td v-text=\"member.telephone\"></td>\n                    <td v-text=\"member.extension\"></td>\n                    <td v-text=\"member.skype_name\"></td>\n                </tr>\n            </tbody></table>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\n    <input type=\"text\" v-model=\"search\">\n        <table width=\"100%\">\n            <tbody><tr>\n                <th class=\"sort-field\" v-repeat=\"column: memberColumns\" v-on=\"click: sortBy(column.field)\" v-class=\"active-field: sortKey==column.field\">\n                    {{ column.title }}\n                </th>\n            </tr>\n            <tr v-repeat=\"member: members\n                        | filterBy search\n                        | orderBy sortKey reverse\">\n                <td><img v-attr=\"src:member | getAvatar '20'\" width=\"20\"> <a href=\"{{ member.url }}\" v-text=\"member | nameFormat\"></a></td>\n                    <td><a href=\"{{ member.department.url }}\" v-text=\"member.department_name\"></a></td>\n                    <td v-text=\"member.role\"></td>\n                    <td><a href=\"mailto:{{ email }}\" v-text=\"member.email\"></a></td>\n                    <td v-text=\"member.telephone\"></td>\n                    <td v-text=\"member.extension\"></td>\n                    <td v-text=\"member.skype_name\"></td>\n                </tr>\n            </tbody></table>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)

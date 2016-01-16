@@ -15,7 +15,7 @@
                         | orderBy sortKey reverse"
             >
                 <td><img v-attr="src:member | getAvatar '20'" width="20"> <a href="{{ member.url }}" v-text="member | nameFormat"></a></td>
-                    <td v-text="member.department_name"></td>
+                    <td><a href="{{ member.department.url }}" v-text="member.department_name"></a></td>
                     <td v-text="member.role"></td>
                     <td><a href="mailto:{{ email }}" v-text="member.email"></a></td>
                     <td v-text="member.telephone"></td>
@@ -33,8 +33,7 @@
             'dept_name',
             'dept_slug',
             'location_slug',
-            'flashdata',
-            'displayflash'
+            'flashdata'
         ],
 
         data() {
@@ -69,14 +68,11 @@
                 skype_name: null,
                 department_id: '',
                 department_name: '',
+                department_url: '',
                 location_id: ''
             },
-            flashdata: {
-                'level': '',
-                'message': ''
-            },
 
-                displayflash: false
+            displayflash: false
             }
         },
 

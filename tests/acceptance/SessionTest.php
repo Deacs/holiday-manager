@@ -1,5 +1,7 @@
 <?php
 
+use App\User;
+use App\Department;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -9,17 +11,18 @@ class SearchTest extends CrowdcubeTester
     protected $baseUrl = 'http://caliente.dev';
 
     /**
-     * @test
+     * @not_test
      */
     public function can_login()
     {
-        $this->visit('/')
+        $user = factory(User::class)->create(['email' => 'a@b.com', 'password' => 'secret']);
+
+        $this->visit('/login')
             ->see('Login')
-            ->click('Login')
-            ->type('david@crowdcube.com', 'email')
-            ->type('david', 'password')
+            ->type('a@b.com', 'email')
+            ->type('secret', 'password')
             ->press('login_button')
-            ->seePageIs('/');
+            ->seePageIs($user->url);
     }
 
     /**
@@ -27,7 +30,9 @@ class SearchTest extends CrowdcubeTester
      */
     public function anonymous_users_are_redirected_to_login_when_visiting_content_pages()
     {
-        $this->visit('/departments/engineering')
+        $department = factory(Department::class)->create();
+
+        $this->visit($department->url)
                 ->seePageIs('/login');
     }
 }

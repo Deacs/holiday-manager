@@ -2,6 +2,7 @@
 
 use App\User;
 use Carbon\Carbon;
+use App\Department;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -9,7 +10,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class DepartmentApiTest extends CrowdcubeTester
 {
 
-//    use DatabaseMigrations;
+    use DatabaseTransactions;
 
     protected $baseUrl = 'http://caliente.dev';
 
@@ -18,13 +19,15 @@ class DepartmentApiTest extends CrowdcubeTester
      */
     public function request_to_show_department_returns_correct_data()
     {
-        Auth::loginUsingId(1);
+        $department = $this->createDepartmentAndLead();
 
-        $this->get('/api/departments/engineering')->seeJsonContains([
-            'name'          => 'Engineering',
-            'slug'          => 'engineering',
-            'lead_id'       => '1',
-            'location_id'   => '1',
+        $this->createUserAndLogin();
+
+        $this->get('/api'.$department->url)->seeJsonContains([
+            'name'          => $department->name,
+            'slug'          => $department->slug,
+            'lead_id'       => $department->lead_id,
+            'location_id'   => $department->location_id,
         ]);
     }
 
@@ -33,18 +36,16 @@ class DepartmentApiTest extends CrowdcubeTester
      */
     public function request_to_show_all_departments_returns_correct_department_names()
     {
-        Auth::loginUsingId(1);
+        $departments = factory(Department::class, 5)->create();
+
+        $this->createUserAndLogin();
 
         $this->get('/api/departments')->seeJson([
-            'name' => 'Engineering',
-            'name' => 'Marketing',
-            'name' => 'Finance',
-            'name' => 'Business Development',
-            'name' => 'Product',
-            'name' => 'Completions',
-            'name' => 'Investments',
-            'name' => 'Legal',
-            'name' => 'Bonds',
+            'name' => $departments[0]->name,
+            'name' => $departments[1]->name,
+            'name' => $departments[2]->name,
+            'name' => $departments[3]->name,
+            'name' => $departments[4]->name,
         ]);
     }
 

@@ -20,6 +20,11 @@ class Department extends Model {
 		'lead_id'
 	];
 
+	protected $casts = [
+		'lead_id' 		=> 'integer',
+		'location_id' 	=> 'integer'
+	];
+
 	const ENGINEERING 			= 1;
 	const MARKETING 			= 2;
 	const INVESTMENTS 			= 3;

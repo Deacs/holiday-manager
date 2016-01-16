@@ -22,7 +22,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'first_name'                => $faker->firstNameMale,
         'last_name'                 => $faker->lastName,
         'role'                      => $faker->word,
-        'password'                  => $faker->word,
+        'password'                  => Hash::make($faker->word),
         'email'                     => $faker->email,
         'telephone'                 => $faker->phoneNumber,
         'extension'                 => $faker->phoneNumber,
@@ -56,7 +56,7 @@ $factory->define(App\Department::class, function (Faker\Generator $faker) {
     return [
         'name'          => $faker->word,
         'lead_id'       => 1,
-        'location_id'   => 'factory:App\Location',
+        'location_id'   => factory(App\Location::class)->create()->id,
     ];
 });
 

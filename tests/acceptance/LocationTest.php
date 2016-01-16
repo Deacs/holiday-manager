@@ -107,8 +107,6 @@ class LocationTest extends CrowdcubeTester
 
         $this->assertResponseStatus(302);
 
-        //$this->getExpectedException('foo');
-
         $this->notSeeInDatabase('locations', ['name' => 'Test Office']);
     }
 
@@ -122,18 +120,11 @@ class LocationTest extends CrowdcubeTester
     {
         $this->createUserAndLogin();
 
-        $location = factory(App\Location::class)->create();
+        $location = factory(Location::class)->create();
 
-        /* @TODO This needs to use CSS selectors */
         $this->visit($location->url)
                 ->see($location->name)
-//                ->see($location->address)
-//                ->see('Rennes Drive')
-//                ->see('Exeter')
-//                ->see('EX4 4RN')
                 ->see($location->telephone);
-//                ->see('Departments')
-//                ->see('Engineering');
     }
 
     /**
@@ -163,7 +154,7 @@ class LocationTest extends CrowdcubeTester
         $location = factory(Location::class)->create();
 
         $this->visit($location->url)
-            ->dontSee('Add New Department');
+                ->dontSee('Add New Department');
     }
 
 }

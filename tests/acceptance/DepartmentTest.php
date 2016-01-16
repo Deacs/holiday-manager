@@ -66,10 +66,10 @@ class DepartmentTest extends CrowdcubeTester
      */
     public function add_new_member_form_displayed_to_team_lead()
     {
-        $department = factory(Department::class)->create(['lead_id' => 1]);
-        $user       = factory(User::class)->create(['id' => $department->lead_id, 'department_id' => $department->id]);
+        $department = $this->createDepartmentAndLead();
+        $teamLead   = $department->lead;
 
-        $this->actingAs($user);
+        $this->actingAs($teamLead);
 
         $this->visit($department->url)
                 ->see('Add New Team Member');
@@ -82,10 +82,10 @@ class DepartmentTest extends CrowdcubeTester
      */
     public function add_new_member_form_displayed_to_super_user()
     {
-        $department = factory(Department::class)->create(['lead_id' => 1]);
-        $user       = factory(User::class)->create(['id' => $department->lead_id, 'department_id' => $department->id]);
+        $department = factory(Department::class)->create();
+        $superUser  = $this->createSuperUser();
 
-        $this->actingAs($user);
+        $this->actingAs($superUser);
 
         $this->visit($department->url)
                 ->see('Add New Team Member');
@@ -126,7 +126,7 @@ class DepartmentTest extends CrowdcubeTester
             'first_name'    => 'Taylor',
             'last_name'     => 'Swift',
             'role'          => 'Junior Developer',
-            'email'         => 'taylor@crowdcube.com',
+            'email'         => 'taylor@domain.com',
             'skype_name'    => 'taylor.crowdcube',
             'telephone'     => '987654321',
             'extension'     => '123',
@@ -157,7 +157,7 @@ class DepartmentTest extends CrowdcubeTester
             'first_name'    => 'Taylor',
             'last_name'     => 'Swift',
             'role'          => 'Junior Developer',
-            'email'         => 'taylor@crowdcube.com',
+            'email'         => 'taylor@domain.com',
         ];
 
         $this->call('POST', '/member/add', $data);
@@ -169,8 +169,7 @@ class DepartmentTest extends CrowdcubeTester
     
     /**
      * @vue_test
-     * @group vue_department
-     * @TODO use factories
+     * @group department
      */
     public function viewing_department_index_displays_correct_departments()
     {
@@ -179,8 +178,6 @@ class DepartmentTest extends CrowdcubeTester
         $user = $this->createUser();
 
         $this->actingAs($user);
-
-//        $this->createUserAndLogin();
 
         $this->visit('/departments/')
                 ->see($departments[0])
@@ -191,22 +188,21 @@ class DepartmentTest extends CrowdcubeTester
 
     /**
      * @vue_test
-     * @group vue_department
-     * @group vue_dom
+     * @group department
+     * @group dom
      */
     public function clicking_department_name_in_listing_opens_correct_department_page()
     {
-        // Vue generated list - cannot test
-        $departments = factory(Department::class, 4)->create();
+        $department = $this->createDepartmentAndLead();
 
         $this->createUserAndLogin();
 
         $this->visit('/departments')
-                ->click('Business Development')
-                ->seePageIs('/departments/business-development')
-                ->see('Business Development')
+                ->click($department->name)
+                ->seePageIs($department->url)
+                ->see($department->name)
                 ->see('Department Lead')
-                ->see('Matt Cooper');
+                ->see($department->lead->fullName());
     }
 
     /**
@@ -232,8 +228,7 @@ class DepartmentTest extends CrowdcubeTester
      */
     public function update_org_chart_option_shown_to_department_lead()
     {
-        $department = factory(Department::class)->create(['lead_id' => 1]);
-        $user       = factory(User::class)->create(['id' => $department->lead_id, 'department_id' => $department->id]);
+        $department = $this->createDepartmentAndLead();
 
         $this->actingAs($department->lead);
 
@@ -282,9 +277,9 @@ class DepartmentTest extends CrowdcubeTester
      */
     public function super_user_adding_new_location_results_in_correct_data_being_persisted()
     {
-        $user = $this->createSuperUser();
+        $superUser = $this->createSuperUser();
 
-        $this->actingAs($user);
+        $this->actingAs($superUser);
 
         $this->withoutMiddleware();
 
@@ -311,9 +306,9 @@ class DepartmentTest extends CrowdcubeTester
      */
     public function attempting_to_add_department_missing_required_fields_prevents_persistence()
     {
-        $user = $this->createSuperUser();
+        $superUser = $this->createSuperUser();
 
-        $this->actingAs($user);
+        $this->actingAs($superUser);
 
         $this->withoutMiddleware();
 
@@ -338,9 +333,9 @@ class DepartmentTest extends CrowdcubeTester
     {
         factory(Department::class)->create(['name' => 'Test Department', 'location_id' => 1, 'lead_id' => 2]);
 
-        $user = $this->createSuperUser();
+        $superUser = $this->createSuperUser();
 
-        $this->actingAs($user);
+        $this->actingAs($superUser);
 
         $this->withoutMiddleware();
 
@@ -364,7 +359,7 @@ class DepartmentTest extends CrowdcubeTester
      */
     public function add_department_form_renders_correct_fields()
     {
-        $this->createUserAndLogin(1);
+        $this->createSuperUser();
 
         $this->visit('/departments/add')
                 ->see('Add new Department');

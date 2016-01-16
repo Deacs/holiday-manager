@@ -17,6 +17,11 @@ class Location extends Model {
         'lon'
     ];
 
+    protected $casts = [
+        'lat' => 'float',
+        'lon' => 'float'
+    ];
+
     const EXETER_ID 	= 1;
     const LONDON_ID 	= 2;
     const SCOTLAND_ID 	= 3;

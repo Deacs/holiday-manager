@@ -4,7 +4,8 @@
 .env.example
 .env.testing
 .idea
-/storage/caliente.sqlite
+storage/caliente.sqlite
+public/img/departments/org-charts/
 todo.txt
 
 

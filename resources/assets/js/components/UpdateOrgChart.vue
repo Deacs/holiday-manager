@@ -19,8 +19,8 @@
         filters: {},
 
         ready: function() {
-
-            console.log('Org Chart Component Ready');
+            // Make the Vue instance available within the Dropzone instance
+            var vm = this;
 
             Dropzone.options.departmentOrgChartUpload = {
                 paramName: "file",
@@ -37,15 +37,17 @@
                             timer: 2000,
                             showConfirmButton: false
                         });
-                        // -- TODO
+                        // Clear out the file list
+                        this.removeAllFiles( true );
                         // Close the upload panel
-
-                        this.showOrgChartUpdate = false;
-
+                        vm.$root.showOrgChartUpdate = false;
                         // Update with new image
+                        // TODO
                     });
                 }
             };
+
+
         }
     }
 

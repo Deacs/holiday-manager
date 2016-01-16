@@ -7,6 +7,7 @@ Vue.use(VueAsyncData);
 import MemberListing        from './components/MemberListing.vue';
 import MemberProfile        from './components/MemberProfile.vue';
 import DepartmentListing    from './components/DepartmentListing.vue';
+import UpdateOrgChart       from './components/UpdateOrgChart.vue';
 
 Vue.use(require('vue-resource'));
 
@@ -19,7 +20,8 @@ new Vue({
     components: {
         MemberProfile,
         MemberListing,
-        DepartmentListing
+        DepartmentListing,
+        UpdateOrgChart
     },
 
     data: {

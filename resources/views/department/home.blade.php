@@ -19,7 +19,7 @@
 
     @if (Auth::user()->hasManageDepartmentPermission($department))
         <div class="large-12 columns" v-show="showOrgChartUpdate">
-            @include('department.update_org_chart')
+            <update-org-chart department_slug="{!! $department->slug !!}" token="{!! csrf_token() !!}"></update-org-chart>
         </div>
     @endif
 

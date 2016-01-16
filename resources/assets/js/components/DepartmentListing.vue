@@ -30,7 +30,7 @@
 
     export default {
 
-        props: ['flashdata', 'displayflash', 'location_slug'],
+        props: ['location_slug'],
 
         data: function() {
 
@@ -52,8 +52,8 @@
             }
         },
         methods: {
-            fetchDepartments:           require('../methods/fetchDepartments'),
-            sortBy:                     require('../methods/sortBy')
+            fetchDepartments:   require('../methods/fetchDepartments'),
+            sortBy:             require('../methods/sortBy')
         },
         filters: {
             nameFormat: require('../filters/nameFormat')

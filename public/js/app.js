@@ -14411,6 +14411,10 @@ var _DepartmentListing = require('./components/DepartmentListing.vue');
 
 var _DepartmentListing2 = _interopRequireDefault(_DepartmentListing);
 
+var _UpdateOrgChart = require('./components/UpdateOrgChart.vue');
+
+var _UpdateOrgChart2 = _interopRequireDefault(_UpdateOrgChart);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Vue = require('vue');
@@ -14430,7 +14434,8 @@ new Vue({
     components: {
         MemberProfile: _MemberProfile2.default,
         MemberListing: _MemberListing2.default,
-        DepartmentListing: _DepartmentListing2.default
+        DepartmentListing: _DepartmentListing2.default,
+        UpdateOrgChart: _UpdateOrgChart2.default
     },
 
     data: {
@@ -14464,7 +14469,7 @@ new Vue({
     }
 });
 
-},{"./components/DepartmentListing.vue":80,"./components/MemberListing.vue":81,"./components/MemberProfile.vue":82,"./filters/dateFormat":83,"./filters/getAvatar":84,"./filters/nameFormat":85,"./methods/fetchDepartments":87,"./methods/fetchLocations":88,"./methods/toggleNewDepartmentPanel":94,"./methods/toggleNewMemberPanel":95,"./methods/toggleOrgChartPanel":96,"moment":1,"vue":77,"vue-async-data":3,"vue-resource":6}],80:[function(require,module,exports){
+},{"./components/DepartmentListing.vue":80,"./components/MemberListing.vue":81,"./components/MemberProfile.vue":82,"./components/UpdateOrgChart.vue":83,"./filters/dateFormat":84,"./filters/getAvatar":85,"./filters/nameFormat":86,"./methods/fetchDepartments":88,"./methods/fetchLocations":89,"./methods/toggleNewDepartmentPanel":95,"./methods/toggleNewMemberPanel":96,"./methods/toggleOrgChartPanel":97,"moment":1,"vue":77,"vue-async-data":3,"vue-resource":6}],80:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -14472,7 +14477,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = {
 
-    props: ['flashdata', 'displayflash', 'location_slug'],
+    props: ['location_slug'],
 
     data: function data() {
 
@@ -14520,7 +14525,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"../filters/nameFormat":85,"../methods/fetchDepartments":87,"../methods/sortBy":93,"vue":77,"vue-hot-reload-api":4}],81:[function(require,module,exports){
+},{"../filters/nameFormat":86,"../methods/fetchDepartments":88,"../methods/sortBy":94,"vue":77,"vue-hot-reload-api":4}],81:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -14599,7 +14604,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"../methods/addMember":86,"../methods/fetchDepartments":87,"../methods/fetchLocations":88,"../methods/fetchMembers":90,"../methods/makeSlug":92,"../methods/sortBy":93,"vue":77,"vue-hot-reload-api":4}],82:[function(require,module,exports){
+},{"../methods/addMember":87,"../methods/fetchDepartments":88,"../methods/fetchLocations":89,"../methods/fetchMembers":91,"../methods/makeSlug":93,"../methods/sortBy":94,"vue":77,"vue-hot-reload-api":4}],82:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -14628,7 +14633,6 @@ exports.default = {
         this.fetchMember(this.member_slug);
 
         this.$http.get('/api/member/' + this.member_slug + '/can-edit/' + this.user_slug, function (data, status, request) {
-            //console.log(data);
             this.$set('canEdit', data);
         }).error(function (data, status, request) {
             // handle error
@@ -14649,7 +14653,66 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"../methods/fetchMember":89,"../methods/hasEditMemberPermissions":91,"vue":77,"vue-hot-reload-api":4}],83:[function(require,module,exports){
+},{"../methods/fetchMember":90,"../methods/hasEditMemberPermissions":92,"vue":77,"vue-hot-reload-api":4}],83:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+
+    props: ['department_slug', 'token'],
+
+    data: function data() {
+        return {};
+    },
+    methods: {},
+    filters: {},
+
+    ready: function ready() {
+
+        console.log('Org Chart Component Ready');
+
+        Dropzone.options.departmentOrgChartUpload = {
+            paramName: "file",
+            maxFilesize: 2, // MB
+            maxFiles: 1, // Do not allow multiple uploads
+            dictDefaultMessage: 'Drag your new organisation chart here',
+
+            init: function init() {
+                this.on("success", function (file) {
+                    swal({
+                        type: "success",
+                        title: "Success",
+                        text: "Organisational Chart successfully updated",
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                    // -- TODO
+                    // Close the upload panel
+
+                    this.showOrgChartUpdate = false;
+
+                    // Update with new image
+                });
+            }
+        };
+    }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\n   <form method=\"POST\" action=\"/departments/{{ department_slug }}/org-chart\" class=\"dropzone\" id=\"department-org-chart-upload\">\n        <input type=\"hidden\" name=\"_token\" value=\"{{ token }}\">\n   </form>\n\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  var id = "/crowdcube/caliente/resources/assets/js/components/UpdateOrgChart.vue"
+  if (!module.hot.data) {
+    hotAPI.createRecord(id, module.exports)
+  } else {
+    hotAPI.update(id, module.exports, module.exports.template)
+  }
+})()}
+},{"vue":77,"vue-hot-reload-api":4}],84:[function(require,module,exports){
 "use strict";
 
 module.exports = function (ymd, type) {
@@ -14661,7 +14724,7 @@ module.exports = function (ymd, type) {
     return Moment(ymd).format("DD/MM/YYYY");
 };
 
-},{}],84:[function(require,module,exports){
+},{}],85:[function(require,module,exports){
 "use strict";
 
 module.exports = function (user, size) {
@@ -14681,7 +14744,7 @@ module.exports = function (user, size) {
     return '/img/avatar.jpg';
 };
 
-},{}],85:[function(require,module,exports){
+},{}],86:[function(require,module,exports){
 'use strict';
 
 module.exports = function (user) {
@@ -14693,7 +14756,7 @@ module.exports = function (user) {
     return 'Unknown User';
 };
 
-},{}],86:[function(require,module,exports){
+},{}],87:[function(require,module,exports){
 'use strict';
 
 module.exports = function (e) {
@@ -14735,7 +14798,7 @@ module.exports = function (e) {
     });
 };
 
-},{}],87:[function(require,module,exports){
+},{}],88:[function(require,module,exports){
 'use strict';
 
 module.exports = function (bounds) {
@@ -14760,7 +14823,7 @@ module.exports = function (bounds) {
     });
 };
 
-},{}],88:[function(require,module,exports){
+},{}],89:[function(require,module,exports){
 'use strict';
 
 module.exports = function () {
@@ -14769,7 +14832,7 @@ module.exports = function () {
     });
 };
 
-},{}],89:[function(require,module,exports){
+},{}],90:[function(require,module,exports){
 'use strict';
 
 module.exports = function (slug) {
@@ -14778,7 +14841,7 @@ module.exports = function (slug) {
     });
 };
 
-},{}],90:[function(require,module,exports){
+},{}],91:[function(require,module,exports){
 'use strict';
 
 module.exports = function (bounds) {
@@ -14799,7 +14862,7 @@ module.exports = function (bounds) {
     });
 };
 
-},{}],91:[function(require,module,exports){
+},{}],92:[function(require,module,exports){
 'use strict';
 
 module.exports = function (user_slug, member_slug, cb) {
@@ -14826,7 +14889,7 @@ module.exports = function (user_slug, member_slug, cb) {
     return false;
 };
 
-},{}],92:[function(require,module,exports){
+},{}],93:[function(require,module,exports){
 'use strict';
 
 module.exports = function () {
@@ -14847,7 +14910,7 @@ module.exports = function () {
     //this.$http.post('/api/member/add', member);
 };
 
-},{}],93:[function(require,module,exports){
+},{}],94:[function(require,module,exports){
 "use strict";
 
 module.exports = function (sortKey) {
@@ -14855,21 +14918,21 @@ module.exports = function (sortKey) {
     this.sortKey = sortKey;
 };
 
-},{}],94:[function(require,module,exports){
+},{}],95:[function(require,module,exports){
 "use strict";
 
 module.exports = function () {
     this.showAddNewDepartment = !this.showAddNewDepartment;
 };
 
-},{}],95:[function(require,module,exports){
+},{}],96:[function(require,module,exports){
 "use strict";
 
 module.exports = function () {
     this.showAddNewMember = !this.showAddNewMember;
 };
 
-},{}],96:[function(require,module,exports){
+},{}],97:[function(require,module,exports){
 "use strict";
 
 module.exports = function () {

@@ -77,7 +77,19 @@
             paramName: "file",
             maxFilesize: 2, // MB
             maxFiles: 1, // Do not allow multiple uploads
-            dictDefaultMessage: 'Drag your new avatar here'
+            dictDefaultMessage: 'Drag your new avatar here',
+
+            init: function() {
+                this.on("success", function(file) {
+                    swal({
+                        type: "success",
+                        title: "Success",
+                        text: "Avatar successfully updated",
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                });
+            }
         };
     </script>
 @endsection

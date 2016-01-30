@@ -33,10 +33,10 @@
             'dept_name',
             'dept_slug',
             'location_slug',
-            'flashdata'
+            'members'
         ],
 
-        data() {
+        data: function() {
 
             return {
                 memberColumns: [
@@ -58,21 +58,19 @@
                 reverse: false,
                 search: '',
                 newMember: {
-                first_name: '',
-                last_name: '',
-                slug: '',
-                role: '',
-                email: '',
-                telephone: null,
-                extension: null,
-                skype_name: null,
-                department_id: '',
-                department_name: '',
-                department_url: '',
-                location_id: ''
-            },
-
-            displayflash: false
+                    first_name: '',
+                    last_name: '',
+                    slug: '',
+                    role: '',
+                    email: '',
+                    telephone: null,
+                    extension: null,
+                    skype_name: null,
+                    department_id: '',
+                    department_name: '',
+                    department_url: '',
+                    location_id: ''
+                }
             }
         },
 
@@ -80,10 +78,21 @@
             fetchDepartments:   require('../methods/fetchDepartments'),
             fetchLocations:     require('../methods/fetchLocations'),
             fetchMembers:       require('../methods/fetchMembers'),
-            addNewMember:       require('../methods/addMember'),
+            //addNewMember:       require('../methods/addMember'),
             sortBy:             require('../methods/sortBy'),
             makeSlug:           require('../methods/makeSlug')
         },
+
+        //events: {
+        //    'add-member': function (member) {
+        //        // `this` in event callbacks are automatically bound
+        //        // to the instance that registered it
+        //
+        //        console.log('--- Event Caught ---');
+        //
+        //        this.members.push(members);
+        //    }
+        //},
 
         ready: function() {
 
@@ -95,9 +104,27 @@
                 location   : this.location_slug
             };
 
+
+
+            //console.log('************/////////////////************');
+            //this.$root.$log();
+            //console.log('************/////////////////************');
+            //console.log(this.$parent._data.getMembers);
+            console.log('Ready from MemberListing component');
+
             this.fetchMembers(bounds);
             this.fetchDepartments();
             this.fetchLocations();
+
+            console.log('MEMBER LISTING : THIS ************/////////////////************');
+            this.$log();
+
+            console.log('PARENT ************/////////////////************');
+            this.$parent.$log();
+
+            console.log('Member Listing : START');
+            console.log(this.$root._data.$members);
+            console.log('Member Listing : END');
         }
     }
 

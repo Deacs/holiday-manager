@@ -12,7 +12,10 @@ module.exports = function(bounds) {
         }
     }
 
-    this.$http.get(endpoint, function(members) {
-        this.members = members;
+    this.$http.get(endpoint, function(member_list) {
+
+        this.members = member_list;
+        console.log('~~~~~~~~~~ FETCH MEMBERS : THIS ~~~~~~~~~~~~~~~~~');
+        this.$log();
     });
 }

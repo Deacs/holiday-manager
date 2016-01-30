@@ -23,6 +23,8 @@
         </div>
     @endif
 
+    <org-chart></org-chart>
+
     @if ($department->hasOrgChart())
         <div class="large-12 columns">
             <a href="/{!! $department->getOrgChart()->path !!}" data-lity>

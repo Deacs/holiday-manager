@@ -35,7 +35,7 @@
                 member_slug:    '',
                 user_slug:      '',
                 member:         '',
-                members:        [],
+                //members:        [],
                 canEdit:        false
             }
         },

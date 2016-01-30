@@ -20,7 +20,6 @@
                 <td v-text="department.lead.telephone"></td>
                 <td v-text="department.lead.extension"></td>
                 <td v-text="department.lead.skype_name"></td>
-
             </tr>
         </table>
 

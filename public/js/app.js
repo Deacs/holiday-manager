@@ -14415,6 +14415,10 @@ var _UpdateOrgChart = require('./components/UpdateOrgChart.vue');
 
 var _UpdateOrgChart2 = _interopRequireDefault(_UpdateOrgChart);
 
+var _OrgChart = require('./components/OrgChart.vue');
+
+var _OrgChart2 = _interopRequireDefault(_OrgChart);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Vue = require('vue');
@@ -14427,6 +14431,8 @@ Vue.use(require('vue-resource'));
 
 Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('value');
 
+//Vue.config.debug = true;
+
 new Vue({
 
     el: '#app',
@@ -14435,26 +14441,54 @@ new Vue({
         MemberProfile: _MemberProfile2.default,
         MemberListing: _MemberListing2.default,
         DepartmentListing: _DepartmentListing2.default,
-        UpdateOrgChart: _UpdateOrgChart2.default
+        UpdateOrgChart: _UpdateOrgChart2.default,
+        OrgChart: _OrgChart2.default
     },
 
     data: {
-        defaultDate: '',
-        holidayRequests: [],
+        //defaultDate:            '',
         locations: [],
         departments: [],
-        haveHistory: false,
+        //members:                [],
+        //haveHistory:            false,
         showOrgChartUpdate: false,
         showAddNewMember: false,
-        showAddNewDepartment: false
+        showAddNewDepartment: false,
+        newMember: {
+            first_name: '',
+            last_name: '',
+            slug: '',
+            role: '',
+            email: '',
+            telephone: null,
+            extension: null,
+            skype_name: null,
+            department_id: '',
+            department_name: '',
+            department_url: '',
+            location_id: ''
+        }
     },
 
     methods: {
+
+        addMember: require('./methods/addMember'),
         fetchLocations: require('./methods/fetchLocations'),
         fetchDepartments: require('./methods/fetchDepartments'),
         toggleOrgChartPanel: require('./methods/toggleOrgChartPanel'),
         toggleNewMemberPanel: require('./methods/toggleNewMemberPanel'),
         toggleNewDepartmentPanel: require('./methods/toggleNewDepartmentPanel')
+    },
+
+    events: {
+        'add-member': function addMember(member) {
+            // `this` in event callbacks are automatically bound
+            // to the instance that registered it
+
+            console.log('--- Event Caught ---');
+
+            //this.members.push(members);
+        }
     },
 
     filters: {
@@ -14466,10 +14500,12 @@ new Vue({
     ready: function ready() {
         this.fetchLocations();
         this.fetchDepartments();
+
+        console.log('Ready from Base Vue instance');
     }
 });
 
-},{"./components/DepartmentListing.vue":80,"./components/MemberListing.vue":81,"./components/MemberProfile.vue":82,"./components/UpdateOrgChart.vue":83,"./filters/dateFormat":84,"./filters/getAvatar":85,"./filters/nameFormat":86,"./methods/fetchDepartments":88,"./methods/fetchLocations":89,"./methods/toggleNewDepartmentPanel":95,"./methods/toggleNewMemberPanel":96,"./methods/toggleOrgChartPanel":97,"moment":1,"vue":77,"vue-async-data":3,"vue-resource":6}],80:[function(require,module,exports){
+},{"./components/DepartmentListing.vue":80,"./components/MemberListing.vue":81,"./components/MemberProfile.vue":82,"./components/OrgChart.vue":83,"./components/UpdateOrgChart.vue":84,"./filters/dateFormat":85,"./filters/getAvatar":86,"./filters/nameFormat":87,"./methods/addMember":88,"./methods/fetchDepartments":89,"./methods/fetchLocations":90,"./methods/toggleNewDepartmentPanel":96,"./methods/toggleNewMemberPanel":97,"./methods/toggleOrgChartPanel":98,"moment":1,"vue":77,"vue-async-data":3,"vue-resource":6}],80:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -14513,7 +14549,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\n    <input type=\"text\" v-model=\"search\" placeholder=\"Start typing any of the fields below to search....\">\n    <table width=\"100%\">\n        <tbody><tr>\n            <th class=\"sort-field\" v-repeat=\"column: departmentColumns\" v-on=\"click: sortBy(column.field)\" v-class=\"active-field: sortKey==column.field\">\n                {{ column.title }}\n            </th>\n        </tr>\n        <tr v-repeat=\"department: departments\n                | filterBy search\n                | orderBy sortKey reverse\">\n            <td><a href=\"{{ department.url }}\" v-text=\"department.name\"></a></td>\n            <td><img v-attr=\"src:department.lead | getAvatar '20'\" width=\"20\"> <a href=\"{{ department.lead.url }}\" v-text=\"department.lead | nameFormat\"></a></td>\n                <td><a href=\"mailto:{{ department.lead.email }}\" v-text=\"department.lead.email\"></a></td>\n                <td v-text=\"department.lead.telephone\"></td>\n                <td v-text=\"department.lead.extension\"></td>\n                <td v-text=\"department.lead.skype_name\"></td>\n\n            </tr>\n        </tbody></table>\n\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\n    <input type=\"text\" v-model=\"search\" placeholder=\"Start typing any of the fields below to search....\">\n    <table width=\"100%\">\n        <tbody><tr>\n            <th class=\"sort-field\" v-repeat=\"column: departmentColumns\" v-on=\"click: sortBy(column.field)\" v-class=\"active-field: sortKey==column.field\">\n                {{ column.title }}\n            </th>\n        </tr>\n        <tr v-repeat=\"department: departments\n                | filterBy search\n                | orderBy sortKey reverse\">\n            <td><a href=\"{{ department.url }}\" v-text=\"department.name\"></a></td>\n            <td><img v-attr=\"src:department.lead | getAvatar '20'\" width=\"20\"> <a href=\"{{ department.lead.url }}\" v-text=\"department.lead | nameFormat\"></a></td>\n                <td><a href=\"mailto:{{ department.lead.email }}\" v-text=\"department.lead.email\"></a></td>\n                <td v-text=\"department.lead.telephone\"></td>\n                <td v-text=\"department.lead.extension\"></td>\n                <td v-text=\"department.lead.skype_name\"></td>\n            </tr>\n        </tbody></table>\n\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -14525,7 +14561,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"../filters/nameFormat":86,"../methods/fetchDepartments":88,"../methods/sortBy":94,"vue":77,"vue-hot-reload-api":4}],81:[function(require,module,exports){
+},{"../filters/nameFormat":87,"../methods/fetchDepartments":89,"../methods/sortBy":95,"vue":77,"vue-hot-reload-api":4}],81:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -14533,7 +14569,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = {
 
-    props: ['dept_name', 'dept_slug', 'location_slug', 'flashdata'],
+    props: ['dept_name', 'dept_slug', 'location_slug', 'members'],
 
     data: function data() {
 
@@ -14561,9 +14597,7 @@ exports.default = {
                 department_name: '',
                 department_url: '',
                 location_id: ''
-            },
-
-            displayflash: false
+            }
         };
     },
 
@@ -14571,10 +14605,21 @@ exports.default = {
         fetchDepartments: require('../methods/fetchDepartments'),
         fetchLocations: require('../methods/fetchLocations'),
         fetchMembers: require('../methods/fetchMembers'),
-        addNewMember: require('../methods/addMember'),
+        //addNewMember:       require('../methods/addMember'),
         sortBy: require('../methods/sortBy'),
         makeSlug: require('../methods/makeSlug')
     },
+
+    //events: {
+    //    'add-member': function (member) {
+    //        // `this` in event callbacks are automatically bound
+    //        // to the instance that registered it
+    //
+    //        console.log('--- Event Caught ---');
+    //
+    //        this.members.push(members);
+    //    }
+    //},
 
     ready: function ready() {
 
@@ -14586,9 +14631,25 @@ exports.default = {
             location: this.location_slug
         };
 
+        //console.log('************/////////////////************');
+        //this.$root.$log();
+        //console.log('************/////////////////************');
+        //console.log(this.$parent._data.getMembers);
+        console.log('Ready from MemberListing component');
+
         this.fetchMembers(bounds);
         this.fetchDepartments();
         this.fetchLocations();
+
+        console.log('MEMBER LISTING : THIS ************/////////////////************');
+        this.$log();
+
+        console.log('PARENT ************/////////////////************');
+        this.$parent.$log();
+
+        console.log('Member Listing : START');
+        console.log(this.$root._data.$members);
+        console.log('Member Listing : END');
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
@@ -14604,7 +14665,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"../methods/addMember":87,"../methods/fetchDepartments":88,"../methods/fetchLocations":89,"../methods/fetchMembers":91,"../methods/makeSlug":93,"../methods/sortBy":94,"vue":77,"vue-hot-reload-api":4}],82:[function(require,module,exports){
+},{"../methods/fetchDepartments":89,"../methods/fetchLocations":90,"../methods/fetchMembers":92,"../methods/makeSlug":94,"../methods/sortBy":95,"vue":77,"vue-hot-reload-api":4}],82:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -14619,7 +14680,7 @@ exports.default = {
             member_slug: '',
             user_slug: '',
             member: '',
-            members: [],
+            //members:        [],
             canEdit: false
         };
     },
@@ -14653,7 +14714,46 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"../methods/fetchMember":90,"../methods/hasEditMemberPermissions":92,"vue":77,"vue-hot-reload-api":4}],83:[function(require,module,exports){
+},{"../methods/fetchMember":91,"../methods/hasEditMemberPermissions":93,"vue":77,"vue-hot-reload-api":4}],83:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+// Determine if the Department has an org chart
+// Set a var to reflect this
+// Get the URL if it is available
+// Set the vars so they are available within the update component and parent
+// The template needs a attr value on the img that can be set here
+
+exports.default = {
+
+    props: [],
+
+    data: function data() {
+        return {};
+    },
+    methods: {},
+    filters: {},
+
+    ready: function ready() {
+        console.log('Org Chart Component Ready');
+    }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  var id = "/crowdcube/caliente/resources/assets/js/components/OrgChart.vue"
+  if (!module.hot.data) {
+    hotAPI.createRecord(id, module.exports)
+  } else {
+    hotAPI.update(id, module.exports, module.exports.template)
+  }
+})()}
+},{"vue":77,"vue-hot-reload-api":4}],84:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -14712,7 +14812,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"vue":77,"vue-hot-reload-api":4}],84:[function(require,module,exports){
+},{"vue":77,"vue-hot-reload-api":4}],85:[function(require,module,exports){
 "use strict";
 
 module.exports = function (ymd, type) {
@@ -14724,7 +14824,7 @@ module.exports = function (ymd, type) {
     return Moment(ymd).format("DD/MM/YYYY");
 };
 
-},{}],85:[function(require,module,exports){
+},{}],86:[function(require,module,exports){
 "use strict";
 
 module.exports = function (user, size) {
@@ -14744,7 +14844,7 @@ module.exports = function (user, size) {
     return '/img/avatar.jpg';
 };
 
-},{}],86:[function(require,module,exports){
+},{}],87:[function(require,module,exports){
 'use strict';
 
 module.exports = function (user) {
@@ -14756,29 +14856,95 @@ module.exports = function (user) {
     return 'Unknown User';
 };
 
-},{}],87:[function(require,module,exports){
+},{}],88:[function(require,module,exports){
 'use strict';
 
-module.exports = function (e) {
+module.exports = function () {
 
-    e.preventDefault();
-
-    console.log('Adding Member');
+    event.preventDefault();
 
     var member = this.newMember;
+    var vm = this;
+
+    //console.log('Member: ');
+    //console.log(member);
+    //console.log('Members: ');
+    //console.log('ROOT DATA ---- ');
+    //console.log(this.$root.data);
+    console.log('ROOT DATA ---- ');
+    //console.log(this.$root.data);
+    console.log('--- PRE CALLBACK ---');
 
     this.$http.post('/api/member/add', member, function (data) {
-        // Prepare the extra fields for the push to the listing
-        member.url = data.slug;
-        member.avatar_path = data.avatar_path;
+
+        //console.log('&&&&&&&&&&& ADD MEMBER PARENT &&&&&&&&&&&&');
+        //this.$parent.$log();
+
+        //console.log('-- Within Callback --');
+        //var member = this.newMember;
+
+        //this.$root.members.push(member);
+        //this.newMember = {
+        //    first_name: '',
+        //    last_name: '',
+        //    email: '',
+        //    telephone: '',
+        //    extension: '',
+        //    role: '',
+        //    location_id: '',
+        //    department_id: ''
+        //};
+
+        //this.$dispatch('child-msg', this.msg);
+        //this.msg = '';
 
         // Push the newly created user to the array
-        this.members.push(member);
+        //vm.$root.members.push(member);
 
-        this.flashdata = {
-            level: 'success',
-            message: 'User successfully added'
-        };
+        // Prepare the extra fields for the push to the listing
+        //member.url          = data.slug;
+        //member.avatar_path  = data.avatar_path;
+
+        console.log(' --- Firing Event ---');
+
+        // The form values need to be reset at this point
+
+        this.$dispatch('add-member', data);
+
+        //this.$parent.members.push(member);
+        //
+        //console.log('DATA ---- ');
+        //console.log(data);
+        //
+        //console.log('MEMBER ---- ');
+        //console.log(member);
+        //
+        //console.log('VM ----- ');
+        //console.log(vm);
+        //
+        //console.log('MEMBERS ---- ');
+        //console.log(vm.$root.members);
+
+        swal({
+            type: "success",
+            title: "Success",
+            text: member.first_name + " successfully added",
+            timer: 2000,
+            showConfirmButton: false
+        });
+
+        // WHERE IS THE MEMBERS ARRAY THAT HOLDS THE CURRENT LISTING?
+
+        console.log('THIS ************/////////////////************');
+        this.$log();
+        this.members.push(member);
+        this._data.members.push(member);
+        console.log('THIS POST PUSH *******/////////////////*******');
+        this.$log();
+        console.log('ROOT ************/////////////////************');
+        this.$root.$log();
+        console.log('PARENT ************/////////////////************');
+        this.$parent.$log();
     }).error(function (data, status) {
 
         // Each field that has failed validation needs
@@ -14789,6 +14955,8 @@ module.exports = function (e) {
                 for (var prop in obj) {
                     // important check that this is objects own property
                     // not from prototype prop inherited
+
+                    // Call SweetAlert to handle the error report
                     if (obj.hasOwnProperty(prop)) {
                         console.log(prop + " = " + key + " >> " + obj[prop]);
                     }
@@ -14798,7 +14966,7 @@ module.exports = function (e) {
     });
 };
 
-},{}],88:[function(require,module,exports){
+},{}],89:[function(require,module,exports){
 'use strict';
 
 module.exports = function (bounds) {
@@ -14823,7 +14991,7 @@ module.exports = function (bounds) {
     });
 };
 
-},{}],89:[function(require,module,exports){
+},{}],90:[function(require,module,exports){
 'use strict';
 
 module.exports = function () {
@@ -14832,7 +15000,7 @@ module.exports = function () {
     });
 };
 
-},{}],90:[function(require,module,exports){
+},{}],91:[function(require,module,exports){
 'use strict';
 
 module.exports = function (slug) {
@@ -14841,7 +15009,7 @@ module.exports = function (slug) {
     });
 };
 
-},{}],91:[function(require,module,exports){
+},{}],92:[function(require,module,exports){
 'use strict';
 
 module.exports = function (bounds) {
@@ -14857,12 +15025,15 @@ module.exports = function (bounds) {
         }
     }
 
-    this.$http.get(endpoint, function (members) {
-        this.members = members;
+    this.$http.get(endpoint, function (member_list) {
+
+        this.members = member_list;
+        console.log('~~~~~~~~~~ FETCH MEMBERS : THIS ~~~~~~~~~~~~~~~~~');
+        this.$log();
     });
 };
 
-},{}],92:[function(require,module,exports){
+},{}],93:[function(require,module,exports){
 'use strict';
 
 module.exports = function (user_slug, member_slug, cb) {
@@ -14889,7 +15060,7 @@ module.exports = function (user_slug, member_slug, cb) {
     return false;
 };
 
-},{}],93:[function(require,module,exports){
+},{}],94:[function(require,module,exports){
 'use strict';
 
 module.exports = function () {
@@ -14910,7 +15081,7 @@ module.exports = function () {
     //this.$http.post('/api/member/add', member);
 };
 
-},{}],94:[function(require,module,exports){
+},{}],95:[function(require,module,exports){
 "use strict";
 
 module.exports = function (sortKey) {
@@ -14918,21 +15089,21 @@ module.exports = function (sortKey) {
     this.sortKey = sortKey;
 };
 
-},{}],95:[function(require,module,exports){
+},{}],96:[function(require,module,exports){
 "use strict";
 
 module.exports = function () {
     this.showAddNewDepartment = !this.showAddNewDepartment;
 };
 
-},{}],96:[function(require,module,exports){
+},{}],97:[function(require,module,exports){
 "use strict";
 
 module.exports = function () {
     this.showAddNewMember = !this.showAddNewMember;
 };
 
-},{}],97:[function(require,module,exports){
+},{}],98:[function(require,module,exports){
 "use strict";
 
 module.exports = function () {

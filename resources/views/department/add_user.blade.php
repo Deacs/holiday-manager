@@ -1,4 +1,4 @@
-<form method="POST" v-on="submit: addNewMember">
+<form method="POST" v-on="submit: addMember">
 
     <input type="hidden" name="_token" value="{!! csrf_token() !!}">
 
@@ -18,17 +18,17 @@
 
         <div class="large-3 columns">
             <label>email address</label>
-            <input type="text" placeholder="jamie.doe@crowdcube.com" name="email" v-model="newMember.email">
+            <input type="text" placeholder="jamie.doe@domain.com" name="email" v-model="newMember.email">
         </div>
 
         <div class="large-3 columns">
             <label>Skype Name</label>
-            <input type="text" placeholder="jamiedoe.crowdcube" name="skype_name" v-model="newMember.skype_name">
+            <input type="text" placeholder="jamiedoe.domain" name="skype_name" v-model="newMember.skype_name">
         </div>
 
         <div class="large-2 columns">
             <label>Telephone</label>
-            <input type="text" placeholder="01392 123456" name="telephone" v-model="newMember.telephone">
+            <input type="text" placeholder="01234 123456" name="telephone" v-model="newMember.telephone">
         </div>
 
         <div class="large-1 columns">
@@ -40,6 +40,11 @@
 
             <select name="location_id" v-model="newMember.location_id">
                 <option>Select a Location</option>
+
+                {{--<option v-for="location in locations" v-bind:value="location.id">--}}
+                    {{--@{{ location.name }}--}}
+                {{--</option>--}}
+
                 <option v-repeat="location: locations" value="@{{ location.id }}">@{{ location.name }}</option>
             </select>
             <input type="hidden" name="department_id" value="{{ $department->id }}" v-model="newMember.department_id">

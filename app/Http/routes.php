@@ -18,6 +18,25 @@ Route::group(['middleware' => 'auth'], function() {
 			'uses' 	=> 'StaffDirectoryController@index'
 		]
 	);
+
+	get('search',
+		[
+			'as' 	=> 'search',
+			'uses'	=> 'ManagerController@search'
+		]
+	);
+	get('clear-index/{index}',
+		[
+			'as' 	=> 'clear-index',
+			'uses'	=> 'Search\AlgoliaController@clearIndex'
+		]
+	);
+	get('add-index/{index}',
+		[
+			'as' 	=> 'add-index',
+			'uses'	=> 'Search\AlgoliaController@addIndex'
+		]
+	);
 });
 
 /**

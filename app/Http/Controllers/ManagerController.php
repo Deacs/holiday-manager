@@ -1,8 +1,8 @@
 <?php namespace App\Http\Controllers;
 
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class ManagerController extends Controller {
 
@@ -14,6 +14,11 @@ class ManagerController extends Controller {
 	public function index()
 	{
  		return view('manager.index');
+	}
+
+	public function search()
+	{
+		return view('search');
 	}
 
 	public function test()

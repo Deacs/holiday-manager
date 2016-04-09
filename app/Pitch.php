@@ -10,7 +10,8 @@ class Pitch extends Model {
         'url',
         'objectId',
         'overfunding',
-        'progress'
+        'progress',
+        'status_string'
     ];
 
     protected $fillable = [];
@@ -27,7 +28,20 @@ class Pitch extends Model {
 
     public function getOverfundingAttribute()
     {
-        return ($this->progress_procent >= 100) ? 'true' : 'false';
+        return $this->isOverfunding();
+    }
+
+    public function getStatusStringAttribute()
+    {
+        if ($this->status == 3) {
+            return 'funded';
+        }
+
+        if ($this->isOverfunding()) {
+            return 'overfunding';
+        }
+
+        return 'live';
     }
 
     public function getProgressAttribute()
@@ -47,6 +61,11 @@ class Pitch extends Model {
         }
 
         return 'https://images.crowdcube.com/unsafe/fit-in/300x300/filters:fill(fff)/https://files-crowdcube-com.s3.amazonaws.com/files/pitch_pics/original/'.$this->logo->file_path;
+    }
+
+    public function isOverfunding()
+    {
+        return ($this->progress_procent >= 100 && $this->status == 2);
     }
 }
 

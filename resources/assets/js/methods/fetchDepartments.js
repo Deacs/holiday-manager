@@ -9,13 +9,6 @@ module.exports = function(bounds) {
     }
 
     this.$http.get(endpoint, function(departments) {
-
-        //console.log('Fetching Departments');
-        //
-        //console.log(endpoint);
-        //
-        //console.log(departments);
-
         this.departments = departments;
     });
 }

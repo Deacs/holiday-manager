@@ -78,30 +78,30 @@
             fetchDepartments:   require('../methods/fetchDepartments'),
             fetchLocations:     require('../methods/fetchLocations'),
             fetchMembers:       require('../methods/fetchMembers'),
-            //addNewMember:       require('../methods/addMember'),
+            addNewMember:       require('../methods/addMember'),
             sortBy:             require('../methods/sortBy'),
             makeSlug:           require('../methods/makeSlug'),
 
 
-            addNewMember: function () {
-
-                var endpoint = '/api/members';
-
-                if (typeof(bounds) !== 'undefined') {
-
-                    if (bounds.dept != '') {
-                        endpoint = '/api/departments/'+bounds.dept+'/team';
-                    }
-                    else if (bounds.location != '') {
-                        endpoint = '/api/locations/'+bounds.location+'/members';
-                    }
-                }
-
-                this.$http.get(endpoint, function(members) {
-                    this.members = members;
-                });
-
-            }
+            //addNewMember: function () {
+            //
+            //    var endpoint = '/api/members';
+            //
+            //    if (typeof(bounds) !== 'undefined') {
+            //
+            //        if (bounds.dept != '') {
+            //            endpoint = '/api/departments/'+bounds.dept+'/team';
+            //        }
+            //        else if (bounds.location != '') {
+            //            endpoint = '/api/locations/'+bounds.location+'/members';
+            //        }
+            //    }
+            //
+            //    this.$http.get(endpoint, function(members) {
+            //        this.members = members;
+            //    });
+            //
+            //}
         },
 
         //events: {
@@ -131,21 +131,23 @@
             //this.$root.$log();
             //console.log('************/////////////////************');
             //console.log(this.$parent._data.getMembers);
-            console.log('Ready from MemberListing component');
+            //console.log('Ready from MemberListing component');
 
+            //var members = this.fetchMembers(bounds);
             this.fetchMembers(bounds);
+            //this.members = members;
             this.fetchDepartments();
             this.fetchLocations();
 
-            console.log('MEMBER LISTING : THIS ************/////////////////************');
-            this.$log();
-
-            console.log('PARENT ************/////////////////************');
-            this.$parent.$log();
-
-            console.log('Member Listing : START');
-            console.log(this.$root._data.$members);
-            console.log('Member Listing : END');
+            //console.log('MEMBER LISTING : THIS ************/////////////////************');
+            //this.$log();
+            //
+            //console.log('PARENT ************/////////////////************');
+            //this.$parent.$log();
+            //
+            //console.log('Member Listing : START');
+            //console.log(this.$root._data.$members);
+            //console.log('Member Listing : END');
         }
     }
 

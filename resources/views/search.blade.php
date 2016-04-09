@@ -54,6 +54,21 @@
         color: #64A816;
         font-weight: bold;
     }
+    .overfunding_pitch {
+        background: #F08E01;
+        float:right;
+        min-width: 50px;
+    }
+    .funded_pitch {
+        background: red;
+        float:right;
+        min-width: 50px;
+    }
+    .live_pitch {
+        background: #64A816;
+        float:right;
+        min-width: 50px;
+    }
 </style>
 
 @section('content')
@@ -78,7 +93,9 @@
         var templatePitch = Hogan.compile('<div class="pitch">' +
                 '<div class="row">'+
                 '<div class="logo large-1 columns"<a href="@{{ url }}"><img src="@{{ thumb_path }}" width="100px" alt="@{{ title }} Logo"></a></div>'+
-                '<div class="title large-11 columns"><a href="@{{ url }}">@{{{ _highlightResult.title.value }}}</a></div>'+
+                '<div class="title large-10 columns"><a href="@{{ url }}">@{{{ _highlightResult.title.value }}}</a></div>'+
+                '<div class="large-1 @{{ status_string }}_pitch"><i class="fi-marker large" style="color:green;"></i></div>'+
+                '</div>'+
                 '</div>'+
                 '<div class="request">Amount Raised: <span class="raised">£@{{ amount_raised }}</span> (@{{ progress }}%) from <span class="raised">@{{ investors }} investors</span></div>' +
                 '<div class="description">@{{{ _highlightResult.description.value }}}</div>' +

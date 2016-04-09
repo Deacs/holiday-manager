@@ -14,8 +14,7 @@ class AlgoliaController extends Controller {
      * @param $index string
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function addIndex($index)
-    {
+    public function addIndex($index) {
         // initialize API Client & Index
         $client = new AlgoliaClient(env('ALGOLIA_APP_ID'), env('ALGOLIA_API_KEY'));
         $index = $client->initIndex($index);
@@ -26,11 +25,8 @@ class AlgoliaController extends Controller {
 
             $batch = [];
             // iterate over results and send them by batch of 10000 elements
-            foreach ($results as $object)
-            {
-//                dd($object->logo);
-                //$row = [];
-                $row['objectID']        = $object->objectId;
+            foreach ($results as $object) {
+                $row['objectID']        = $object->objectId.'_mark';
                 $row['id']              = $object->id;
                 $row['title']           = $object->title;
                 $row['url']             = $object->url;
@@ -40,6 +36,9 @@ class AlgoliaController extends Controller {
                 $row['progress']        = $object->progress;
                 $row['overfunding']     = $object->overfunding;
                 $row['thumb_path']      = $object->companyLogoPath();
+                $row['status_code']     = $object->status;
+                $row['status_string']   = $object->status_string;
+                $row['funded']          = $object->status == 3;
 
                 array_push($batch, $row);
 
@@ -73,12 +72,8 @@ class AlgoliaController extends Controller {
         $index->clearIndex();
 
 //        $res = $index->saveObject([
-//            'objectID' => 123,
-//            'id' => 9999,
-//            'url' => "url-to-test",
-//            'title' => "Deacon Test Article [Updated]",
-//            'site_description' => "The description of the test article",
-//            'site_keywords' => "deacon"
+//            'objectID' => 'pitch_20678',
+//            'status_code' => 3
 //        ]);
 //
 ////		$client->moveIndex("cc_dev_pitches_temp", "cc_dev_pitches");

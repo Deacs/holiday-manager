@@ -29,11 +29,9 @@ new Vue({
     },
 
     data: {
-        //defaultDate:            '',
         locations:              [],
         departments:            [],
-        //members:                [],
-        //haveHistory:            false,
+        members:                [],
         showOrgChartUpdate:     false,
         showAddNewMember:       false,
         showAddNewDepartment:   false,

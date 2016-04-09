@@ -13,6 +13,10 @@ th.active-field {
     color: #333333;
 }
 
+input.form-error {
+    border-color: red;
+}
+
 /* Dropzone Overides */
 .dropzone {
     padding: 10px 10px;

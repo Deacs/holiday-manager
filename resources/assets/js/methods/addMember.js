@@ -19,29 +19,40 @@ module.exports = function() {
 
     }).error(function (data, status) {
 
-        // Each field that has failed validation needs
-        // to highlight the relevant input field
+        var error_msg   = '',
+            error_items = [];
+
+        console.log('********************');
+        console.log(data);
+        console.log('********************');
+
         for (var key in data) {
             if (data.hasOwnProperty(key)) {
                 var obj = data[key];
                 for (var prop in obj) {
-                    // important check that this is objects own property
+                    // Important check that this is objects own property
                     // not from prototype prop inherited
-
-                    // Call SweetAlert to handle the error report
                     if(obj.hasOwnProperty(prop)){
-
-                        swal({
-                            type: "error",
-                            title: "Error",
-                            text: "New user could not be added :: "+prop + " = " + key + " >> " +obj[prop],
-                            timer: 2000,
-                            showConfirmButton: false
-                        });
+                        error_items.push(obj[prop]);
                         console.log(prop + " = " + key + " >> " +obj[prop]);
+
+                        // Each field that has failed validation needs
+                        // to highlight the relevant input field
+                        obj.error_class = 'form-error';
                     }
                 }
             }
         }
+
+        error_msg = "The following error"+ (error_items.length > 1 ? 's' : '') +" prevented the user being added:\n\n"+error_items.join("\n"),
+
+        // SweetAlert to handle the error report
+        swal({
+            type: "error",
+            title: "Error",
+            text: error_msg,
+            timer: 4000,
+            showConfirmButton: false
+        });
     });
 }

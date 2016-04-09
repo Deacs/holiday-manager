@@ -82,39 +82,26 @@
             sortBy:             require('../methods/sortBy'),
             makeSlug:           require('../methods/makeSlug'),
 
+            addNewMember: function () {
 
-            //addNewMember: function () {
-            //
-            //    var endpoint = '/api/members';
-            //
-            //    if (typeof(bounds) !== 'undefined') {
-            //
-            //        if (bounds.dept != '') {
-            //            endpoint = '/api/departments/'+bounds.dept+'/team';
-            //        }
-            //        else if (bounds.location != '') {
-            //            endpoint = '/api/locations/'+bounds.location+'/members';
-            //        }
-            //    }
-            //
-            //    this.$http.get(endpoint, function(members) {
-            //        this.members = members;
-            //    });
-            //
-            //}
+                var endpoint = '/api/members';
+
+                if (typeof(bounds) !== 'undefined') {
+
+                    if (bounds.dept != '') {
+                        endpoint = '/api/departments/'+bounds.dept+'/team';
+                    }
+                    else if (bounds.location != '') {
+                        endpoint = '/api/locations/'+bounds.location+'/members';
+                    }
+                }
+
+                this.$http.get(endpoint, function(members) {
+                    this.members = members;
+                });
+
+            }
         },
-
-        //events: {
-        //    'add-member': function (member) {
-        //        // `this` in event callbacks are automatically bound
-        //        // to the instance that registered it
-        //
-        //        console.log('--- Event Caught ---');
-        //
-        //        this.members.push(members);
-        //    }
-        //},
-
         ready: function() {
 
             var dept        = '';
@@ -125,29 +112,9 @@
                 location   : this.location_slug
             };
 
-
-
-            //console.log('************/////////////////************');
-            //this.$root.$log();
-            //console.log('************/////////////////************');
-            //console.log(this.$parent._data.getMembers);
-            //console.log('Ready from MemberListing component');
-
-            //var members = this.fetchMembers(bounds);
             this.fetchMembers(bounds);
-            //this.members = members;
             this.fetchDepartments();
             this.fetchLocations();
-
-            //console.log('MEMBER LISTING : THIS ************/////////////////************');
-            //this.$log();
-            //
-            //console.log('PARENT ************/////////////////************');
-            //this.$parent.$log();
-            //
-            //console.log('Member Listing : START');
-            //console.log(this.$root._data.$members);
-            //console.log('Member Listing : END');
         }
     }
 

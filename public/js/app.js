@@ -14469,24 +14469,12 @@ new Vue({
     },
 
     methods: {
-
         addMember: require('./methods/addMember'),
         fetchLocations: require('./methods/fetchLocations'),
         fetchDepartments: require('./methods/fetchDepartments'),
         toggleOrgChartPanel: require('./methods/toggleOrgChartPanel'),
         toggleNewMemberPanel: require('./methods/toggleNewMemberPanel'),
         toggleNewDepartmentPanel: require('./methods/toggleNewDepartmentPanel')
-    },
-
-    events: {
-        'add-member': function addMember(member) {
-            // `this` in event callbacks are automatically bound
-            // to the instance that registered it
-
-            console.log('--- Event Caught ---');
-
-            //this.members.push(members);
-        }
     },
 
     filters: {
@@ -14605,40 +14593,26 @@ exports.default = {
         fetchMembers: require('../methods/fetchMembers'),
         addNewMember: require('../methods/addMember'),
         sortBy: require('../methods/sortBy'),
-        makeSlug: require('../methods/makeSlug')
+        makeSlug: require('../methods/makeSlug'),
 
+        addNewMember: function addNewMember() {
+
+            var endpoint = '/api/members';
+
+            if (typeof bounds !== 'undefined') {
+
+                if (bounds.dept != '') {
+                    endpoint = '/api/departments/' + bounds.dept + '/team';
+                } else if (bounds.location != '') {
+                    endpoint = '/api/locations/' + bounds.location + '/members';
+                }
+            }
+
+            this.$http.get(endpoint, function (members) {
+                this.members = members;
+            });
+        }
     },
-
-    //addNewMember: function () {
-    //
-    //    var endpoint = '/api/members';
-    //
-    //    if (typeof(bounds) !== 'undefined') {
-    //
-    //        if (bounds.dept != '') {
-    //            endpoint = '/api/departments/'+bounds.dept+'/team';
-    //        }
-    //        else if (bounds.location != '') {
-    //            endpoint = '/api/locations/'+bounds.location+'/members';
-    //        }
-    //    }
-    //
-    //    this.$http.get(endpoint, function(members) {
-    //        this.members = members;
-    //    });
-    //
-    //}
-    //events: {
-    //    'add-member': function (member) {
-    //        // `this` in event callbacks are automatically bound
-    //        // to the instance that registered it
-    //
-    //        console.log('--- Event Caught ---');
-    //
-    //        this.members.push(members);
-    //    }
-    //},
-
     ready: function ready() {
 
         var dept = '';
@@ -14649,27 +14623,9 @@ exports.default = {
             location: this.location_slug
         };
 
-        //console.log('************/////////////////************');
-        //this.$root.$log();
-        //console.log('************/////////////////************');
-        //console.log(this.$parent._data.getMembers);
-        //console.log('Ready from MemberListing component');
-
-        //var members = this.fetchMembers(bounds);
         this.fetchMembers(bounds);
-        //this.members = members;
         this.fetchDepartments();
         this.fetchLocations();
-
-        //console.log('MEMBER LISTING : THIS ************/////////////////************');
-        //this.$log();
-        //
-        //console.log('PARENT ************/////////////////************');
-        //this.$parent.$log();
-        //
-        //console.log('Member Listing : START');
-        //console.log(this.$root._data.$members);
-        //console.log('Member Listing : END');
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
@@ -14899,30 +14855,41 @@ module.exports = function () {
         });
     }).error(function (data, status) {
 
-        // Each field that has failed validation needs
-        // to highlight the relevant input field
+        var error_msg = '',
+            error_items = [];
+
+        console.log('********************');
+        console.log(data);
+        console.log('********************');
+
         for (var key in data) {
             if (data.hasOwnProperty(key)) {
                 var obj = data[key];
                 for (var prop in obj) {
-                    // important check that this is objects own property
+                    // Important check that this is objects own property
                     // not from prototype prop inherited
-
-                    // Call SweetAlert to handle the error report
                     if (obj.hasOwnProperty(prop)) {
-
-                        swal({
-                            type: "error",
-                            title: "Error",
-                            text: "New user could not be added :: " + prop + " = " + key + " >> " + obj[prop],
-                            timer: 2000,
-                            showConfirmButton: false
-                        });
+                        error_items.push(obj[prop]);
                         console.log(prop + " = " + key + " >> " + obj[prop]);
+
+                        // Each field that has failed validation needs
+                        // to highlight the relevant input field
+                        obj.error_class = 'form-error';
                     }
                 }
             }
         }
+
+        error_msg = "The following error" + (error_items.length > 1 ? 's' : '') + " prevented the user being added:\n\n" + error_items.join("\n"),
+
+        // SweetAlert to handle the error report
+        swal({
+            type: "error",
+            title: "Error",
+            text: error_msg,
+            timer: 4000,
+            showConfirmButton: false
+        });
     });
 };
 

@@ -5,7 +5,7 @@
     <div class="row panel radius">
         <div class="large-4 columns">
             <label>First Name</label>
-            <input type="text" placeholder="Jamie" name="first_name" v-model="newMember.first_name">
+            <input type="text" placeholder="Jamie" name="first_name" v-model="newMember.first_name"  class="@{{ error_class }}">
         </div>
         <div class="large-4 columns">
             <label>Last Name</label>

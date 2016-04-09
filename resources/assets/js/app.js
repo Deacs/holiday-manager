@@ -52,24 +52,12 @@ new Vue({
     },
 
     methods: {
-
         addMember:                  require('./methods/addMember'),
         fetchLocations:             require('./methods/fetchLocations'),
         fetchDepartments:           require('./methods/fetchDepartments'),
         toggleOrgChartPanel:        require('./methods/toggleOrgChartPanel'),
         toggleNewMemberPanel:       require('./methods/toggleNewMemberPanel'),
         toggleNewDepartmentPanel:   require('./methods/toggleNewDepartmentPanel'),
-    },
-
-    events: {
-        'add-member': function (member) {
-            // `this` in event callbacks are automatically bound
-            // to the instance that registered it
-
-            console.log('--- Event Caught ---');
-    
-            //this.members.push(members);
-        }
     },
 
     filters : {

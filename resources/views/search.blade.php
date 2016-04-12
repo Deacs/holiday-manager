@@ -87,7 +87,9 @@
     <script src="//cdn.jsdelivr.net/hogan.js/3.0/hogan.min.js"></script>
     <script src="//cdn.jsdelivr.net/autocomplete.js/0/autocomplete.min.js"></script>
     <script>
+
         var client = algoliasearch("WPJE7ZD8RV", "e0a7331b6f7141e375e25b70f7407b46");
+
         var pitches = client.initIndex('cc_dev_pitches');
         // Mustache templating by Hogan.js (http://mustache.github.io/)
         var templatePitch = Hogan.compile('<div class="pitch">' +
@@ -105,6 +107,11 @@
         var templateContent = Hogan.compile('<div class="content">' +
                 '<div class="title">@{{{ _highlightResult.title.value }}}</div>' +
                 '<div class="description">@{{{ _highlightResult.site_description.value }}}</div>' +
+                '</div>');
+        var blog = client.initIndex('cc_blog');
+        var templateBlog = Hogan.compile('<div class="content">' +
+                '<div class="title">@{{{ _highlightResult.post_title.value }}}</div>' +
+                '<div class="description">@{{{ _highlightResult.post_content.value }}}</div>' +
                 '</div>');
 
         // autocomplete.js initialization
@@ -126,8 +133,17 @@
                 templates: {
                     header: '<div class="category">Content</div>',
                     suggestion: function(hit) {
-                        // render the hit using Hogan.js
                         return templateContent.render(hit);
+                    }
+                }
+            },
+            {
+                source: autocomplete.sources.hits(blog, {hitsPerPage: 5}),
+                displayKey: 'name',
+                templates: {
+                    header: '<div class="category">Blog</div>',
+                    suggestion: function(hit) {
+                        return templateBlog.render(hit);
                     }
                 }
             }

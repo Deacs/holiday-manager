@@ -31,10 +31,24 @@ Route::group(['middleware' => 'auth'], function() {
 			'uses'	=> 'Search\AlgoliaController@clearIndex'
 		]
 	);
-	get('add-index/{index}',
+	get('add-pitch-index/{index}',
 		[
 			'as' 	=> 'add-index',
-			'uses'	=> 'Search\AlgoliaController@addIndex'
+			'uses'	=> 'Search\AlgoliaController@addPitchIndex'
+		]
+	);
+
+	get('upload-index',
+		[
+			'as' 	=> 'upload-index',
+			'uses' 	=> 'Search\AlgoliaController@uploadIndexFile'
+		]
+	);
+
+	post('parse-index',
+		[
+			'as' 	=> 'parse-index',
+			'uses' 	=> 'Search\AlgoliaController@parseIndexFile'
 		]
 	);
 });

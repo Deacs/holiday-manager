@@ -2,13 +2,13 @@ module.exports = function() {
 
     event.preventDefault();
 
-    var member  = this.newMember;
-    var vm      = this;
+    var member = this.newMember;
 
     this.$http.post('/api/member/add', member, function(data) {
 
         this.members.push(member);
 
+        // Check SweetAlert for callback options
         swal({
             type: "success",
             title: "Success",
@@ -17,14 +17,21 @@ module.exports = function() {
             showConfirmButton: false
         });
 
+        // Clear form inputs
+        // TODO
+        //member.first_name   = '';
+        //member.last_name    = '';
+        //member.role         = '';
+        //member.email        = '';
+        //member.skype_name   = '';
+        //member.telephone    = '';
+        //member.extension    = '';
+        //member.location_id  = '';
+
     }).error(function (data, status) {
 
         var error_msg   = '',
             error_items = [];
-
-        console.log('********************');
-        console.log(data);
-        console.log('********************');
 
         for (var key in data) {
             if (data.hasOwnProperty(key)) {
@@ -38,7 +45,11 @@ module.exports = function() {
 
                         // Each field that has failed validation needs
                         // to highlight the relevant input field
-                        obj.error_class = 'form-error';
+                        var ele = document.getElementById(key);
+
+                        if (ele != null) {
+                            ele.className = 'form-error';
+                        }
                     }
                 }
             }
@@ -46,7 +57,7 @@ module.exports = function() {
 
         error_msg = "The following error"+ (error_items.length > 1 ? 's' : '') +" prevented the user being added:\n\n"+error_items.join("\n"),
 
-        // SweetAlert to handle the error report
+        // Init SweetAlert to handle the error report
         swal({
             type: "error",
             title: "Error",

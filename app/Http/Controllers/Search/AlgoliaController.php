@@ -1,7 +1,8 @@
 <?php namespace App\Http\Controllers\Search;
 
 use App\Pitch;
-use App\Http\Requests;
+use App\Search;
+use League\Csv\Reader;
 use AlgoliaSearch\Client;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -11,45 +12,17 @@ class AlgoliaController extends Controller {
 
     /**
      * Add an Algolia index
+     *
+     * @param Search $search
      * @param $index string
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     *
+     * @throws \AlgoliaSearch\AlgoliaException
      */
-    public function addIndex($index) {
-        // initialize API Client & Index
-        $client = new AlgoliaClient(env('ALGOLIA_APP_ID'), env('ALGOLIA_API_KEY'));
-        $index = $client->initIndex($index);
-
-        $results = Pitch::whereIn('status', [2,3])->get();
-
-        if ($results) {
-
-            $batch = [];
-            // iterate over results and send them by batch of 10000 elements
-            foreach ($results as $object) {
-                $row['objectID']        = $object->objectId.'_mark';
-                $row['id']              = $object->id;
-                $row['title']           = $object->title;
-                $row['url']             = $object->url;
-                $row['description']     = $object->description;
-                $row['investors']       = $object->investors;
-                $row['amount_raised']   = $object->reached_amount;
-                $row['progress']        = $object->progress;
-                $row['overfunding']     = $object->overfunding;
-                $row['thumb_path']      = $object->companyLogoPath();
-                $row['status_code']     = $object->status;
-                $row['status_string']   = $object->status_string;
-                $row['funded']          = $object->status == 3;
-
-                array_push($batch, $row);
-
-                if (count($batch) == 10000) {
-                    $index->saveObjects($batch);
-                    $batch = [];
-                }
-            }
-
-            $index->saveObjects($batch);
-        }
+    public function addPitchIndex(Search $search, $index)
+    {
+        $search->addPitchIndex($index);
 
         return view('utils.index.add');
     }
@@ -57,30 +30,48 @@ class AlgoliaController extends Controller {
     /**
      * Clear an existing Algolia index
      *
+     * @param Search $search
      * @param $index string
+     *
      * @return Response
+     *
      * @throws \AlgoliaSearch\AlgoliaException
      */
-    public function clearIndex($index)
+    public function clearIndex(Search $search, $index)
     {
-        // initialize API Client & Index
-        $client = new AlgoliaClient(env('ALGOLIA_APP_ID'), env('ALGOLIA_API_KEY'));
-
-        //dd($client);
-        $index = $client->initIndex($index);
-
-        $index->clearIndex();
-
-//        $res = $index->saveObject([
-//            'objectID' => 'pitch_20678',
-//            'status_code' => 3
-//        ]);
-//
-////		$client->moveIndex("cc_dev_pitches_temp", "cc_dev_pitches");
-//
-//        dd($res);
+        $search->clearIndex($index);
 
         return view('utils.index.clear');
+    }
+
+    /**
+     * Display option to upload a file to be parsed and converted to search index
+     */
+    public function uploadIndexFile()
+    {
+        return view('utils.index.upload');
+    }
+
+    /**
+     * Parse a CSV file and prepare for indexing
+     *
+     * @param search $search
+     * @param Request $request
+     *
+     * @return string
+     */
+    public function parseIndexFile(Search $search, Request $request)
+    {
+        // Validate the file type
+        $this->validate($request, [
+            'file' => 'required|mimes:txt,csv'
+        ]);
+
+        $search->setInputFile($request->file('file'));
+
+        $search->parseFile();
+
+        return 'Got file';
     }
 
 }

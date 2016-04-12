@@ -5,25 +5,25 @@
     <div class="row panel radius">
         <div class="large-4 columns">
             <label>First Name</label>
-            <input type="text" placeholder="Jamie" name="first_name" v-model="newMember.first_name"  class="@{{ error_class }}">
+            <input type="text" placeholder="Jamie" id="first_name" name="first_name" v-model="newMember.first_name">
         </div>
         <div class="large-4 columns">
             <label>Last Name</label>
-            <input type="text" placeholder="Doe" name="last_name" v-model="newMember.last_name">
+            <input type="text" placeholder="Doe" id="last_name" name="last_name" v-model="newMember.last_name">
         </div>
         <div class="large-4 columns">
             <label>Role</label>
-            <input type="text" placeholder="Analyst" name="role" v-model="newMember.role">
+            <input type="text" placeholder="Analyst" id="role" name="role" v-model="newMember.role">
         </div>
 
         <div class="large-3 columns">
             <label>email address</label>
-            <input type="text" placeholder="jamie.doe@domain.com" name="email" v-model="newMember.email">
+            <input type="text" placeholder="jamie.doe@domain.com" id="email" name="email" v-model="newMember.email">
         </div>
 
         <div class="large-3 columns">
             <label>Skype Name</label>
-            <input type="text" placeholder="jamiedoe.domain" name="skype_name" v-model="newMember.skype_name">
+            <input type="text" placeholder="jamiedoe.domain" id="skype_name" name="skype_name" v-model="newMember.skype_name">
         </div>
 
         <div class="large-2 columns">
@@ -38,7 +38,7 @@
         <div class="large-3 columns">
             <label>Location</label>
 
-            <select name="location_id" v-model="newMember.location_id">
+            <select id="location_id" name="location_id" v-model="newMember.location_id">
                 <option>Select a Location</option>
 
                 {{--<option v-for="location in locations" v-bind:value="location.id">--}}

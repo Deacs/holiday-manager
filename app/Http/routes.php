@@ -19,7 +19,12 @@ Route::group(['middleware' => 'auth'], function() {
 		]
 	);
 
-	get('search',
+
+});
+
+Route::group(['middleware' => 'auth', 'prefix' => 'search', 'as' => 'search.'], function () {
+
+	get('/',
 		[
 			'as' 	=> 'search',
 			'uses'	=> 'ManagerController@search'

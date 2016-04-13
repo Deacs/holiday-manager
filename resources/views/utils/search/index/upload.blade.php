@@ -7,7 +7,7 @@
 
     <div class="row">
         <div class="large-2 columns left">
-            <form method="POST" action="/parse-index" id="search-index-upload" class="dropzone" style="height:40px;">
+            <form method="POST" action="/search/parse-index" id="search-index-upload" class="dropzone" style="height:40px;">
                 {{ csrf_field() }}
             </form>
         </div>

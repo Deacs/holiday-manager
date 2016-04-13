@@ -6,7 +6,6 @@ use League\Csv\Reader;
 use AlgoliaSearch\Client;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use AlgoliaSearch\Client as AlgoliaClient;
 
 class AlgoliaController extends Controller {
 
@@ -24,7 +23,7 @@ class AlgoliaController extends Controller {
     {
         $search->addPitchIndex($index);
 
-        return view('utils.index.add');
+        return view('utils.search.index.add');
     }
 
     /**
@@ -41,7 +40,7 @@ class AlgoliaController extends Controller {
     {
         $search->clearIndex($index);
 
-        return view('utils.index.clear');
+        return view('utils.search.index.clear');
     }
 
     /**
@@ -49,7 +48,7 @@ class AlgoliaController extends Controller {
      */
     public function uploadIndexFile()
     {
-        return view('utils.index.upload');
+        return view('utils.search.index.upload');
     }
 
     /**
@@ -58,9 +57,10 @@ class AlgoliaController extends Controller {
      * @param search $search
      * @param Request $request
      *
+     * @param string $index
      * @return string
      */
-    public function parseIndexFile(Search $search, Request $request)
+    public function parseIndexFile(Search $search, Request $request, $index = 'cc_blog')
     {
         // Validate the file type
         $this->validate($request, [
@@ -69,7 +69,7 @@ class AlgoliaController extends Controller {
 
         $search->setInputFile($request->file('file'));
 
-        $search->parseFile();
+        $search->parseIndexFile($index);
 
         return 'Got file';
     }

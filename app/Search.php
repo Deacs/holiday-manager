@@ -1,6 +1,7 @@
 <?php namespace App;
 
 use League\Csv\Reader;
+use AlgoliaSearch\Client as AlgoliaClient;
 
 class Search
 {
@@ -10,9 +11,8 @@ class Search
 
     protected $inputFile;
 
-    public function _construct()
+    public function __construct()
     {
-        // initialize API Client & Index
         $this->client = new AlgoliaClient(env('ALGOLIA_APP_ID'), env('ALGOLIA_API_KEY'));
     }
 
@@ -33,7 +33,7 @@ class Search
 
     /**
      * Prepare and add an index of Pitches
-     * 
+     *
      * @param $index
      */
     public function addPitchIndex($index)
@@ -87,26 +87,33 @@ class Search
 
     /**
      * Parse an exported file in order to create an index
+     * @param $index
      */
-    public function parseFile()
+    public function parseIndexFile($index)
     {
-        $imagePath = $this->inputFile->getPathName();
+        $this->clearIndex($index);
 
-        $inputCsv = Reader::createFromPath($imagePath);
+        $this->initIndex($index);
+
+        $filePath = $this->inputFile->getPathName();
+
+        $inputCsv = Reader::createFromPath($filePath);
 
         $rows = $inputCsv->fetchAll();
 
         // First element will be the headings
         $headings = array_shift($rows);
+        $entries = [];
 
         foreach ($rows as $row) {
-            echo json_encode($row);
+            $entry = [];
+            foreach ($row as $key => $item) {
+                $entry[$headings[$key]] = strip_tags($item);
+            }
+
+            $entries[] = $entry;
         }
 
-        dd($headings);
-
-        dd($rows);
-
-        header('Content-Type: application/json; charset="utf-8"');
+        $this->index->addObjects($entries);
     }
 }

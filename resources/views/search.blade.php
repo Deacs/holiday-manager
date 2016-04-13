@@ -110,7 +110,7 @@
                 '</div>');
         var blog = client.initIndex('cc_blog');
         var templateBlog = Hogan.compile('<div class="content">' +
-                '<div class="title">@{{{ _highlightResult.post_title.value }}}</div>' +
+                '<div class="title"><a href="@{{ post_name }}">@{{{ _highlightResult.post_title.value }}}</a></div>' +
                 '<div class="description">@{{{ _highlightResult.post_content.value }}}</div>' +
                 '</div>');
 
